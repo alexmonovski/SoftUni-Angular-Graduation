@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const assetsController = require("../controllers/assetsController");
 
 router.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -12,5 +13,7 @@ router.use((req, res, next) => {
   );
   next();
 });
+
+router.use("/", assetsController);
 
 module.exports = router;
