@@ -8,6 +8,7 @@ const articleSchema = new Schema({
   author: { type: Types.ObjectId, ref: "User" },
   topics: { type: [Types.ObjectId], ref: "Topic", default: [] },
   createdAt: { type: Date, default: Date.now },
+  lastEdit: { type: Date, default: Date.now },
 });
 
 articleSchema.plugin(uniqueValidator);

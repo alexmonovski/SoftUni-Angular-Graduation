@@ -1,5 +1,7 @@
 const Article = require("../models/Article");
 const Topic = require("../models/Topic");
+const User = require("../models/User");
+const { validateInput } = require("../util/validateInput");
 
 async function getAllArticles() {
   return Article.find().lean();
@@ -30,9 +32,28 @@ async function getArticlesByTopics(topicArray) {
 }
 
 async function createArticle(body) {
-  await validateInput(body, "createAsset");
+  await validateInput(body, "createArticle");
   const newArticle = await Article.create(body);
   return newArticle;
+}
+
+async function editArticle(id, body) {
+  await validateInput(body, "editArticle");
+  const article = await Article.findById(id);
+  article.name = body.name;
+  article.description = body.description;
+  article.topics = body.topics;
+  article.lastEdit = Date.now();
+  await article.save();
+}
+
+async function likeArticle(id, subscriberId) {
+  await Article.findByIdAndUpdate(id, { $push: { usersLiked: subscriberId } });
+  await User.findByIdAndUpdate(subscriberId, { $push: { subscribedTo: id } });
+}
+
+async function deleteArticle(id) {
+  await Article.findByIdAndDelete(id);
 }
 
 module.exports = {
@@ -41,4 +62,7 @@ module.exports = {
   getArticlesByAuthor,
   getArticlesByTopics,
   createArticle,
+  editArticle,
+  likeArticle,
+  deleteArticle,
 };

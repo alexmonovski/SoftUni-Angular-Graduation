@@ -10,7 +10,10 @@ const userSchema = new Schema({
   topics: { type: [Types.ObjectId], ref: "Topic", default: [] },
   articlesCreated: { type: [Types.ObjectId], ref: "Article", default: [] },
   articlesLiked: { type: [Types.ObjectId], ref: "Article", default: [] },
-  authorSubscriptions: { type: [Types.ObjectId], ref: "User", default: [] },
+  // to whom has the user subscribed to:
+  subscribedTo: { type: [Types.ObjectId], ref: "User", default: [] },
+  // subscriptions that the author has:
+  subscriptions: { type: [Types.ObjectId], ref: "User", default: [] },
 });
 
 userSchema.plugin(uniqueValidator);
