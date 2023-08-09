@@ -1,5 +1,7 @@
 .article-detail {
   padding: 20px;
+  margin: auto;
+  width: 80vw;
 }
 
 .article-avatar {

@@ -15,13 +15,24 @@
     </li>
     <li>
       <a mat-button routerLink="/auth/profile" routerLinkActive="mat-accent"
-        >Register</a
+        >Profile</a
+      >
+    </li>
+    <li>
+      <a mat-button routerLink="/about" routerLinkActive="mat-accent">About</a>
+    </li>
+    <li>
+      <a mat-button routerLink="/articles" routerLinkActive="mat-accent"
+        >Article details</a
       >
     </li>
   </ul>
   <ul>
     <li>
       <button mat-button>Logout</button>
+    </li>
+    <li>
+      <app-dark-mode-toggle></app-dark-mode-toggle>
     </li>
   </ul>
 </mat-toolbar>

@@ -4,9 +4,12 @@ import { MatCardModule } from '@angular/material/card';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatListModule } from '@angular/material/list';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @NgModule({
   declarations: [],
@@ -19,6 +22,9 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     MatStepperModule,
     MatChipsModule,
     MatToolbarModule,
+    MatInputModule,
+    MatIconModule,
+    MatSlideToggleModule,
   ],
   exports: [
     MatButtonModule,
@@ -29,6 +35,9 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     MatStepperModule,
     MatChipsModule,
     MatToolbarModule,
+    MatInputModule,
+    MatIconModule,
+    MatSlideToggleModule,
   ],
 })
 export class MaterialModule {}

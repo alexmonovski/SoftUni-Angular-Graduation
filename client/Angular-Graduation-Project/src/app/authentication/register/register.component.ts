@@ -1,41 +1,64 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ReactiveFormsModule } from '@angular/forms';
+import { Component, OnInit, inject } from '@angular/core';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
+import { passwordMatchValidator } from '../services/password-match-validator.service';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css'],
 })
-export class RegisterComponent {
-  stepOneForm: FormGroup;
-  stepTwoForm: FormGroup;
-  interests: string[] = [];
-  chipInput = { value: '' };
+export class RegisterComponent implements OnInit {
+  firstRegisterFormGroup!: any;
+  secondRegisterFormGroup!: any;
 
-  constructor(private formBuilder: FormBuilder) {
-    this.stepOneForm = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+  constructor(private fb: FormBuilder) {
+    this.firstRegisterFormGroup = new FormGroup({
+      username: new FormControl('', [Validators.required]),
+      email: new FormControl('', [Validators.required, Validators.email]),
+      passwordGroup: new FormGroup(
+        {
+          password: new FormControl('', [Validators.required]),
+          repass: new FormControl('', [Validators.required]),
+        },
+        { validators: passwordMatchValidator }
+      ),
     });
-
-    this.stepTwoForm = this.formBuilder.group({
-      username: ['', Validators.required],
+    this.secondRegisterFormGroup = new FormGroup({
+      topics: new FormControl(''),
     });
   }
+  onSubmit() {}
 
-  addInterest(interest: string): void {
-    if (interest && !this.interests.includes(interest)) {
-      this.interests.push(interest);
-      // Reset the input field
-      this.chipInput.value = '';
-    }
-  }
+  keywords = ['angular', 'how-to', 'tutorial', 'accessibility'];
+  formControl = new FormControl(['angular']);
 
-  removeInterest(interest: string): void {
-    const index = this.interests.indexOf(interest);
+  announcer = inject(LiveAnnouncer);
+
+  removeKeyword(keyword: string) {
+    const index = this.keywords.indexOf(keyword);
     if (index >= 0) {
-      this.interests.splice(index, 1);
+      this.keywords.splice(index, 1);
+
+      this.announcer.announce(`removed ${keyword}`);
     }
   }
+
+  add(event: MatChipInputEvent): void {
+    const value = (event.value || '').trim();
+
+    if (value) {
+      this.keywords.push(value);
+    }
+
+    event.chipInput!.clear();
+  }
+
+  ngOnInit(): void {}
 }

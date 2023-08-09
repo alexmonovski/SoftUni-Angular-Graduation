@@ -1,51 +1,85 @@
-<div>
-  <h2>Register</h2>
-  <!-- Registration form here -->
-</div>
-<div class="register">
-  <mat-stepper>
-    <mat-step label="Step 1">
-      <h2>Email and Password</h2>
-      <form [formGroup]="stepOneForm">
-        <mat-form-field>
-          <input matInput formControlName="email" placeholder="Email" />
-        </mat-form-field>
+<mat-stepper
+  orientation="vertical"
+  [linear]="true"
+  class=".mat-stepper-container"
+>
+  <mat-step [stepControl]="firstRegisterFormGroup">
+    <form [formGroup]="firstRegisterFormGroup">
+      <mat-form-field>
+        <input matInput placeholder="Your email" formControlName="email" />
+        <mat-hint>Please enter a valid email.</mat-hint>
+      </mat-form-field>
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Your username"
+          formControlName="username"
+        />
+      </mat-form-field>
+      <div formGroupName="passwordGroup">
         <mat-form-field>
           <input
             matInput
+            placeholder="Your password"
             formControlName="password"
             type="password"
-            placeholder="Password"
           />
         </mat-form-field>
-        <button mat-button matStepperNext>Next</button>
-      </form>
-    </mat-step>
-
-    <mat-step label="Step 2">
-      <h2>Username and Chips</h2>
-      <form [formGroup]="stepTwoForm">
-        <mat-form-field>
-          <input matInput formControlName="username" placeholder="Username" />
-        </mat-form-field>
-        <mat-chip-listbox>
-          <mat-chip-option
-            *ngFor="let interest of interests"
-            (removed)="removeInterest(interest)"
-            >{{ interest }}</mat-chip-option
-          >
-        </mat-chip-listbox>
         <mat-form-field>
           <input
             matInput
-            #chipInput
-            placeholder="Add interest"
-            (keyup.enter)="addInterest(chipInput.value)"
+            placeholder="Repeat password"
+            formControlName="repass"
+            type="password"
           />
         </mat-form-field>
+      </div>
+      <div>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="secondRegisterFormGroup">
+    <form [formGroup]="secondRegisterFormGroup">
+      <mat-form-field class="example-form-field">
+        <mat-label>Video keywords</mat-label>
+        <mat-chip-grid
+          #chipGrid
+          aria-label="Enter keywords"
+          [formControl]="formControl"
+        >
+          <mat-chip-row
+            *ngFor="let keyword of keywords"
+            (removed)="removeKeyword(keyword)"
+          >
+            {{ keyword }}
+            <button matChipRemove aria-label="'remove ' + keyword">
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </mat-chip-row>
+        </mat-chip-grid>
+        <input
+          placeholder="New keyword..."
+          [matChipInputFor]="chipGrid"
+          (matChipInputTokenEnd)="add($event)"
+        />
+      </mat-form-field>
+      <div>
         <button mat-button matStepperPrevious>Back</button>
         <button mat-button matStepperNext>Next</button>
-      </form>
-    </mat-step>
-  </mat-stepper>
-</div>
+      </div>
+    </form>
+  </mat-step>
+
+  <mat-step>
+    <ng-template matStepLabel>Done</ng-template>
+    <p>
+      Done! Press 'Submit' to complete registration or 'Back' to change
+      something.
+    </p>
+    <div>
+      <button mat-button matStepperPrevious>Back</button>
+      <button mat-button (click)="onSubmit()">Submit</button>
+    </div>
+  </mat-step>
+</mat-stepper>
