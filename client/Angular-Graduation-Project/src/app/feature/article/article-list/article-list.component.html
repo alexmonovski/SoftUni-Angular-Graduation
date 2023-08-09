@@ -1,1 +1,9 @@
-<p>article-list works!</p>
+<div class="article-list">
+  <h2>Article List</h2>
+  <ul>
+    <li *ngFor="let article of articles">
+      <!-- <a [routerLink]="['/article', article.id]">{{ article.title }}</a> -->
+      <app-article-card></app-article-card>
+    </li>
+  </ul>
+</div>

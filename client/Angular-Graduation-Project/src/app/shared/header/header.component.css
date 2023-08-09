@@ -1,0 +1,38 @@
+nav {
+  background-color: lightblue;
+  padding: 10px 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+a {
+  text-decoration: none;
+  color: #007bff;
+  font-size: 18px;
+  margin: 0 20px;
+  transition: color 0.3s;
+}
+
+a:hover {
+  color: #0056b3;
+}
+
+nav ul {
+  list-style-type: none; /* Remove the default dot */
+  padding: 0;
+  margin: 0;
+  display: flex; /* Display list items horizontally */
+}
+
+nav li {
+  margin-right: 15px; /* Adjust the spacing between list items */
+}
+
+nav a {
+  text-decoration: none;
+  color: black; /* Change the link color as needed */
+}
+
+.button {
+  margin-top: 10px; /* Add spacing above the Logout button */
+}

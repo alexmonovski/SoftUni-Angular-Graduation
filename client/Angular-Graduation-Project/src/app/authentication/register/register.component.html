@@ -1,1 +1,51 @@
-<p>register works!</p>
+<div>
+  <h2>Register</h2>
+  <!-- Registration form here -->
+</div>
+<div class="register">
+  <mat-stepper>
+    <mat-step label="Step 1">
+      <h2>Email and Password</h2>
+      <form [formGroup]="stepOneForm">
+        <mat-form-field>
+          <input matInput formControlName="email" placeholder="Email" />
+        </mat-form-field>
+        <mat-form-field>
+          <input
+            matInput
+            formControlName="password"
+            type="password"
+            placeholder="Password"
+          />
+        </mat-form-field>
+        <button mat-button matStepperNext>Next</button>
+      </form>
+    </mat-step>
+
+    <mat-step label="Step 2">
+      <h2>Username and Chips</h2>
+      <form [formGroup]="stepTwoForm">
+        <mat-form-field>
+          <input matInput formControlName="username" placeholder="Username" />
+        </mat-form-field>
+        <mat-chip-listbox>
+          <mat-chip-option
+            *ngFor="let interest of interests"
+            (removed)="removeInterest(interest)"
+            >{{ interest }}</mat-chip-option
+          >
+        </mat-chip-listbox>
+        <mat-form-field>
+          <input
+            matInput
+            #chipInput
+            placeholder="Add interest"
+            (keyup.enter)="addInterest(chipInput.value)"
+          />
+        </mat-form-field>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button matStepperNext>Next</button>
+      </form>
+    </mat-step>
+  </mat-stepper>
+</div>

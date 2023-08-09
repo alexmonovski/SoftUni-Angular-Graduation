@@ -9,6 +9,10 @@ import { SubscriptionCardComponent } from './profile/subscribed-users/subscripti
 import { ArticleListComponent } from './article/article-list/article-list.component';
 import { ArticleCardComponent } from './article/article-card/article-card.component';
 import { ArticleDetailsComponent } from './article/article-details/article-details.component';
+import { MatCardModule } from '@angular/material/card';
+import { ArticleCommentsComponent } from './article/article-comments/article-comments.component';
+import { UserCardComponent } from './profile/user-card/user-card.component';
+import { MaterialModule } from '../material.module';
 
 @NgModule({
   declarations: [
@@ -20,8 +24,10 @@ import { ArticleDetailsComponent } from './article/article-details/article-detai
     ArticleListComponent,
     ArticleCardComponent,
     ArticleDetailsComponent,
+    ArticleCommentsComponent,
+    UserCardComponent,
   ],
-  imports: [CommonModule],
+  imports: [CommonModule, MatCardModule, MaterialModule],
   exports: [
     ProfileComponent,
     SubscribedUsersComponent,
@@ -31,6 +37,7 @@ import { ArticleDetailsComponent } from './article/article-details/article-detai
     ArticleListComponent,
     ArticleCardComponent,
     ArticleDetailsComponent,
+    UserCardComponent,
   ],
 })
 export class FeatureModule {}
