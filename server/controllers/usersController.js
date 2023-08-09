@@ -1,8 +1,7 @@
 const {
   getAllUsers,
+  getSingleUser,
   subscribeToUser,
-  editUser,
-  registerUser,
 } = require("../services/usersServices");
 const usersController = require("express").Router();
 
@@ -31,32 +30,6 @@ usersController.post("/:id/subscribe", async (req, res) => {
     const userId = "";
     const author = await subscribeToUser(req.params.id, userId);
     console.log(author);
-  } catch (err) {
-    console.log(err);
-  }
-});
-
-usersController.post("/:id/edit", async (req, res) => {
-  try {
-    const author = await editUser(req.params.id, userId);
-    console.log(author);
-  } catch (err) {
-    console.log(err);
-  }
-});
-
-usersController.post("/auth/register", async (req, res) => {
-  try {
-    const token = await registerUser(req.body);
-    return res.status(201).json(token);
-  } catch (err) {
-    console.log(err);
-  }
-});
-usersController.post("/auth/login", async (req, res) => {
-  try {
-    const token = await loginUser(req.body);
-    return res.status(200).json(token);
   } catch (err) {
     console.log(err);
   }
