@@ -6,6 +6,7 @@ import { DarkModeToggleComponent } from './dark-mode-toggle/dark-mode-toggle.com
 import { AboutComponent } from './about/about.component';
 import { ErrorComponent } from './error/error.component';
 import { MaterialModule } from '../material.module';
+import { AppRoutingModule } from '../app-routing.module';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,7 @@ import { MaterialModule } from '../material.module';
     FooterComponent,
     ErrorComponent,
   ],
-  imports: [CommonModule, MaterialModule],
+  imports: [CommonModule, MaterialModule, AppRoutingModule],
   exports: [
     HeaderComponent,
     FooterComponent,

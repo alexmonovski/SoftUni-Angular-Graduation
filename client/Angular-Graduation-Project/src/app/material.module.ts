@@ -6,6 +6,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 @NgModule({
   declarations: [],
@@ -17,6 +18,7 @@ import { MatChipsModule } from '@angular/material/chips';
     MatFormFieldModule,
     MatStepperModule,
     MatChipsModule,
+    MatToolbarModule,
   ],
   exports: [
     MatButtonModule,
@@ -26,6 +28,7 @@ import { MatChipsModule } from '@angular/material/chips';
     MatFormFieldModule,
     MatStepperModule,
     MatChipsModule,
+    MatToolbarModule,
   ],
 })
 export class MaterialModule {}

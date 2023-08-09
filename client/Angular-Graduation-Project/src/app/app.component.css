@@ -1,0 +1,8 @@
+section.main {
+  height: 80vh;
+}
+
+section.header,
+section.footer {
+  height: 10vh;
+}
