@@ -10,6 +10,10 @@ import { HomeComponent } from './home/home.component';
 import { ArticleCardComponent } from './article/article-card/article-card.component';
 import { CoreModule } from '../core/core.module';
 import { AppRoutingModule } from '../app-routing.module';
+import { ArticleCreateComponent } from './article-create/article-create.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { CKEditorModule } from 'ckeditor4-angular';
+import { JoditAngularModule } from 'jodit-angular';
 
 @NgModule({
   declarations: [
@@ -18,6 +22,7 @@ import { AppRoutingModule } from '../app-routing.module';
     ArticleCommentsComponent,
     HomeComponent,
     ArticleCardComponent,
+    ArticleCreateComponent,
   ],
   imports: [
     CommonModule,
@@ -25,6 +30,9 @@ import { AppRoutingModule } from '../app-routing.module';
     MaterialModule,
     CoreModule,
     AppRoutingModule,
+    ReactiveFormsModule,
+    CKEditorModule,
+    JoditAngularModule,
   ],
   exports: [
     ArticleListComponent,

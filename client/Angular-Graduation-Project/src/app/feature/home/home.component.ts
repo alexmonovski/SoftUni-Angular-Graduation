@@ -15,7 +15,7 @@ export class HomeComponent {
     this.apiCalls.getAllArticles().subscribe({
       next: (data) => (this.articles = data),
       error: (err) => console.log(err),
-      complete: () => console.log('Registration completed.'),
+      complete: () => console.log('Successfully fetched resources.'),
     });
   }
 }
