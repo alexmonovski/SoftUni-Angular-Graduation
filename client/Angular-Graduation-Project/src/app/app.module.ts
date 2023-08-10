@@ -9,6 +9,7 @@ import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { FeatureModule } from './feature/feature.module';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [AppComponent],
@@ -21,6 +22,7 @@ import { FeatureModule } from './feature/feature.module';
     BrowserAnimationsModule,
     MaterialModule,
     FeatureModule,
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

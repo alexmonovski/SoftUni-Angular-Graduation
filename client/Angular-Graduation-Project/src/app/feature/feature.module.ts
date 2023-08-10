@@ -8,6 +8,8 @@ import { ArticleCommentsComponent } from './article/article-comments/article-com
 import { MaterialModule } from '../material.module';
 import { HomeComponent } from './home/home.component';
 import { ArticleCardComponent } from './article/article-card/article-card.component';
+import { CoreModule } from '../core/core.module';
+import { AppRoutingModule } from '../app-routing.module';
 
 @NgModule({
   declarations: [
@@ -17,7 +19,13 @@ import { ArticleCardComponent } from './article/article-card/article-card.compon
     HomeComponent,
     ArticleCardComponent,
   ],
-  imports: [CommonModule, MatCardModule, MaterialModule],
+  imports: [
+    CommonModule,
+    MatCardModule,
+    MaterialModule,
+    CoreModule,
+    AppRoutingModule,
+  ],
   exports: [
     ArticleListComponent,
     ArticleDetailsComponent,

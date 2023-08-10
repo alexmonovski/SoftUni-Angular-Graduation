@@ -4,15 +4,25 @@ const {
   likeArticle,
   getArticlesByAuthor,
   getArticlesByTopics,
+  getArticleById,
 } = require("../services/articlesServices");
 
 const articlesController = require("express").Router();
 
-// /articles
 articlesController.get("/", async (req, res) => {
   try {
     const articles = await getAllArticles();
-    return articles;
+    console.log("return value", articles);
+    res.json(articles);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+articlesController.get("/:id", async (req, res) => {
+  try {
+    const article = await getArticleById(req.params.id);
+    return article.json();
   } catch (error) {
     console.log(error);
   }
@@ -47,15 +57,6 @@ articlesController.post("/subscription", async (req, res) => {
       articles[name] = await getArticlesByAuthor(id);
     }
 
-    return articles;
-  } catch (error) {
-    console.log(error);
-  }
-});
-
-articlesController.get("/:id", async (req, res) => {
-  try {
-    const articles = await getArticlesByAuthor(req.params.id);
     return articles;
   } catch (error) {
     console.log(error);

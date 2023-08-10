@@ -14,7 +14,7 @@ usersController.get("/", async (req, res) => {
   }
 });
 
-// get single author for about page; като вземеш single author то всичко влиза в него. ще видя дали ще пиша Populate. после на фронтенда ще обходя масива с топици и статии и ще ги фечна едно по едно
+// get single author for about page;
 usersController.get("/:id", async (req, res) => {
   try {
     const author = await getSingleUser(req.params.id);

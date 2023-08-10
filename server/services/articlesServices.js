@@ -6,6 +6,9 @@ const { validateInput } = require("../util/validateInput");
 async function getAllArticles() {
   return Article.find().lean();
 }
+async function getArticleById(id) {
+  return await Article.findById(id).lean();
+}
 
 async function getArticlesByDate(startDate, endDate) {
   return Article.find({
@@ -16,7 +19,6 @@ async function getArticlesByDate(startDate, endDate) {
   }).lean();
 }
 
-// същия сървис е това, просто ще го викаме 10 пъти.
 async function getArticlesByAuthor(authorId) {
   return Article.find({ author: authorId });
 }
@@ -66,4 +68,5 @@ module.exports = {
   editArticle,
   likeArticle,
   deleteArticle,
+  getArticleById,
 };

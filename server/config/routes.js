@@ -16,8 +16,8 @@ router.use((req, res, next) => {
   next();
 });
 
-router.use("/", articlesController);
 router.use("/users", usersController);
 router.use("/auth", authController);
+router.use("/articles", articlesController);
 
 module.exports = router;

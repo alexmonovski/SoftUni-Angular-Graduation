@@ -12,7 +12,7 @@ authController.post("/register", async (req, res) => {
   }
 });
 
-// очаква email и password в бодито
+// expocts email and password in the body
 authController.post("/login", async (req, res) => {
   try {
     const token = await loginUser(req.body.data);

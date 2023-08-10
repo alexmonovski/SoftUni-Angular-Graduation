@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { IArticle } from 'src/app/shared/interfaces/iarticle';
 
 @Component({
   selector: 'app-article-list',
@@ -6,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./article-list.component.css'],
 })
 export class ArticleListComponent {
-  articles: any[] = [1, 2, 3, 4, 5];
+  @Input() articles: IArticle[] = [];
 }
