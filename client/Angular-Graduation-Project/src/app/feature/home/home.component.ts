@@ -12,8 +12,10 @@ export class HomeComponent {
   constructor(private apiCalls: ApiCallsService) {}
 
   ngOnInit(): void {
-    this.apiCalls.getAllArticles().subscribe((data) => {
-      this.articles = data;
+    this.apiCalls.getAllArticles().subscribe({
+      next: (data) => (this.articles = data),
+      error: (err) => console.log(err),
+      complete: () => console.log('Registration completed.'),
     });
   }
 }

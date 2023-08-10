@@ -5,18 +5,22 @@ const authController = require("express").Router();
 
 authController.post("/register", async (req, res) => {
   try {
-    const token = await registerUser(req.body);
-    return res.status(201).json(token);
+    const formData = req.body;
+    console.log(formData);
+    const token = await registerUser(formData);
+    return res.status(201).json({ jwt: token });
   } catch (err) {
     console.log(err);
   }
 });
 
-// expocts email and password in the body
+// expects email and password in the body
 authController.post("/login", async (req, res) => {
   try {
-    const token = await loginUser(req.body.data);
-    return res.status(200).json(token);
+    const formData = req.body;
+    console.log(formData);
+    const token = await loginUser(formData);
+    return res.status(200).json({ jwt: token });
   } catch (err) {
     console.log(err);
   }

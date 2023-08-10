@@ -1,10 +1,18 @@
 const jwt = require("jsonwebtoken");
 const { SECRET } = require("../config/env");
 const { validateInput } = require("../util/validateInput");
+const User = require("../models/User");
 
 async function registerUser(body) {
-  await validateInput(body, "registerUser");
-  const user = await User.create(body);
+  // await validateInput(body, "registerUser");
+  const password = body.passwordGroup.password;
+  const { username, email } = body;
+  const parsedBody = {
+    email,
+    username,
+    password,
+  };
+  const user = await User.create(parsedBody);
   return createSession(user);
 }
 

@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -17,4 +17,25 @@ export class ApiCallsService {
     const url = `http://localhost:3000/articles/${id}`;
     return this.http.get(url);
   }
+
+  postRegisterForm(formData: any) {
+    const url = `http://localhost:3000/auth/register`;
+    return this.http.post(url, formData);
+  }
+
+  postLoginForm(formData: any) {
+    const url = `http://localhost:3000/auth/login`;
+    return this.http.post(url, formData);
+  }
 }
+
+// sendToken(formData: any) {
+//   const url = `http://localhost:3000/auth/login`;
+//   const jwt = localStorage.getItem('authToken');
+//   const httpOptions = {
+//     headers: new HttpHeaders({
+//       Authorization: `Bearer ${jwt}`,
+//     }),
+//   };
+//   return this.http.post(url, formData, httpOptions);
+// }

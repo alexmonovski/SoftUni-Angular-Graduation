@@ -1,13 +1,8 @@
-import { Component, OnInit, inject } from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { passwordMatchValidator } from '../services/password-match-validator.service';
-import { MatChipInputEvent } from '@angular/material/chips';
-import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { ApiCallsService } from 'src/app/core/services/api-calls.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -15,13 +10,38 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
   styleUrls: ['./register.component.css'],
 })
 export class RegisterComponent implements OnInit {
-  firstRegisterFormGroup!: any;
-  secondRegisterFormGroup!: any;
+  registerFormGroup: FormGroup;
+  keywords: string[] = [];
 
-  constructor(private fb: FormBuilder) {
-    this.firstRegisterFormGroup = new FormGroup({
-      username: new FormControl('', [Validators.required]),
+  removeKeyword(keyword: string): void {
+    const keywordsControl = this.registerFormGroup.get('topics') as FormControl;
+    const currentKeywords = keywordsControl.value as string[];
+    const updatedKeywords = currentKeywords.filter((kw) => kw !== keyword);
+    keywordsControl.setValue(updatedKeywords);
+  }
+
+  add(event: any): void {
+    const input = event.input;
+    const value = event.value;
+
+    if ((value || '').trim()) {
+      const keywordsControl = this.registerFormGroup.get(
+        'topics'
+      ) as FormControl;
+      const currentKeywords = keywordsControl.value as string[];
+      currentKeywords.push(value.trim());
+      keywordsControl.setValue(currentKeywords);
+    }
+
+    if (input) {
+      input.value = '';
+    }
+  }
+
+  constructor(private apiCalls: ApiCallsService, private router: Router) {
+    this.registerFormGroup = new FormGroup({
       email: new FormControl('', [Validators.required, Validators.email]),
+      username: new FormControl('', [Validators.required]),
       passwordGroup: new FormGroup(
         {
           password: new FormControl('', [Validators.required]),
@@ -29,35 +49,22 @@ export class RegisterComponent implements OnInit {
         },
         { validators: passwordMatchValidator }
       ),
-    });
-    this.secondRegisterFormGroup = new FormGroup({
-      topics: new FormControl(''),
+      topics: new FormControl([]),
     });
   }
-  onSubmit() {}
 
-  keywords = ['angular', 'how-to', 'tutorial', 'accessibility'];
-  formControl = new FormControl(['angular']);
-
-  announcer = inject(LiveAnnouncer);
-
-  removeKeyword(keyword: string) {
-    const index = this.keywords.indexOf(keyword);
-    if (index >= 0) {
-      this.keywords.splice(index, 1);
-
-      this.announcer.announce(`removed ${keyword}`);
-    }
-  }
-
-  add(event: MatChipInputEvent): void {
-    const value = (event.value || '').trim();
-
-    if (value) {
-      this.keywords.push(value);
-    }
-
-    event.chipInput!.clear();
+  onSubmit() {
+    const formData = this.registerFormGroup.value;
+    this.apiCalls.postRegisterForm(formData).subscribe({
+      next: (response) => {
+        // can make better
+        const token = Object.values(response);
+        localStorage.setItem('authToken', token[0]);
+        this.router.navigate(['/']);
+      },
+      error: (err) => console.log(err),
+      complete: () => console.log('Registration completed.'),
+    });
   }
 
   ngOnInit(): void {}
