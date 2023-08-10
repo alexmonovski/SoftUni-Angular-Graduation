@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const { SECRET } = require("../config/env");
+const { validateInput } = require("../util/validateInput");
 
 async function registerUser(body) {
   await validateInput(body, "registerUser");

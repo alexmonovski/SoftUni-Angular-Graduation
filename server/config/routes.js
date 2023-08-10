@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const articlesController = require("../controllers/articlesController");
+const authController = require("../controllers/authController");
 const usersController = require("../controllers/usersController");
 
 router.use((req, res, next) => {
@@ -17,5 +18,6 @@ router.use((req, res, next) => {
 
 router.use("/", articlesController);
 router.use("/users", usersController);
+router.use("/auth", authController);
 
 module.exports = router;

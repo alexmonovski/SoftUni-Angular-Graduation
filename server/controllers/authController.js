@@ -1,6 +1,9 @@
+const { registerUser, loginUser } = require("../services/authServices");
+const { getSingleUser } = require("../services/usersServices");
+
 const authController = require("express").Router();
 
-authController.post("/auth/register", async (req, res) => {
+authController.post("/register", async (req, res) => {
   try {
     const token = await registerUser(req.body);
     return res.status(201).json(token);
@@ -8,10 +11,21 @@ authController.post("/auth/register", async (req, res) => {
     console.log(err);
   }
 });
-authController.post("/auth/login", async (req, res) => {
+
+// очаква email и password в бодито
+authController.post("/login", async (req, res) => {
   try {
-    const token = await loginUser(req.body);
+    const token = await loginUser(req.body.data);
     return res.status(200).json(token);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+authController.get("/:id", async (req, res) => {
+  try {
+    const user = await getSingleUser(req.params.id);
+    return res.status(200).json(user);
   } catch (err) {
     console.log(err);
   }

@@ -16,6 +16,7 @@ async function getArticlesByDate(startDate, endDate) {
   }).lean();
 }
 
+// същия сървис е това, просто ще го викаме 10 пъти.
 async function getArticlesByAuthor(authorId) {
   return Article.find({ author: authorId });
 }
@@ -26,7 +27,7 @@ async function getArticlesByTopics(topicArray) {
     const topicDocument = await Topic.findOne({ name: topic }).populate(
       "articles"
     );
-    articlesByTopics.topic = topicDocument.articles;
+    articlesByTopics[topic] = topicDocument.articles;
   }
   return articlesByTopics;
 }
