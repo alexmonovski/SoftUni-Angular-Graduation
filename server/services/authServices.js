@@ -2,17 +2,41 @@ const jwt = require("jsonwebtoken");
 const { SECRET } = require("../config/env");
 const { validateInput } = require("../util/validateInput");
 const User = require("../models/User");
+const Topic = require("../models/Topic");
+
+// check for same titles on the frontend;
 
 async function registerUser(body) {
-  // await validateInput(body, "registerUser");
+  const { username, email, topics } = body;
   const password = body.passwordGroup.password;
-  const { username, email } = body;
+
   const parsedBody = {
-    email,
     username,
+    email,
     password,
   };
+  // на този етап не са наложителни топиците
+  await validateInput(parsedBody, "registerUser");
+
   const user = await User.create(parsedBody);
+  const topicsToAdd = [];
+
+  for (const topicData of topics) {
+    const topic = await Topic.findOne({ title: topicData.title });
+    if (!topic) {
+      topic = await Topic.create(topicData);
+    }
+    topicsToAdd.push(topic._id);
+  }
+
+  await User.findByIdAndUpdate(
+    user._id,
+    { $push: { topics: { $each: topicsToAdd } } },
+
+    // This option indicates that you want the updated document to be returned as the result of the update operation. By default, Mongoose returns the document as it was before the update. Setting new to true ensures that you get the updated document with the new topics array.
+    { new: true }
+  );
+
   return createSession(user);
 }
 

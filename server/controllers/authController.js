@@ -6,7 +6,6 @@ const authController = require("express").Router();
 authController.post("/register", async (req, res) => {
   try {
     const formData = req.body;
-    console.log(formData);
     const token = await registerUser(formData);
     return res.status(201).json({ jwt: token });
   } catch (err) {

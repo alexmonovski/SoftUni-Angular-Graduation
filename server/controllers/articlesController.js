@@ -5,6 +5,7 @@ const {
   getArticlesByAuthor,
   getArticlesByTopics,
   getArticleById,
+  editArticle,
 } = require("../services/articlesServices");
 
 const articlesController = require("express").Router();
@@ -63,7 +64,7 @@ articlesController.post("/subscription", async (req, res) => {
   }
 });
 
-articlesController.post("/:id/edit", async (req, res) => {
+articlesController.post("/edit/:id", async (req, res) => {
   try {
     await editArticle(req.params.id, req.body);
   } catch (err) {
@@ -71,7 +72,7 @@ articlesController.post("/:id/edit", async (req, res) => {
   }
 });
 
-articlesController.post("/:id/like", async (req, res) => {
+articlesController.post("/like/:id", async (req, res) => {
   try {
     await likeArticle(req.params.id, req.body);
   } catch (err) {
@@ -79,7 +80,7 @@ articlesController.post("/:id/like", async (req, res) => {
   }
 });
 
-articlesController.post("/:id/delete", async (req, res) => {
+articlesController.post("/delete/:id", async (req, res) => {
   try {
     await deleteArticle(req.params.id, req.body);
   } catch (err) {

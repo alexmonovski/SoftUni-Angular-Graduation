@@ -1,4 +1,5 @@
 <div class="createArticle">
+  <h2>{{ formTitle }} Article Form</h2>
   <form [formGroup]="createArticleFormGroup" (ngSubmit)="onSubmit()">
     <mat-form-field>
       <mat-label>Title</mat-label>
@@ -9,6 +10,7 @@
       <mat-label>Description</mat-label>
       <textarea
         cdkTextareaAutosize
+        cdkAutosizeMinRows="10"
         matInput
         formControlName="description"
         placeholder="Description"
@@ -19,12 +21,15 @@
       <mat-label>Content</mat-label>
       <textarea
         cdkTextareaAutosize
+        cdkAutosizeMinRows="10"
         matInput
         formControlName="content"
         placeholder="Content"
       ></textarea>
     </mat-form-field>
 
-    <button mat-button type="submit">Create Article</button>
+    <button mat-raised-button type="submit" color="primary">
+      Create Article
+    </button>
   </form>
 </div>

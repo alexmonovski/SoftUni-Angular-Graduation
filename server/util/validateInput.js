@@ -3,21 +3,17 @@ const User = require("../models/User");
 const bcrypt = require("bcrypt");
 
 async function validateInput(body, command) {
-  if (command == "createArticle") {
-    let { title, description } = body;
-    if (title == "" || description == "") {
+  if (command == "createArticle" || command == "editArticle") {
+    let { title, description, content } = body;
+    if (title == "" || description == "" || content == "") {
       throw new Error("All fields are required.");
     }
     return true;
-  } else if (command == "editArticle") {
-    let { title, description } = body;
-    if (title == "" || description == "") {
-      throw new Error("All fields are required.");
-    }
-    return true;
-  } else if (command == "registerUser") {
-    const { email, username, password, repass } = body;
-    if (email == "" || username == "" || password == "" || repass == "") {
+  }
+  //
+  else if (command == "registerUser") {
+    const { email, username, password, topics } = body;
+    if (email == "" || username == "" || password == "" || topics.length == 0) {
       throw new Error("All fields are required.");
     }
     const emailTaken = await User.findOne({ email: email });
@@ -25,10 +21,10 @@ async function validateInput(body, command) {
     if (emailTaken || usernameTaken) {
       throw new Error("A user with this email or username already exists.");
     }
-    if (password != repass) {
-      throw new Error("Password fields do not match.");
-    }
-  } else if (command == "loginUser") {
+    return true;
+  }
+  //
+  else if (command == "loginUser") {
     const { email, password } = body;
     if (email == "" || password == "") {
       throw new Error("All fields are required.");
@@ -42,7 +38,9 @@ async function validateInput(body, command) {
       throw new Error("Email or password do not match.");
     }
     return user;
-  } else if (command == "topic") {
+  }
+  //
+  else if (command == "topic") {
     const { topic } = body;
     if (topic == "") {
       throw new Error("Empty field!");
@@ -51,7 +49,9 @@ async function validateInput(body, command) {
     if (topicTaken) {
       throw new Error("Topic already exists!");
     }
-  } else if (command == "editUser") {
+  }
+  //
+  else if (command == "editUser") {
     return;
   }
 }

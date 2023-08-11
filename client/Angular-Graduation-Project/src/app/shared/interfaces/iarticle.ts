@@ -1,6 +1,11 @@
 export interface IArticle {
-  _id: string;
+  title: string;
   description: string;
   content: string;
-  name: string;
+  createdAt: Date;
+  lastEdit: Date;
+  _id: string;
+  author: string;
+  usersLiked: string[];
+  topics: string[];
 }

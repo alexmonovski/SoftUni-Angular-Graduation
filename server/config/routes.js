@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const articlesController = require("../controllers/articlesController");
 const authController = require("../controllers/authController");
+const topicsController = require("../controllers/topicsController");
 const usersController = require("../controllers/usersController");
 
 router.use((req, res, next) => {
@@ -19,5 +20,6 @@ router.use((req, res, next) => {
 router.use("/users", usersController);
 router.use("/auth", authController);
 router.use("/articles", articlesController);
+router.use("/topics", topicsController);
 
 module.exports = router;

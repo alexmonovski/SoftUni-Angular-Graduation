@@ -27,8 +27,14 @@ export class ApiCallsService {
     const url = `http://localhost:3000/auth/login`;
     return this.http.post(url, formData);
   }
+
+  getAllTopics(): Observable<any> {
+    const url = `http://localhost:3000/topics/`;
+    return this.http.get(url);
+  }
 }
 
+// access auth only resources
 // sendToken(formData: any) {
 //   const url = `http://localhost:3000/auth/login`;
 //   const jwt = localStorage.getItem('authToken');

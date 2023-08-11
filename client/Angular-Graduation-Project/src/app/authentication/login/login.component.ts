@@ -14,7 +14,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent {
-  loginFormGroup!: FormGroup; // Use '!' to indicate it will be initialized later
+  loginFormGroup!: FormGroup;
 
   constructor(private apiCalls: ApiCallsService, private router: Router) {}
 

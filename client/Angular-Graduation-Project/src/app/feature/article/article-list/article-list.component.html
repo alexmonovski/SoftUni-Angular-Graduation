@@ -4,7 +4,7 @@
     <li *ngFor="let article of articles">
       <app-article-card
         [article]="article"
-        [routerLink]="['/articles', article._id]"
+        [routerLink]="['/articles', article?._id]"
       ></app-article-card>
     </li>
   </ul>

@@ -1,3 +1,4 @@
+import { ITopic } from './../../shared/interfaces/itopic';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { passwordMatchValidator } from '../services/password-match-validator.service';
@@ -11,32 +12,9 @@ import { Router } from '@angular/router';
 })
 export class RegisterComponent implements OnInit {
   registerFormGroup: FormGroup;
-  keywords: string[] = [];
+  topics: string[] = [];
 
-  removeKeyword(keyword: string): void {
-    const keywordsControl = this.registerFormGroup.get('topics') as FormControl;
-    const currentKeywords = keywordsControl.value as string[];
-    const updatedKeywords = currentKeywords.filter((kw) => kw !== keyword);
-    keywordsControl.setValue(updatedKeywords);
-  }
-
-  add(event: any): void {
-    const input = event.input;
-    const value = event.value;
-
-    if ((value || '').trim()) {
-      const keywordsControl = this.registerFormGroup.get(
-        'topics'
-      ) as FormControl;
-      const currentKeywords = keywordsControl.value as string[];
-      currentKeywords.push(value.trim());
-      keywordsControl.setValue(currentKeywords);
-    }
-
-    if (input) {
-      input.value = '';
-    }
-  }
+  // implement logic to fetch the topics and use them in an autofill. prepopulate the chips with 5 topics
 
   constructor(private apiCalls: ApiCallsService, private router: Router) {
     this.registerFormGroup = new FormGroup({
@@ -67,5 +45,42 @@ export class RegisterComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  removeKeyword(keyword: string): void {
+    const keywordsControl = this.registerFormGroup.get('topics') as FormControl;
+    const currentKeywords = keywordsControl.value as string[];
+    const updatedKeywords = currentKeywords.filter((kw) => kw !== keyword);
+    keywordsControl.setValue(updatedKeywords);
+  }
+
+  add(event: any): void {
+    const input = event.input;
+    const value = event.value;
+
+    if ((value || '').trim()) {
+      const keywordsControl = this.registerFormGroup.get(
+        'topics'
+      ) as FormControl;
+      const currentKeywords = keywordsControl.value as string[];
+      currentKeywords.push(value.trim());
+      keywordsControl.setValue(currentKeywords);
+    }
+
+    if (input) {
+      input.value = '';
+    }
+  }
+
+  topicModels!: ITopic[];
+
+  ngOnInit(): void {
+    this.apiCalls.getAllTopics().subscribe({
+      next: (data) => {
+        this.topicModels = data;
+        this.topicModels.forEach((topic) => this.topics.push(topic.title));
+        this.registerFormGroup.get('topics')?.setValue(this.topics.slice(0, 5));
+      },
+      error: (err) => console.log(err),
+      complete: () => console.log('Successfully fetched resources.'),
+    });
+  }
 }
