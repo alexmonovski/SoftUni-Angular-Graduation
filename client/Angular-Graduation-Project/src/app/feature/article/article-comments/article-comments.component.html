@@ -1,9 +1,30 @@
 <div class="comment-section">
   <h3>Comments</h3>
-  <ul>
-    Potato
-    <!-- <li *ngFor="let comment of comments">
-        {{ comment.text }} - {{ comment.author }}
-      </li> -->
-  </ul>
+  <ng-container *ngIf="comments">
+    <ul *ngIf="comments.length > 0">
+      <li *ngFor="let comment of comments">
+        {{ comment.content }} - {{ author }}
+      </li>
+    </ul>
+  </ng-container>
+  <mat-card class="comment-form">
+    <mat-card-title>Add Comment</mat-card-title>
+    <mat-card-content>
+      <form [formGroup]="commentForm" (ngSubmit)="onSubmitComment()">
+        <mat-form-field>
+          <input matInput placeholder="Title" formControlName="title" />
+        </mat-form-field>
+        <mat-form-field>
+          <textarea
+            matInput
+            placeholder="Content"
+            formControlName="content"
+          ></textarea>
+        </mat-form-field>
+        <button mat-raised-button color="primary" type="submit">
+          Submit Comment
+        </button>
+      </form>
+    </mat-card-content>
+  </mat-card>
 </div>

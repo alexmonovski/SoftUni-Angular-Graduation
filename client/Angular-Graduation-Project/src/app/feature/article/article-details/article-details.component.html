@@ -1,13 +1,13 @@
-<div class="article-detail">
+<div class="article-detail" *ngIf="article">
   <mat-card>
     <mat-card-header>
       <div mat-card-avatar class="article-avatar"></div>
-      <mat-card-title>{{ article?.title }}</mat-card-title>
-      <mat-card-subtitle>Author: </mat-card-subtitle>
+      <mat-card-title>{{ article.title }}</mat-card-title>
+      <mat-card-subtitle>Author: {{ article.author?.name }}</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
-      {{ article?.content }}
+      {{ article.content }}
     </mat-card-content>
   </mat-card>
-  <app-article-comments></app-article-comments>
+  <app-article-comments [comments]="comments" [id]="id"></app-article-comments>
 </div>

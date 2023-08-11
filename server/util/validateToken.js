@@ -1,9 +1,10 @@
 const jwt = require("jsonwebtoken");
 const { SECRET } = require("../config/env");
 
-async function getUserIdFromToken(token) {
+async function getUserIdFromToken(header) {
   try {
-    const decodedToken = await jwt.verify(token, SECRET);
+    const token = header.split(" ")[1];
+    const decodedToken = jwt.verify(token, SECRET);
     return decodedToken.userId;
   } catch (error) {
     console.error(error);

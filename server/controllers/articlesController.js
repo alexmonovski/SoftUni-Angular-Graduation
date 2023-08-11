@@ -7,6 +7,7 @@ const {
   deleteArticle,
   commentArticle,
 } = require("../services/articlesServices");
+const { getUserIdFromToken } = require("../util/validateToken");
 const articlesController = require("express").Router();
 
 // get all articles
@@ -36,6 +37,19 @@ articlesController.get("/:id", async (req, res) => {
   }
 });
 
+articlesController.post("/:id/comments", async (req, res) => {
+  try {
+    const userId = await getUserIdFromToken(req.headers.authorization);
+    const articleId = req.params.id;
+    const commentBody = req.body;
+    const article = await commentArticle(articleId, commentBody, userId);
+    res.status(201).json({ message: "Comment added successfully" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 // create article
 articlesController.post("/create", async (req, res) => {
   try {
@@ -52,7 +66,7 @@ articlesController.post("/create", async (req, res) => {
 });
 
 // edit an article
-articlesController.post("/edit/:id", async (req, res) => {
+articlesController.post(":id/edit", async (req, res) => {
   try {
     await editArticle(req.params.id, req.body);
     res.status(200).json({ message: "Article edited successfully" });
@@ -63,7 +77,7 @@ articlesController.post("/edit/:id", async (req, res) => {
 });
 
 // like an article
-articlesController.post("/like/:id", async (req, res) => {
+articlesController.post(":id/like", async (req, res) => {
   try {
     await likeArticle(req.params.id, req.body);
     res.status(200).json({ message: "Article liked successfully" });
@@ -73,20 +87,8 @@ articlesController.post("/like/:id", async (req, res) => {
   }
 });
 
-articlesController.post("/comments/:id", async (req, res) => {
-  try {
-    const articleId = req.params.id;
-    const commentBody = req.body;
-    const article = await commentArticle(articleId, commentBody);
-    res.status(201).json({ message: "Comment added successfully" });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: "Internal server error" });
-  }
-});
-
 // delete an article
-articlesController.post("/delete/:id", async (req, res) => {
+articlesController.post(":id/delete", async (req, res) => {
   try {
     //TD: check if user is owner;
     await deleteArticle(req.params.id);

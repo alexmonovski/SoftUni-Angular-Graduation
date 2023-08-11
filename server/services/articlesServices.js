@@ -9,7 +9,11 @@ async function getAllArticles() {
 }
 
 async function getArticleById(id) {
-  return await Article.findById(id).lean();
+  return await Article.findById(id)
+    .populate("author")
+    .populate("usersLiked")
+    .populate("topics")
+    .populate("comments");
 }
 
 async function getArticlesByDate(startDate, endDate) {
@@ -58,15 +62,15 @@ async function likeArticle(id, subscriberId) {
   await Article.findByIdAndUpdate(id, { $push: { usersLiked: subscriberId } });
   await User.findByIdAndUpdate(subscriberId, { $push: { subscribedTo: id } });
 }
-async function commentArticle(articleId, commentBody) {
-  const newComment = await Comment.create(commentBody);
-  const article = await Article.findByIdAndUpdate(articleId, {
-    $push: { comments: newComment._id },
-  });
-  await Comment.findByIdAndUpdate(newComment._id, {
-    $push: { articles: articleId },
-  });
-  return article;
+
+async function commentArticle(articleId, commentBody, authorId) {
+  const newComment = new Comment(commentBody);
+  newComment.author = authorId;
+  await newComment.save();
+
+  const article = await Article.findById(articleId);
+  article.comments.push(newComment._id);
+  await article.save();
 }
 
 async function deleteArticle(id) {

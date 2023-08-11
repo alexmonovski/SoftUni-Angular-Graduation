@@ -5,7 +5,7 @@ async function getAllUsers() {
 }
 
 async function getUserById(id) {
-  return User.findById(id).lean();
+  return await User.findById(id).lean();
 }
 
 async function subscribeToUser(id, subscriberId) {

@@ -18,6 +18,12 @@ export class ApiCallsService {
     return this.http.get(url);
   }
 
+  addComment(comment: any, id: any): Observable<any> {
+    const url = `http://localhost:3000/articles/${id}/comments/`;
+    const requestBody = comment;
+    return this.http.post<any>(url, requestBody);
+  }
+
   postRegisterForm(formData: any) {
     const url = `http://localhost:3000/auth/register`;
     return this.http.post(url, formData);
@@ -30,6 +36,19 @@ export class ApiCallsService {
 
   getAllTopics(): Observable<any> {
     const url = `http://localhost:3000/topics/`;
+    return this.http.get(url);
+  }
+  getAllComments(): Observable<any> {
+    const url = `http://localhost:3000/comments/`;
+    return this.http.get(url);
+  }
+
+  getSingleUser(id: any): Observable<any> {
+    const url = `http://localhost:3000/users/${id}`;
+    return this.http.get(url);
+  }
+  getSelf(): Observable<any> {
+    const url = `http://localhost:3000/users/current`;
     return this.http.get(url);
   }
 }

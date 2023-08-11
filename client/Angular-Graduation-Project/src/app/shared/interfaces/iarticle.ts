@@ -5,7 +5,7 @@ export interface IArticle {
   createdAt: Date;
   lastEdit: Date;
   _id: string;
-  author: string;
+  author: {};
   usersLiked: string[];
   topics: string[];
 }

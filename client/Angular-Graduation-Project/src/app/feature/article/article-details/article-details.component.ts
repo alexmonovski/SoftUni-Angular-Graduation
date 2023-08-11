@@ -1,7 +1,7 @@
 import { ActivatedRoute, Params } from '@angular/router';
-import { IArticle } from './../../../shared/interfaces/iarticle';
 import { Component } from '@angular/core';
 import { ApiCallsService } from 'src/app/core/services/api-calls.service';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-article-details',
@@ -9,7 +9,10 @@ import { ApiCallsService } from 'src/app/core/services/api-calls.service';
   styleUrls: ['./article-details.component.css'],
 })
 export class ArticleDetailsComponent {
-  article: IArticle | undefined;
+  article!: any;
+  id!: any;
+  comments: any[] = [];
+  commentForm!: FormGroup;
 
   constructor(
     private route: ActivatedRoute,
@@ -17,11 +20,19 @@ export class ArticleDetailsComponent {
   ) {}
 
   ngOnInit() {
-    // may simplify if not needed
     this.route.params.subscribe((params: Params) => {
-      const id = params['id'];
-      this.apiCalls.getSingleArticle(id).subscribe((data) => {
-        this.article = data;
+      this.id = params['id'];
+      this.apiCalls.getSingleArticle(this.id).subscribe({
+        next: (data) => {
+          this.article = data;
+          this.comments = data.comments;
+        },
+        error: (err) => {
+          console.log(err);
+        },
+        complete: () => {
+          console.log('Resources received');
+        },
       });
     });
   }

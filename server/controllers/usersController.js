@@ -20,7 +20,20 @@ usersController.get("/", async (req, res) => {
 // get single user
 usersController.get("/:id", async (req, res) => {
   try {
-    const user = await getUserById(req.params.id);
+    // то хубаво, само че трябва да го вземеш от токена, защото сега това е адреса на статията, не на юзъра
+    const userId = await getUserIdFromToken(req.headers.authorization);
+    const user = await getUserById(userId);
+    res.status(200).json({ message: "User retrieved successfully", user });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+usersController.get("/current", async (req, res) => {
+  try {
+    // то хубаво, само че трябва да го вземеш от токена, защото сега това е адреса на статията, не на юзъра
+    const userId = await getUserIdFromToken(req.headers.authorization);
+    const user = await getUserById(userId);
     res.status(200).json({ message: "User retrieved successfully", user });
   } catch (err) {
     console.log(err);
