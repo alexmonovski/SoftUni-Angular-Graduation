@@ -79,7 +79,7 @@ export class RegisterComponent implements OnInit {
   ngOnInit(): void {
     this.apiCalls.getAllTopics().subscribe({
       next: (data) => {
-        this.topicModels = data;
+        this.topicModels = data.topics.slice();
         this.topicModels.forEach((topic) => this.topics.push(topic.title));
         this.registerFormGroup.get('topics')?.setValue(this.topics.slice(0, 5));
       },
