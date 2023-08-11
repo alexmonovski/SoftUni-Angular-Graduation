@@ -2,89 +2,85 @@ const {
   getAllArticles,
   createArticle,
   likeArticle,
-  getArticlesByAuthor,
-  getArticlesByTopics,
   getArticleById,
   editArticle,
+  deleteArticle,
 } = require("../services/articlesServices");
-
 const articlesController = require("express").Router();
 
+// get all articles
 articlesController.get("/", async (req, res) => {
   try {
     const articles = await getAllArticles();
-    console.log("return value", articles);
-    res.json(articles);
-  } catch (error) {
-    console.log(error);
+    res.status(200).json(articles);
+  } catch (err) {
+    console.log(err);
+    // not a good practice to expose server errors to the client;
+    res.status(500).json({ error: "Internal server error" });
   }
 });
 
+// get article by id
 articlesController.get("/:id", async (req, res) => {
   try {
     const article = await getArticleById(req.params.id);
-    return article.json();
+    if (!article) {
+      res.status(404).json({ error: "Article not found" });
+    } else {
+      res.status(200).json(article);
+    }
   } catch (error) {
     console.log(error);
+    res.status(500).json({ error: "Internal server error" });
   }
 });
 
+// create article
 articlesController.post("/create", async (req, res) => {
   try {
     const newArticle = await createArticle(req.body);
-    return newArticle;
+    if (newArticle) {
+      res.status(201).json(newArticle);
+    } else {
+      res.status(400).json({ error: "Bad Request" });
+    }
   } catch (err) {
     console.log(err);
+    res.status(500).json({ error: "Internal server error" }); // Status code 500 for server error
   }
 });
 
-articlesController.post("/topic", async (req, res) => {
-  try {
-    const data = req.body.data;
-    const articles = await getArticlesByTopics(data);
-    return articles;
-  } catch (error) {
-    console.log(error);
-  }
-});
-articlesController.post("/subscription", async (req, res) => {
-  try {
-    // arr of objects
-    const { data } = req.body.data;
-    const articles = {};
-
-    for (const tokens of data) {
-      const { name, id } = tokens;
-      articles[name] = await getArticlesByAuthor(id);
-    }
-
-    return articles;
-  } catch (error) {
-    console.log(error);
-  }
-});
-
+// edit an article
 articlesController.post("/edit/:id", async (req, res) => {
   try {
     await editArticle(req.params.id, req.body);
+    res.status(200).json({ message: "Article edited successfully" });
   } catch (err) {
     console.log(err);
+    res.status(500).json({ error: "Internal server error" });
   }
 });
 
+// like an article
 articlesController.post("/like/:id", async (req, res) => {
   try {
     await likeArticle(req.params.id, req.body);
+    res.status(200).json({ message: "Article liked successfully" });
   } catch (err) {
     console.log(err);
+    res.status(500).json({ error: "Internal server error" });
   }
 });
 
+// delete an article
 articlesController.post("/delete/:id", async (req, res) => {
   try {
-    await deleteArticle(req.params.id, req.body);
+    //TD: check if user is owner;
+    await deleteArticle(req.params.id);
+    res.status(204).send({ message: "Article deleted successfully" });
   } catch (err) {
     console.log(err);
+    res.status(500).json({ error: "Internal server error" });
   }
 });
 

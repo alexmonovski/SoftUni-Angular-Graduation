@@ -6,6 +6,7 @@ const { validateInput } = require("../util/validateInput");
 async function getAllArticles() {
   return Article.find().lean();
 }
+
 async function getArticleById(id) {
   return await Article.findById(id).lean();
 }
@@ -23,13 +24,15 @@ async function getArticlesByAuthor(authorId) {
   return Article.find({ author: authorId });
 }
 
+async function getArticlesByTopic(topicId) {
+  const topicDocument = await Topic.findById(topicId).populate("articles");
+  return topicDocument.articles;
+}
+
 async function getArticlesByTopics(topicArray) {
   const articlesByTopics = {};
   for (const topic of topicArray) {
-    const topicDocument = await Topic.findOne({ name: topic }).populate(
-      "articles"
-    );
-    articlesByTopics[topic] = topicDocument.articles;
+    articlesByTopics[topic] = await getArticlesByTopic(topic);
   }
   return articlesByTopics;
 }
@@ -69,4 +72,5 @@ module.exports = {
   likeArticle,
   deleteArticle,
   getArticleById,
+  getArticlesByTopic,
 };

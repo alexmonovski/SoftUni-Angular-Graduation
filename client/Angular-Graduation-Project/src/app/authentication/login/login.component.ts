@@ -26,21 +26,16 @@ export class LoginComponent {
   }
 
   onSubmit() {
-    if (this.loginFormGroup.valid) {
-      const email = this.loginFormGroup.get('email')?.value;
-      const password = this.loginFormGroup.get('password')?.value;
-      if (email && password) {
-        const formData = this.loginFormGroup.value;
-        this.apiCalls.postLoginForm(formData).subscribe({
-          next: (response) => {
-            const token = Object.values(response);
-            localStorage.setItem('authToken', token[0]);
-            this.router.navigate(['/']);
-          },
-          error: (err) => console.log(err),
-          complete: () => console.log('Login completed.'),
-        });
-      }
-    }
+    const formData = this.loginFormGroup.value;
+    this.apiCalls.postLoginForm(formData).subscribe({
+      next: (response) => {
+        const token = Object.values(response);
+        // may refactor the token;
+        localStorage.setItem('authToken', token[0]);
+        this.router.navigate(['/']);
+      },
+      error: (err) => console.log(err),
+      complete: () => console.log('Login completed.'),
+    });
   }
 }

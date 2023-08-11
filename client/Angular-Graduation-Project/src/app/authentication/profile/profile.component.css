@@ -27,7 +27,6 @@ mat-panel-title {
   font-weight: bold;
 }
 
-/* Style for user articles and liked articles */
 app-user-articles,
 app-liked-articles {
   padding: 20px;

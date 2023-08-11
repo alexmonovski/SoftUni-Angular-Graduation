@@ -1,37 +1,48 @@
 const {
   getAllUsers,
-  getSingleUser,
   subscribeToUser,
+  getUserById,
 } = require("../services/usersServices");
+const { getUserIdFromToken } = require("../util/validateToken");
 const usersController = require("express").Router();
 
+// get all users
 usersController.get("/", async (req, res) => {
   try {
-    const allAuthors = await getAllUsers();
-    console.log(allAuthors);
+    const users = await getAllUsers();
+    res.status(200).json({ message: "Users retrieved successfully", users });
   } catch (err) {
     console.log(err);
+    res.status(500).json({ error: "Internal server error" });
   }
 });
 
-// get single author for about page;
+// get single user
 usersController.get("/:id", async (req, res) => {
   try {
-    const author = await getSingleUser(req.params.id);
-    console.log(author);
+    const user = await getUserById(req.params.id);
+    res.status(200).json({ message: "User retrieved successfully", user });
   } catch (err) {
     console.log(err);
+    res.status(500).json({ error: "Internal server error" });
   }
 });
 
+// subscribe to user
 usersController.post("/:id/subscribe", async (req, res) => {
   try {
-    //todo: extract token with userId from request
-    const userId = "";
-    const author = await subscribeToUser(req.params.id, userId);
-    console.log(author);
+    const userId = getUserIdFromToken(req.headers.authorization);
+    const success = await subscribeToUser(req.params.id, userId);
+    if (success) {
+      return res.status(200).json({ message: "Subscribed successfully" });
+    } else {
+      return res.status(500).json({ error: "Subscription failed" });
+    }
   } catch (err) {
     console.log(err);
+    return res
+      .status(500)
+      .json({ error: "An error occurred. Please try again later." });
   }
 });
 
