@@ -3,33 +3,42 @@
     <li>
       <a mat-button routerLink="/" routerLinkActive="mat-accent">Home</a>
     </li>
-    <li>
-      <a mat-button routerLink="/auth/login" routerLinkActive="mat-accent"
-        >Login</a
-      >
-    </li>
-    <li>
-      <a mat-button routerLink="/auth/register" routerLinkActive="mat-accent"
-        >Register</a
-      >
-    </li>
-    <li>
-      <a mat-button routerLink="/auth/profile" routerLinkActive="mat-accent"
-        >Profile</a
-      >
-    </li>
-    <li>
-      <a mat-button routerLink="/articles/create" routerLinkActive="mat-accent"
-        >Create article</a
-      >
-    </li>
+    <ng-container *ngIf="!(isLoggedIn$ | async)">
+      <li>
+        <a mat-button routerLink="/auth/login" routerLinkActive="mat-accent"
+          >Login</a
+        >
+      </li>
+      <li>
+        <a mat-button routerLink="/auth/register" routerLinkActive="mat-accent"
+          >Register</a
+        >
+      </li>
+    </ng-container>
+    <ng-container *ngIf="isLoggedIn$ | async">
+      <li>
+        <a mat-button routerLink="/auth/profile" routerLinkActive="mat-accent"
+          >Profile</a
+        >
+      </li>
+      <li>
+        <a
+          mat-button
+          routerLink="/articles/create"
+          routerLinkActive="mat-accent"
+          >Create article</a
+        >
+      </li>
+    </ng-container>
     <li>
       <a mat-button routerLink="/about" routerLinkActive="mat-accent">About</a>
     </li>
   </ul>
   <ul>
     <li>
-      <button mat-button>Logout</button>
+      <button mat-button (click)="logout()" *ngIf="isLoggedIn$ | async">
+        Logout
+      </button>
     </li>
     <li>
       <app-dark-mode-toggle></app-dark-mode-toggle>

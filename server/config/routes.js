@@ -3,6 +3,7 @@ const articlesController = require("../controllers/articlesController");
 const authController = require("../controllers/authController");
 const topicsController = require("../controllers/topicsController");
 const usersController = require("../controllers/usersController");
+const cors = require("cors");
 
 router.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -17,9 +18,9 @@ router.use((req, res, next) => {
   next();
 });
 
-router.use("/users", usersController);
-router.use("/auth", authController);
-router.use("/articles", articlesController);
-router.use("/topics", topicsController);
+router.use("/users", cors(), usersController);
+router.use("/auth", cors(), authController);
+router.use("/articles", cors(), articlesController);
+router.use("/topics", cors(), topicsController);
 
 module.exports = router;

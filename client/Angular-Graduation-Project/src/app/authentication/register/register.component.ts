@@ -4,6 +4,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { passwordMatchValidator } from '../services/password-match-validator.service';
 import { ApiCallsService } from 'src/app/core/services/api-calls.service';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -13,10 +14,13 @@ import { Router } from '@angular/router';
 export class RegisterComponent implements OnInit {
   registerFormGroup: FormGroup;
   topics: string[] = [];
+  //todo: implement logic to fetch the topics and use them in an autofill. prepopulate the chips with 5 topics
 
-  // implement logic to fetch the topics and use them in an autofill. prepopulate the chips with 5 topics
-
-  constructor(private apiCalls: ApiCallsService, private router: Router) {
+  constructor(
+    private apiCalls: ApiCallsService,
+    private router: Router,
+    private authService: AuthService
+  ) {
     this.registerFormGroup = new FormGroup({
       email: new FormControl('', [Validators.required, Validators.email]),
       username: new FormControl('', [Validators.required]),
@@ -37,7 +41,7 @@ export class RegisterComponent implements OnInit {
       next: (response) => {
         // can make better
         const tokens = Object.values(response);
-        localStorage.setItem('authToken', tokens[1]);
+        this.authService.setToken(tokens[1]);
         this.router.navigate(['/']);
       },
       error: (err) => console.log(err),
