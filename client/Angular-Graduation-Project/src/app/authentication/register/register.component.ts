@@ -36,8 +36,8 @@ export class RegisterComponent implements OnInit {
     this.apiCalls.postRegisterForm(formData).subscribe({
       next: (response) => {
         // can make better
-        const token = Object.values(response);
-        localStorage.setItem('authToken', token[0]);
+        const tokens = Object.values(response);
+        localStorage.setItem('authToken', tokens[1]);
         this.router.navigate(['/']);
       },
       error: (err) => console.log(err),

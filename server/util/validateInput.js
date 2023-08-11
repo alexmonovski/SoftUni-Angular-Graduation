@@ -13,11 +13,13 @@ async function validateInput(body, command) {
   //
   else if (command == "registerUser") {
     const { email, username, password, topics } = body;
-    if (email == "" || username == "" || password == "" || topics.length == 0) {
+    if (email == "" || username == "" || password == "") {
       throw new Error("All fields are required.");
     }
     const emailTaken = await User.findOne({ email: email });
     const usernameTaken = await User.findOne({ username: username });
+
+    console.log(emailTaken, usernameTaken);
     if (emailTaken || usernameTaken) {
       throw new Error("A user with this email or username already exists.");
     }

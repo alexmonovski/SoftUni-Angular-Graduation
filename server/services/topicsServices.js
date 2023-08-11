@@ -17,6 +17,7 @@ async function getTopicsByArticle(articleId) {
 
 async function createTopic(body) {
   await validateInput(body, "createArticle");
+  console.log(body);
   const newTopic = await Topic.create(body);
   return newTopic;
 }

@@ -6,7 +6,6 @@ const userSchema = new Schema({
   username: { type: String, required: true, unique: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  description: { type: String, required: true },
   topics: { type: [Types.ObjectId], ref: "Topic", default: [] },
   articlesCreated: { type: [Types.ObjectId], ref: "Article", default: [] },
   articlesLiked: { type: [Types.ObjectId], ref: "Article", default: [] },

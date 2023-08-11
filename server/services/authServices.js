@@ -21,21 +21,22 @@ async function registerUser(body) {
   const user = await User.create(parsedBody);
   const topicsToAdd = [];
 
-  for (const topicData of topics) {
-    const topic = await Topic.findOne({ title: topicData.title });
-    if (!topic) {
-      topic = await Topic.create(topicData);
-    }
-    topicsToAdd.push(topic._id);
-  }
+  // for (const topicData of topics) {
+  //   const topic = await Topic.findOne({ title: topicData.title });
+  //   if (!topic) {
+  //     console.log(topicData);
+  //     topic = await Topic.create({ title: topicData.title });
+  //   }
+  //   topicsToAdd.push(topic._id);
+  // }
 
-  await User.findByIdAndUpdate(
-    user._id,
-    { $push: { topics: { $each: topicsToAdd } } },
+  // await User.findByIdAndUpdate(
+  //   user._id,
+  //   { $push: { topics: { $each: topicsToAdd } } },
 
-    // This option indicates that you want the updated document to be returned as the result of the update operation. By default, Mongoose returns the document as it was before the update. Setting new to true ensures that you get the updated document with the new topics array.
-    { new: true }
-  );
+  //   This option indicates that you want the updated document to be returned as the result of the update operation. By default, Mongoose returns the document as it was before the update. Setting new to true ensures that you get the updated document with the new topics array.
+  //   { new: true }
+  // );
 
   return createSession(user);
 }

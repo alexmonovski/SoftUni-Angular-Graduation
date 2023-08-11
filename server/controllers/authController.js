@@ -6,7 +6,9 @@ authController.post("/register", async (req, res) => {
   try {
     // possibly add a special res.status if username is already taken
     const formData = req.body;
+    console.log(formData);
     const token = await registerUser(formData);
+    console.log(token);
     return res
       .status(201)
       .json({ message: "Registration successful", jwt: token });

@@ -1,28 +1,31 @@
 <div class="user-profile">
-  <h2>User Profile</h2>
-  <div class="user-card-container">
-    <app-user-card
-      ><!-- *ngFor="let user of subscribedUsers"
-        [user]="user" --></app-user-card
-    >
+  <div class="user-info">
+    <h2>User Profile</h2>
+    <div class="user-card-container">
+      <app-user-card
+        ><!-- *ngFor="let user of subscribedUsers" [user]="user" --></app-user-card
+      >
+    </div>
   </div>
-  <mat-expansion-panel>
-    <mat-expansion-panel-header>
-      <mat-panel-title>User Articles</mat-panel-title>
-    </mat-expansion-panel-header>
-    User created articles:
-    <app-article-card></app-article-card>
-  </mat-expansion-panel>
-  <mat-expansion-panel>
-    <mat-expansion-panel-header>
-      <mat-panel-title>Liked Articles</mat-panel-title>
-    </mat-expansion-panel-header>
-    <app-liked-articles></app-liked-articles>
-  </mat-expansion-panel>
-  <mat-expansion-panel>
-    <mat-expansion-panel-header>
-      <mat-panel-title>Subscriptions</mat-panel-title>
-    </mat-expansion-panel-header>
-    <app-user-card></app-user-card>
-  </mat-expansion-panel>
+  <div class="user-expansions">
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>User Articles</mat-panel-title>
+      </mat-expansion-panel-header>
+      User created articles:
+      <app-article-card></app-article-card>
+    </mat-expansion-panel>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Liked Articles</mat-panel-title>
+      </mat-expansion-panel-header>
+      <app-liked-articles></app-liked-articles>
+    </mat-expansion-panel>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Subscriptions</mat-panel-title>
+      </mat-expansion-panel-header>
+      <app-user-card></app-user-card>
+    </mat-expansion-panel>
+  </div>
 </div>
