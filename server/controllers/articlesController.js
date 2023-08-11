@@ -5,6 +5,7 @@ const {
   getArticleById,
   editArticle,
   deleteArticle,
+  commentArticle,
 } = require("../services/articlesServices");
 const articlesController = require("express").Router();
 
@@ -68,6 +69,18 @@ articlesController.post("/like/:id", async (req, res) => {
     res.status(200).json({ message: "Article liked successfully" });
   } catch (err) {
     console.log(err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+articlesController.post("/comments/:id", async (req, res) => {
+  try {
+    const articleId = req.params.id;
+    const commentBody = req.body;
+    const article = await commentArticle(articleId, commentBody);
+    res.status(201).json({ message: "Comment added successfully" });
+  } catch (error) {
+    console.log(error);
     res.status(500).json({ error: "Internal server error" });
   }
 });

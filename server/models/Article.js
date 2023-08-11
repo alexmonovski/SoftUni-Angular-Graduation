@@ -10,6 +10,7 @@ const articleSchema = new Schema({
   author: { type: Types.ObjectId, ref: "User" },
   usersLiked: { type: [Types.ObjectId], ref: "User", default: [] },
   topics: { type: [Types.ObjectId], ref: "Topic", default: [] },
+  comments: { type: [Types.ObjectId], ref: "Comment", default: [] },
 });
 
 articleSchema.plugin(uniqueValidator);

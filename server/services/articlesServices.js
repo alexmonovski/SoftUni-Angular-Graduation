@@ -1,4 +1,5 @@
 const Article = require("../models/Article");
+const Comment = require("../models/Comment");
 const Topic = require("../models/Topic");
 const User = require("../models/User");
 const { validateInput } = require("../util/validateInput");
@@ -57,6 +58,16 @@ async function likeArticle(id, subscriberId) {
   await Article.findByIdAndUpdate(id, { $push: { usersLiked: subscriberId } });
   await User.findByIdAndUpdate(subscriberId, { $push: { subscribedTo: id } });
 }
+async function commentArticle(articleId, commentBody) {
+  const newComment = await Comment.create(commentBody);
+  const article = await Article.findByIdAndUpdate(articleId, {
+    $push: { comments: newComment._id },
+  });
+  await Comment.findByIdAndUpdate(newComment._id, {
+    $push: { articles: articleId },
+  });
+  return article;
+}
 
 async function deleteArticle(id) {
   await Article.findByIdAndDelete(id);
@@ -73,4 +84,5 @@ module.exports = {
   deleteArticle,
   getArticleById,
   getArticlesByTopic,
+  commentArticle,
 };
