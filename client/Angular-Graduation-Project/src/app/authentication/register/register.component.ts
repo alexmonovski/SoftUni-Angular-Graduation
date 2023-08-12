@@ -84,7 +84,7 @@ export class RegisterComponent implements OnInit {
   onSubmit(): void {
     if (this.formGroup.valid) {
       const formData = this.formArray?.value;
-      const name = formData[0].fullName;
+      const name = formData[0].name;
       const email = formData[0].email;
       const description = formData[0].description;
       const password = formData[1].password;
@@ -101,6 +101,7 @@ export class RegisterComponent implements OnInit {
       });
     } else {
       console.error('Form has errors.');
+      console.log(this.formGroup.valid);
     }
   }
 

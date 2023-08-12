@@ -17,10 +17,10 @@ async function validateInput(body, command) {
       throw new Error("All fields are required.");
     }
     const emailTaken = await User.findOne({ email: email });
-    const usernameTaken = await User.findOne({ username: username });
+    const nameTaken = await User.findOne({ name: name });
 
-    console.log(emailTaken, usernameTaken);
-    if (emailTaken || usernameTaken) {
+    console.log(emailTaken, nameTaken);
+    if (emailTaken || nameTaken) {
       throw new Error("A user with this email or username already exists.");
     }
     return true;
