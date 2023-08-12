@@ -7,5 +7,9 @@ import { IArticle } from 'src/app/shared/interfaces/iarticle';
   styleUrls: ['./article-card.component.css'],
 })
 export class ArticleCardComponent {
-  @Input() articles: IArticle[] | undefined;
+  @Input() article: any;
+
+  ngOnInit() {
+    console.log(this.article);
+  }
 }
