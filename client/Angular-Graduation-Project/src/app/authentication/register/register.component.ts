@@ -92,7 +92,7 @@ export class RegisterComponent implements OnInit {
       this.apiCalls.postRegisterForm(sendData).subscribe({
         next: (response) => {
           const tokens = Object.values(response);
-          this.authService.setToken(tokens[1]);
+          this.authService.setTokens(tokens[1]);
           this.router.navigate(['/']);
         },
         error: (err) => console.log(err),

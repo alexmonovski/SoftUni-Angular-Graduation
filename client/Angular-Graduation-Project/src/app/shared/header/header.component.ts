@@ -12,6 +12,6 @@ export class HeaderComponent {
   constructor(private authService: AuthService) {}
 
   logout() {
-    this.authService.setToken(null); // Clear the authentication token
+    this.authService.setTokens(null); // Clear the authentication token
   }
 }

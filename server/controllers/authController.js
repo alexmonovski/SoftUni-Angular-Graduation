@@ -6,12 +6,10 @@ authController.post("/register", async (req, res) => {
   try {
     // possibly add a special res.status if username is already taken
     const formData = req.body;
-    console.log(formData);
-    const token = await registerUser(formData);
-    console.log(token);
+    const session = await registerUser(formData);
     return res
       .status(201)
-      .json({ message: "Registration successful", jwt: token });
+      .json({ message: "Registration successful", session });
   } catch (err) {
     console.log(err);
     return res
@@ -24,8 +22,8 @@ authController.post("/register", async (req, res) => {
 authController.post("/login", async (req, res) => {
   try {
     const formData = req.body;
-    const token = await loginUser(formData);
-    return res.status(200).json({ message: "Login successful", jwt: token });
+    const session = await loginUser(formData);
+    return res.status(200).json({ message: "Login successful", session });
   } catch (err) {
     console.log(err);
     return res

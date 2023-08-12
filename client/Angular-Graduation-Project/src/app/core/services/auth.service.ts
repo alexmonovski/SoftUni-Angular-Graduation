@@ -18,13 +18,17 @@ export class AuthService {
     return localStorage.getItem('authToken');
   }
 
-  setToken(token: string | null) {
+  setTokens(tokens: any | null) {
     // Update the subject and store the token in local storage
-    this.authTokenSubject.next(token);
-    if (token) {
-      localStorage.setItem('authToken', token);
+    // also store the current user's id for later use;
+
+    this.authTokenSubject.next(tokens.token);
+    if (tokens) {
+      localStorage.setItem('userId', tokens.userId);
+      localStorage.setItem('authToken', tokens.token);
     } else {
       localStorage.removeItem('authToken');
+      localStorage.removeItem('userId');
     }
   }
 }

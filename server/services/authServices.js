@@ -29,13 +29,14 @@ async function loginUser(body) {
 }
 
 function createSession(user) {
-  const payload = {
-    userId: user._id.toString(),
-    userEmail: user.email,
-    username: user.username,
+  const userId = user._id.toString();
+  const token = jwt.sign(userId, SECRET);
+
+  const session = {
+    userId,
+    token,
   };
-  const token = jwt.sign(payload, SECRET);
-  return token;
+  return session;
 }
 
 module.exports = {
