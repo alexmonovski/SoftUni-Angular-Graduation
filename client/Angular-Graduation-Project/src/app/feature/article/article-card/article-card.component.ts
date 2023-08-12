@@ -7,5 +7,5 @@ import { IArticle } from 'src/app/shared/interfaces/iarticle';
   styleUrls: ['./article-card.component.css'],
 })
 export class ArticleCardComponent {
-  @Input() article: IArticle | undefined;
+  @Input() articles: IArticle[] | undefined;
 }

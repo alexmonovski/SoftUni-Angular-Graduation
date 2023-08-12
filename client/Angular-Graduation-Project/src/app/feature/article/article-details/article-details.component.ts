@@ -24,16 +24,14 @@ export class ArticleDetailsComponent {
       this.id = params['id'];
       this.apiCalls.getSingleArticle(this.id).subscribe({
         next: (data) => {
-          console.log(data);
-
           this.article = data;
           this.comments = data.comments;
         },
         error: (err) => {
-          console.log(err);
+          console.error(err);
         },
         complete: () => {
-          console.log('Resources received');
+          ('');
         },
       });
     });

@@ -8,12 +8,14 @@ import { ProfileComponent } from './authentication/profile/profile.component';
 import { ArticleDetailsComponent } from './feature/article/article-details/article-details.component';
 import { ArticleCreateComponent } from './feature/article/article-create/article-create.component';
 import { ArticleCommentComponent } from './feature/article/article-comment/article-comment.component';
+import { UsersComponent } from './authentication/users/users.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
+  { path: 'auth', component: UsersComponent },
   { path: 'auth/login', component: LoginComponent },
   { path: 'auth/register', component: RegisterComponent },
-  { path: 'auth/profile', component: ProfileComponent },
+  { path: 'auth/profile/:id', component: ProfileComponent },
   { path: 'about', component: AboutComponent },
   { path: 'articles/create', component: ArticleCreateComponent },
   { path: 'articles/:id', component: ArticleDetailsComponent },

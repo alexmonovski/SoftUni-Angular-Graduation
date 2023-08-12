@@ -31,11 +31,10 @@ export class ArticleCommentComponent {
       this.routeId = this.route.snapshot.params['id'];
       this.apiCalls.addComment(formData, this.routeId).subscribe({
         next: (response) => {
-          console.log('Comment added:', response);
           this.router.navigate(['/articles', this.routeId]);
         },
-        error: (err) => console.log(err),
-        complete: () => console.log('Add comment completed.'),
+        error: (err) => console.error(err),
+        complete: () => '',
       });
     }
   }

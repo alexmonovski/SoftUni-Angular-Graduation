@@ -9,9 +9,10 @@ import { AuthService } from 'src/app/core/services/auth.service';
 export class HeaderComponent {
   // sub to observable
   isLoggedIn$ = this.authService.authToken$;
+  userId$ = this.authService.userIdToken$;
   constructor(private authService: AuthService) {}
 
   logout() {
-    this.authService.setTokens(null); // Clear the authentication token
+    this.authService.setTokens(null);
   }
 }

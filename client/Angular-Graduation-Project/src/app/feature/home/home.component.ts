@@ -14,8 +14,8 @@ export class HomeComponent {
   ngOnInit(): void {
     this.apiCalls.getAllArticles().subscribe({
       next: (data) => (this.articles = data),
-      error: (err) => console.log(err),
-      complete: () => console.log('Successfully fetched resources.'),
+      error: (err) => console.error(err),
+      complete: () => '',
     });
   }
 }

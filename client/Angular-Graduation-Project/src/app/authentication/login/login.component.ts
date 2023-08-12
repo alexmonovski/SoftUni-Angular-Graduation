@@ -33,8 +33,8 @@ export class LoginComponent {
         this.authService.setTokens(tokens[1]);
         this.router.navigate(['/']);
       },
-      error: (err) => console.log(err),
-      complete: () => console.log('Login completed.'),
+      error: (err) => console.error(err),
+      complete: () => '',
     });
   }
 }

@@ -9,23 +9,28 @@ import { ApiCallsService } from 'src/app/core/services/api-calls.service';
 })
 export class ProfileComponent {
   articles = [];
-  user = {};
+  user: any;
   userId = '';
 
   constructor(
     private apiCalls: ApiCallsService,
     private route: ActivatedRoute
-  ) {
+  ) {}
+
+  ngOnInit() {
     this.route.params.subscribe((params) => {
+      console.log(params['id']);
+
       this.userId = params['id'];
     });
 
     this.apiCalls.getSingleUser(this.userId).subscribe({
       next: (response) => {
-        console.log(response);
+        this.user = response.user;
+        console.log(this.user);
       },
-      error: (err) => console.log(err),
-      complete: () => console.log('Login completed.'),
+      error: (err) => console.error(err),
+      complete: () => '',
     });
   }
 }

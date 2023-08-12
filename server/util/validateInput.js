@@ -12,8 +12,8 @@ async function validateInput(body, command) {
   }
   //
   else if (command == "registerUser") {
-    const { email, username, password, topics } = body;
-    if (email == "" || username == "" || password == "") {
+    const { name, email, description, password, topics } = body;
+    if (email == "" || name == "" || description == "" || password == "") {
       throw new Error("All fields are required.");
     }
     const emailTaken = await User.findOne({ email: email });

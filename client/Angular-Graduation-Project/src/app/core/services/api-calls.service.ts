@@ -43,6 +43,11 @@ export class ApiCallsService {
     return this.http.get(url);
   }
 
+  getAllUsers(): Observable<any> {
+    const url = `http://localhost:3000/users/`;
+    return this.http.get(url);
+  }
+
   getSingleUser(id: any): Observable<any> {
     const url = `http://localhost:3000/users/${id}`;
     return this.http.get(url);

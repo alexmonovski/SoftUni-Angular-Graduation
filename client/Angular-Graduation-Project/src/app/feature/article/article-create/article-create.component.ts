@@ -36,8 +36,8 @@ export class ArticleCreateComponent implements OnInit {
           this.existingArticle = data;
           this.populateForm();
         },
-        error: (err) => console.log(err),
-        complete: () => console.log('Successfully fetched resources.'),
+        error: (err) => console.error(err),
+        complete: () => '',
       });
       this.formTitle = 'Edit';
     }
@@ -56,12 +56,11 @@ export class ArticleCreateComponent implements OnInit {
       const formData = this.createArticleFormGroup.value;
       this.apiCalls.createArticle(formData).subscribe({
         next: (response) => {
-          console.log(response);
           const id = response._id;
           this.router.navigate([`/articles/${id}`]);
         },
-        error: (err) => console.log(err),
-        complete: () => console.log('Create article completed.'),
+        error: (err) => console.error(err),
+        complete: () => '',
       });
     }
   }

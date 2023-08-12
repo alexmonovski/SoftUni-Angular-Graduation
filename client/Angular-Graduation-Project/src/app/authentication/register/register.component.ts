@@ -50,8 +50,9 @@ export class RegisterComponent implements OnInit {
     this.formGroup = this._formBuilder.group({
       formArray: this._formBuilder.array([
         this._formBuilder.group({
-          fullName: ['', [Validators.required]],
+          name: ['', [Validators.required]],
           email: ['', [Validators.required, Validators.email]],
+          description: ['', [Validators.required]],
         }),
         this._formBuilder.group(
           {
@@ -72,11 +73,10 @@ export class RegisterComponent implements OnInit {
       next: (data) => {
         for (const dataObj of data.topics) {
           // this.topics.push(dataObj.title);
-          console.log(dataObj);
         }
       },
-      error: (err) => console.log(err),
-      complete: () => console.log('Successfully fetched resources.'),
+      error: (err) => console.error(err),
+      complete: () => '',
     });
   }
 
@@ -84,22 +84,23 @@ export class RegisterComponent implements OnInit {
   onSubmit(): void {
     if (this.formGroup.valid) {
       const formData = this.formArray?.value;
-      const username = formData[0].fullName;
+      const name = formData[0].fullName;
       const email = formData[0].email;
+      const description = formData[0].description;
       const password = formData[1].password;
       const topics = formData[2].topics.slice();
-      const sendData = { username, email, password, topics };
+      const sendData = { name, email, description, password, topics };
       this.apiCalls.postRegisterForm(sendData).subscribe({
         next: (response) => {
           const tokens = Object.values(response);
           this.authService.setTokens(tokens[1]);
           this.router.navigate(['/']);
         },
-        error: (err) => console.log(err),
-        complete: () => console.log('Register completed.'),
+        error: (err) => console.error(err),
+        complete: () => '',
       });
     } else {
-      console.log('Form has errors.');
+      console.error('Form has errors.');
     }
   }
 

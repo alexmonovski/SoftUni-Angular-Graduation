@@ -11,6 +11,7 @@ import { SubscribedUsersComponent } from './profile/subscribed-users/subscribed-
 import { SubscriptionCardComponent } from './profile/subscribed-users/subscription-card/subscription-card.component';
 import { UserCardComponent } from './profile/user-card/user-card.component';
 import { FeatureModule } from '../feature/feature.module';
+import { UsersComponent } from './users/users.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { FeatureModule } from '../feature/feature.module';
     SubscribedUsersComponent,
     SubscriptionCardComponent,
     UserCardComponent,
+    UsersComponent,
   ],
   imports: [CommonModule, MaterialModule, ReactiveFormsModule, FeatureModule],
   exports: [

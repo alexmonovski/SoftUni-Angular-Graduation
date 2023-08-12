@@ -7,12 +7,13 @@ const Topic = require("../models/Topic");
 // check for same titles on the frontend;
 
 async function registerUser(body) {
-  const { username, email, topics } = body;
+  const { name, email, description, topics } = body;
   const password = body.passwordGroup.password;
 
   const parsedBody = {
     username,
     email,
+    description,
     password,
   };
   // на този етап не са наложителни топиците

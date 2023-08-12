@@ -44,9 +44,6 @@ async function getArticlesByTopics(topicArray) {
 
 async function createArticle(body, userId) {
   await validateInput(body, "createArticle");
-
-  console.log(body.title, body.description, body.content, userId);
-
   const newArticle = new Article({
     title: body.title,
     description: body.description,

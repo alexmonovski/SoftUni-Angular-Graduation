@@ -3,8 +3,9 @@ const uniqueValidator = require("mongoose-unique-validator");
 const bcrypt = require("bcrypt");
 
 const userSchema = new Schema({
-  username: { type: String, required: true, unique: true },
+  name: { type: String, required: true, unique: true },
   email: { type: String, required: true, unique: true },
+  description: { type: String, required: true },
   password: { type: String, required: true },
   topics: { type: [Types.ObjectId], ref: "Topic", default: [] },
   articlesCreated: { type: [Types.ObjectId], ref: "Article", default: [] },

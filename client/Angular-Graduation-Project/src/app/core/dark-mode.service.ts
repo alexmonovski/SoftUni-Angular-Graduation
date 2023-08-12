@@ -12,8 +12,6 @@ export class DarkModeService {
   }
 
   private applyDarkModeStyles() {
-    console.log('potato');
-
     if (this.isDarkMode) {
       document.body.classList.add('dark-mode');
     } else {

@@ -11,10 +11,8 @@ export function passwordMatchValidator(): ValidatorFn {
     const repass = formGroup.get('repass');
 
     if (password && repass && password.value !== repass.value) {
-      console.log('passwords are different');
       return { passwordMismatch: true };
     } else {
-      console.log('passwords are the same');
       return null;
     }
   };

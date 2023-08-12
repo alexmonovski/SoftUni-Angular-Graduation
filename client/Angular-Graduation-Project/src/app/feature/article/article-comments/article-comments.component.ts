@@ -34,20 +34,17 @@ export class ArticleCommentsComponent implements OnInit {
     this.apiCalls.getSelf().subscribe({
       next: (data) => {
         this.author = data.user.username;
-        console.log(this.author);
       },
       error: (err) => {
-        console.log(err);
+        console.error(err);
       },
       complete: () => {
-        console.log('Comment submitted.');
+        ('');
       },
     });
   }
 
-  ngAfterViewInit() {
-    console.log(this.articleId);
-  }
+  ngAfterViewInit() {}
 
   onSubmitComment(): void {
     if (this.commentForm.valid) {
@@ -58,10 +55,10 @@ export class ArticleCommentsComponent implements OnInit {
           this.commentForm.reset();
         },
         error: (err) => {
-          console.log(err);
+          console.error(err);
         },
         complete: () => {
-          console.log('Comment submitted.');
+          ('');
         },
       });
     }

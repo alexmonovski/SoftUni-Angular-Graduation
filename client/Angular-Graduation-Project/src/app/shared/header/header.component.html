@@ -17,10 +17,14 @@
     </ng-container>
     <ng-container *ngIf="isLoggedIn$ | async">
       <li>
-        <a mat-button routerLink="/auth/profile" routerLinkActive="mat-accent"
+        <a
+          mat-button
+          [routerLink]="'/auth/profile/' + (userId$ | async)"
+          routerLinkActive="mat-accent"
           >Profile</a
         >
       </li>
+
       <li>
         <a
           mat-button
@@ -30,6 +34,9 @@
         >
       </li>
     </ng-container>
+    <li>
+      <a mat-button routerLink="/auth" routerLinkActive="mat-accent">Authors</a>
+    </li>
     <li>
       <a mat-button routerLink="/about" routerLinkActive="mat-accent">About</a>
     </li>

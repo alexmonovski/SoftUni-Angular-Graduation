@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { ArticleListComponent } from './article/article-list/article-list.component';
 import { ArticleDetailsComponent } from './article/article-details/article-details.component';
 import { MatCardModule } from '@angular/material/card';
 import { ArticleCommentsComponent } from './article/article-comments/article-comments.component';
@@ -18,7 +17,6 @@ import { ArticleCommentComponent } from './article/article-comment/article-comme
 
 @NgModule({
   declarations: [
-    ArticleListComponent,
     ArticleDetailsComponent,
     ArticleCommentsComponent,
     HomeComponent,
@@ -37,7 +35,6 @@ import { ArticleCommentComponent } from './article/article-comment/article-comme
     JoditAngularModule,
   ],
   exports: [
-    ArticleListComponent,
     ArticleDetailsComponent,
     ArticleCommentsComponent,
     HomeComponent,

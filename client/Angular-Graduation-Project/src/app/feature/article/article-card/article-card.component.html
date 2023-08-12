@@ -1,13 +1,15 @@
-<div class="article-container">
-  <mat-card class="article-card">
-    <mat-card-header>
-      <div mat-card-avatar class="article-avatar"></div>
-      <mat-card-title>{{ article?.title }}</mat-card-title>
-      <mat-card-subtitle>Author Name - Publication Date</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-      <!-- Your article content goes here -->
-      <p>{{ article?.content }}</p>
-    </mat-card-content>
-  </mat-card>
-</div>
+<ng-container *ngIf="articles">
+  <div class="article-container" *ngFor="let article of articles">
+    <mat-card class="article-card">
+      <mat-card-header>
+        <div mat-card-avatar class="article-avatar"></div>
+        <mat-card-title>{{ article?.title }}</mat-card-title>
+        <mat-card-subtitle>Author Name - Publication Date</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <!-- Your article content goes here -->
+        <p>{{ article?.content }}</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</ng-container>
