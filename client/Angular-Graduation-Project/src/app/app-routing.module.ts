@@ -6,7 +6,7 @@ import { RegisterComponent } from './authentication/register/register.component'
 import { AboutComponent } from './shared/about/about.component';
 import { ProfileComponent } from './authentication/profile/profile.component';
 import { ArticleDetailsComponent } from './feature/article/article-details/article-details.component';
-import { ArticleCreateComponent } from './feature/article-create/article-create.component';
+import { ArticleCreateComponent } from './feature/article/article-create/article-create.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },

@@ -1,89 +1,74 @@
-<mat-stepper
-  orientation="vertical"
-  [linear]="true"
-  class="mat-stepper-container"
->
-  <mat-step [stepControl]="registerFormGroup">
-    <form [formGroup]="registerFormGroup">
+<h3>Linear Vertical Stepper Demo using a single form</h3>
+<form [formGroup]="formGroup">
+  <mat-vertical-stepper
+    #linearVerticalStepper="matVerticalStepper"
+    formArrayName="formArray"
+    [linear]="false"
+  >
+    <!-- value won't be null or undefined;  -->
+    <mat-step formGroupName="0" [stepControl]="formArray?.get([0])!">
+      <ng-template matStepLabel
+        >Fill out your name and email address</ng-template
+      >
       <mat-form-field>
-        <input matInput placeholder="Your email" formControlName="email" />
-        <mat-hint>Please enter a valid email.</mat-hint>
+        <mat-label>Full name</mat-label>
+        <input matInput formControlName="fullName" required />
       </mat-form-field>
+
       <mat-form-field>
-        <input
-          matInput
-          placeholder="Your username"
-          formControlName="username"
-        />
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" required />
       </mat-form-field>
-      <div formGroupName="passwordGroup">
-        <mat-form-field>
-          <input
-            matInput
-            placeholder="Your password"
-            formControlName="password"
-            type="password"
-          />
-        </mat-form-field>
-        <mat-form-field>
-          <input
-            matInput
-            placeholder="Repeat password"
-            formControlName="repass"
-            type="password"
-          />
-        </mat-form-field>
-      </div>
       <div>
         <button mat-button matStepperNext>Next</button>
       </div>
-    </form>
-  </mat-step>
+    </mat-step>
 
-  <mat-step>
-    <ng-template matStepLabel
-      >Please select your topics of interest</ng-template
-    >
-    <form [formGroup]="registerFormGroup">
-      <mat-form-field class="example-form-field">
-        <mat-label>Video keywords</mat-label>
-        <mat-chip-grid
-          #chipGrid
-          aria-label="Enter keywords"
-          formControlName="topics"
-        >
-          <mat-chip-row
-            *ngFor="let keyword of registerFormGroup.get('topics')?.value"
-            (removed)="removeKeyword(keyword)"
-          >
-            {{ keyword }}
-            <button matChipRemove aria-label="'remove ' + keyword">
-              <mat-icon>cancel</mat-icon>
-            </button>
-          </mat-chip-row>
-        </mat-chip-grid>
-        <input
-          placeholder="New keyword..."
-          [matChipInputFor]="chipGrid"
-          (matChipInputTokenEnd)="add($event)"
-        />
+    <mat-step formGroupName="1" [stepControl]="formArray?.get([1])!">
+      <ng-template matStepLabel>
+        <div>Enter your password</div>
+      </ng-template>
+      <mat-form-field>
+        <mat-label>Password</mat-label>
+        <input matInput formControlName="password" />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Repeat password</mat-label>
+        <input matInput formControlName="repass" />
       </mat-form-field>
       <div>
         <button mat-button matStepperPrevious>Back</button>
         <button mat-button matStepperNext>Next</button>
       </div>
-    </form>
-  </mat-step>
+    </mat-step>
+    <mat-step formGroupName="2" [stepControl]="formArray?.get([2])!">
+      <ng-template matStepLabel>
+        <div>Please enter your topics of interest (optional)</div>
+      </ng-template>
+      <mat-form-field>
+        <mat-label>Please select your topics of interest (optional)</mat-label>
+        <input matInput formControlName="topics" />
+      </mat-form-field>
 
-  <mat-step>
-    <ng-template matStepLabel>Done</ng-template>
-    <p>
-      Done! Press 'Submit' to complete registration or 'Back' to change
-      something.
-    </p>
-    <div>
-      <button mat-button matStepperPrevious>Back</button>
-      <button mat-button (click)="onSubmit()">Submit</button>
-    </div>
-  </mat-step>
-</mat-stepper>
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+    </mat-step>
+
+    <mat-step>
+      <ng-template matStepLabel>Confirm your information</ng-template>
+      Everything seems correct.
+      <div>
+        <button
+          type="button"
+          mat-button
+          (click)="linearVerticalStepper.reset()"
+        >
+          Reset
+        </button>
+        <button mat-button (click)="onSubmit()">Done</button>
+      </div>
+    </mat-step>
+  </mat-vertical-stepper>
+</form>
