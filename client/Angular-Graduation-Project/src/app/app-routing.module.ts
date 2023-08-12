@@ -7,6 +7,7 @@ import { AboutComponent } from './shared/about/about.component';
 import { ProfileComponent } from './authentication/profile/profile.component';
 import { ArticleDetailsComponent } from './feature/article/article-details/article-details.component';
 import { ArticleCreateComponent } from './feature/article/article-create/article-create.component';
+import { ArticleCommentComponent } from './feature/article/article-comment/article-comment.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -16,6 +17,7 @@ const routes: Routes = [
   { path: 'about', component: AboutComponent },
   { path: 'articles/create', component: ArticleCreateComponent },
   { path: 'articles/:id', component: ArticleDetailsComponent },
+  { path: 'articles/:id/add-comment', component: ArticleCommentComponent },
 ];
 
 @NgModule({

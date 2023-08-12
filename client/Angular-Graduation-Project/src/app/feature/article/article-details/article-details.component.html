@@ -3,7 +3,9 @@
     <mat-card-header>
       <div mat-card-avatar class="article-avatar"></div>
       <mat-card-title>{{ article.title }}</mat-card-title>
-      <mat-card-subtitle>Author: {{ article.author?.name }}</mat-card-subtitle>
+      <mat-card-subtitle
+        >Author: {{ article.author?.username }}</mat-card-subtitle
+      >
     </mat-card-header>
     <mat-card-content>
       {{ article.content }}

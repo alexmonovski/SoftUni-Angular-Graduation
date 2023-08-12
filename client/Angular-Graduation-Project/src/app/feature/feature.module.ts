@@ -14,6 +14,7 @@ import { ArticleCreateComponent } from './article/article-create/article-create.
 import { ReactiveFormsModule } from '@angular/forms';
 import { CKEditorModule } from 'ckeditor4-angular';
 import { JoditAngularModule } from 'jodit-angular';
+import { ArticleCommentComponent } from './article/article-comment/article-comment.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { JoditAngularModule } from 'jodit-angular';
     HomeComponent,
     ArticleCardComponent,
     ArticleCreateComponent,
+    ArticleCommentComponent,
   ],
   imports: [
     CommonModule,

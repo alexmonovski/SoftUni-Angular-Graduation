@@ -53,7 +53,8 @@ articlesController.post("/:id/comments", async (req, res) => {
 // create article
 articlesController.post("/create", async (req, res) => {
   try {
-    const newArticle = await createArticle(req.body);
+    const userId = await getUserIdFromToken(req.headers.authorization);
+    const newArticle = await createArticle(req.body, userId);
     if (newArticle) {
       res.status(201).json(newArticle);
     } else {

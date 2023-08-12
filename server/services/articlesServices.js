@@ -42,9 +42,21 @@ async function getArticlesByTopics(topicArray) {
   return articlesByTopics;
 }
 
-async function createArticle(body) {
+async function createArticle(body, userId) {
   await validateInput(body, "createArticle");
-  const newArticle = await Article.create(body);
+
+  console.log(body.title, body.description, body.content, userId);
+
+  const newArticle = new Article({
+    title: body.title,
+    description: body.description,
+    content: body.content,
+    author: userId,
+  });
+  await newArticle.save();
+  await User.findByIdAndUpdate(userId, {
+    $push: { articlesCreated: newArticle._id },
+  });
   return newArticle;
 }
 

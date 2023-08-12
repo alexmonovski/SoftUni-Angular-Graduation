@@ -51,6 +51,10 @@ export class ApiCallsService {
     const url = `http://localhost:3000/users/current`;
     return this.http.get(url);
   }
+  createArticle(formData: any): Observable<any> {
+    const url = `http://localhost:3000/articles/create`;
+    return this.http.post(url, formData);
+  }
 }
 
 // access auth only resources

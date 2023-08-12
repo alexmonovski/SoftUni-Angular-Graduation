@@ -1,5 +1,5 @@
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Component } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IArticle } from 'src/app/shared/interfaces/iarticle';
 import { ApiCallsService } from 'src/app/core/services/api-calls.service';
@@ -9,7 +9,7 @@ import { ApiCallsService } from 'src/app/core/services/api-calls.service';
   templateUrl: './article-create.component.html',
   styleUrls: ['./article-create.component.css'],
 })
-export class ArticleCreateComponent {
+export class ArticleCreateComponent implements OnInit {
   createArticleFormGroup!: FormGroup;
   existingArticle: IArticle | null = null;
   formTitle = 'Create';
@@ -17,14 +17,15 @@ export class ArticleCreateComponent {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private apiCalls: ApiCallsService
+    private apiCalls: ApiCallsService,
+    private formBuilder: FormBuilder
   ) {}
 
   ngOnInit(): void {
-    this.createArticleFormGroup = new FormGroup({
-      title: new FormControl('', [Validators.required, Validators.email]),
-      description: new FormControl('', Validators.required),
-      content: new FormControl('', Validators.required),
+    this.createArticleFormGroup = this.formBuilder.group({
+      title: ['', [Validators.required]],
+      description: ['', [Validators.required]],
+      content: ['', [Validators.required]],
     });
 
     const articleId = this.route.snapshot.params['id'];
@@ -53,7 +54,15 @@ export class ArticleCreateComponent {
   onSubmit() {
     if (this.createArticleFormGroup.valid) {
       const formData = this.createArticleFormGroup.value;
-      console.log('Form Data:', formData);
+      this.apiCalls.createArticle(formData).subscribe({
+        next: (response) => {
+          console.log(response);
+          const id = response._id;
+          this.router.navigate([`/articles/${id}`]);
+        },
+        error: (err) => console.log(err),
+        complete: () => console.log('Create article completed.'),
+      });
     }
   }
 }

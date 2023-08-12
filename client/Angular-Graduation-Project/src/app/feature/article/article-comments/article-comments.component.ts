@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ApiCallsService } from 'src/app/core/services/api-calls.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 // make it dynamic and imrpove; use subject I guess. make new fetch on every change? or use subject?
 
@@ -14,8 +15,12 @@ export class ArticleCommentsComponent implements OnInit {
   @Input() id!: any;
   commentForm!: FormGroup;
   author!: string;
+  articleId!: string;
 
-  constructor(private apiCalls: ApiCallsService) {}
+  constructor(
+    private apiCalls: ApiCallsService,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
     this.commentForm = new FormGroup({
@@ -23,6 +28,9 @@ export class ArticleCommentsComponent implements OnInit {
       content: new FormControl('', Validators.required),
     });
 
+    this.route.params.subscribe((params) => {
+      this.articleId = params['id'];
+    });
     this.apiCalls.getSelf().subscribe({
       next: (data) => {
         this.author = data.user.username;
@@ -35,6 +43,10 @@ export class ArticleCommentsComponent implements OnInit {
         console.log('Comment submitted.');
       },
     });
+  }
+
+  ngAfterViewInit() {
+    console.log(this.articleId);
   }
 
   onSubmitComment(): void {

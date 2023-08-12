@@ -1,0 +1,17 @@
+<div class="article-create">
+  <form [formGroup]="commentForm" (ngSubmit)="onSubmitComment()">
+    <mat-form-field>
+      <input matInput placeholder="Title" formControlName="title" />
+    </mat-form-field>
+    <mat-form-field>
+      <textarea
+        matInput
+        placeholder="Content"
+        formControlName="content"
+      ></textarea>
+    </mat-form-field>
+    <button mat-raised-button color="primary" type="submit">
+      Submit Comment
+    </button>
+  </form>
+</div>
