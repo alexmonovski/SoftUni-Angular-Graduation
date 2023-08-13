@@ -19,6 +19,7 @@ export class ArticleCreateComponent implements OnInit {
   formTitle = 'Create';
   topicDocs = [];
   topics: string[] = [];
+  options: any[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -49,6 +50,16 @@ export class ArticleCreateComponent implements OnInit {
       });
       this.formTitle = 'Edit';
     }
+
+    this.apiCalls.getAllTopics().subscribe({
+      next: (data) => {
+        for (const dataObj of data.topics) {
+          this.options.push(dataObj.name);
+        }
+      },
+      error: (err) => console.error(err),
+      complete: () => console.log(this.options),
+    });
   }
 
   populateForm() {
@@ -65,7 +76,7 @@ export class ArticleCreateComponent implements OnInit {
       this.apiCalls.createArticle(formData).subscribe({
         next: (response) => {
           const id = response._id;
-          // this.router.navigate([`/articles/${id}`]);
+          this.router.navigate([`/articles/${id}`]);
         },
         error: (err) => console.error(err),
         complete: () => '',

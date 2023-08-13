@@ -1,5 +1,9 @@
-<ng-container *ngIf="articles">
+<ng-container *ngIf="articles && articles.length > 0; else noArticles">
   <ng-container *ngFor="let article of articles">
     <app-article-card [article]="article"></app-article-card>
   </ng-container>
 </ng-container>
+
+<ng-template #noArticles>
+  <p class="no-articles-message">No articles available yet. Be the first!</p>
+</ng-template>
