@@ -16,7 +16,7 @@ articlesController.get("/", async (req, res) => {
     const articles = await getAllArticles();
     res.status(200).json(articles);
   } catch (err) {
-    console.log(err);
+    console.error(err);
     // not a good practice to expose server errors to the client;
     res.status(500).json({ error: "Internal server error" });
   }
@@ -26,13 +26,14 @@ articlesController.get("/", async (req, res) => {
 articlesController.get("/:id", async (req, res) => {
   try {
     const article = await getArticleById(req.params.id);
+    console.log(article);
     if (!article) {
       res.status(404).json({ error: "Article not found" });
     } else {
       res.status(200).json(article);
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).json({ error: "Internal server error" });
   }
 });
@@ -45,7 +46,7 @@ articlesController.post("/:id/comments", async (req, res) => {
     const article = await commentArticle(articleId, commentBody, userId);
     res.status(201).json({ message: "Comment added successfully" });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).json({ error: "Internal server error" });
   }
 });
@@ -61,7 +62,7 @@ articlesController.post("/create", async (req, res) => {
       res.status(400).json({ error: "Bad Request" });
     }
   } catch (err) {
-    console.log(err);
+    console.error(err);
     res.status(500).json({ error: "Internal server error" }); // Status code 500 for server error
   }
 });
@@ -72,7 +73,7 @@ articlesController.post(":id/edit", async (req, res) => {
     await editArticle(req.params.id, req.body);
     res.status(200).json({ message: "Article edited successfully" });
   } catch (err) {
-    console.log(err);
+    console.error(err);
     res.status(500).json({ error: "Internal server error" });
   }
 });
@@ -83,7 +84,7 @@ articlesController.post(":id/like", async (req, res) => {
     await likeArticle(req.params.id, req.body);
     res.status(200).json({ message: "Article liked successfully" });
   } catch (err) {
-    console.log(err);
+    console.error(err);
     res.status(500).json({ error: "Internal server error" });
   }
 });
@@ -95,7 +96,7 @@ articlesController.post(":id/delete", async (req, res) => {
     await deleteArticle(req.params.id);
     res.status(204).send({ message: "Article deleted successfully" });
   } catch (err) {
-    console.log(err);
+    console.error(err);
     res.status(500).json({ error: "Internal server error" });
   }
 });

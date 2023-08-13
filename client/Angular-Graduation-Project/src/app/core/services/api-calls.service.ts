@@ -18,6 +18,16 @@ export class ApiCallsService {
     return this.http.get(url);
   }
 
+  getSingleTopic(id: any): Observable<any> {
+    const url = `http://localhost:3000/topics/${id}`;
+    return this.http.get(url);
+  }
+
+  getSingleArticlePopulated(id: any): Observable<any> {
+    const url = `http://localhost:3000/articles/${id}?action=populated`;
+    return this.http.get(url);
+  }
+
   addComment(comment: any, id: any): Observable<any> {
     const url = `http://localhost:3000/articles/${id}/comments/`;
     const requestBody = comment;
@@ -52,8 +62,8 @@ export class ApiCallsService {
     const url = `http://localhost:3000/users/${id}`;
     return this.http.get(url);
   }
-  getSingleUserSimple(id: any): Observable<any> {
-    const url = `http://localhost:3000/users/${id}?action=simple`;
+  getSingleUserLean(id: any): Observable<any> {
+    const url = `http://localhost:3000/users/${id}?action=lean`;
     return this.http.get(url);
   }
   getSelf(): Observable<any> {

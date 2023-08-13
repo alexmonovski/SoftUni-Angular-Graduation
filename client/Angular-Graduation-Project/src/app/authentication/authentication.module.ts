@@ -5,30 +5,29 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ProfileComponent } from './profile/profile.component';
-import { LikeCardComponent } from './profile/liked-articles/like-card/like-card.component';
-import { LikedArticlesComponent } from './profile/liked-articles/liked-articles.component';
-import { SubscribedUsersComponent } from './profile/subscribed-users/subscribed-users.component';
-import { SubscriptionCardComponent } from './profile/subscribed-users/subscription-card/subscription-card.component';
 import { UserCardComponent } from './user-card/user-card.component';
 import { FeatureModule } from '../feature/feature.module';
 import { UsersComponent } from './users/users.component';
-import { RouterModule, Routes } from '@angular/router';
-import { CreatedArticlesComponent } from './profile/created-articles/created-articles.component';
+import { RouterModule } from '@angular/router';
 import { ProfileUserCardComponent } from './profile/user-card/profile-user-card.component';
+import { CreatedArticlesCardComponent } from './profile/created-articles-card/created-articles-card.component';
+import { TopicsSubscribedCardComponent } from './profile/topics-subscribed-card/topics-subscribed-card.component';
+import { ArticlesLikedCardComponent } from './profile/articles-liked-card/articles-liked-card.component';
+import { SubscribedUsersCardComponent } from './profile/subscribed-users-card/subscribed-users-card.component';
 
 @NgModule({
   declarations: [
     LoginComponent,
     RegisterComponent,
     ProfileComponent,
-    LikeCardComponent,
-    LikedArticlesComponent,
-    SubscribedUsersComponent,
-    SubscriptionCardComponent,
+
     UserCardComponent,
     UsersComponent,
-    CreatedArticlesComponent,
     ProfileUserCardComponent,
+    CreatedArticlesCardComponent,
+    TopicsSubscribedCardComponent,
+    ArticlesLikedCardComponent,
+    SubscribedUsersCardComponent,
   ],
   imports: [
     CommonModule,
@@ -37,14 +36,6 @@ import { ProfileUserCardComponent } from './profile/user-card/profile-user-card.
     FeatureModule,
     RouterModule,
   ],
-  exports: [
-    LoginComponent,
-    RegisterComponent,
-    ProfileComponent,
-    LikeCardComponent,
-    LikedArticlesComponent,
-    SubscribedUsersComponent,
-    SubscriptionCardComponent,
-  ],
+  exports: [LoginComponent, RegisterComponent, ProfileComponent],
 })
 export class AuthenticationModule {}

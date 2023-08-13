@@ -2,50 +2,55 @@
   <div class="user-profile">
     <!-- user card; expects an id -->
     <div class="first-flex">
-      <app-profile-user-card [userId]="userId"></app-profile-user-card>
+      <app-profile-user-card [user]="user"></app-profile-user-card>
     </div>
-    <!--  -->
-
     <div class="second-flex">
       <div class="user-expansions">
         <!--  -->
-        <!-- articles created; expects an array -->
         <mat-expansion-panel>
           <mat-expansion-panel-header>
             <mat-panel-title>Created Articles</mat-panel-title>
           </mat-expansion-panel-header>
-          User created articles:
-          <ng-container *ngFor="let article of articles">
-            <app-article-card [article]="article"></app-article-card>
+          <ng-container *ngFor="let articleId of articlesCreated">
+            <app-created-articles-card
+              [articleId]="articleId"
+            ></app-created-articles-card>
           </ng-container>
         </mat-expansion-panel>
 
-        <!-- articles liked; expects an array -->
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>Users Subscribed To</mat-panel-title>
+          </mat-expansion-panel-header>
+          <ng-container *ngFor="let userId of subscribedTo">
+            <app-subscribed-users-card
+              [userId]="userId"
+            ></app-subscribed-users-card>
+          </ng-container>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>Topics Subscribed To</mat-panel-title>
+          </mat-expansion-panel-header>
+          <ng-container *ngFor="let topicId of topicSubscriptions">
+            <app-topics-subscribed-card
+              [topicId]="topicId"
+            ></app-topics-subscribed-card>
+          </ng-container>
+        </mat-expansion-panel>
+
         <mat-expansion-panel>
           <mat-expansion-panel-header>
             <mat-panel-title>Liked Articles</mat-panel-title>
           </mat-expansion-panel-header>
-          <app-liked-articles
-            [articles]="user.articlesLiked"
-          ></app-liked-articles>
+          <ng-container *ngFor="let articleId of articlesLiked">
+            <app-articles-liked-card
+              [articleId]="articleId"
+            ></app-articles-liked-card>
+          </ng-container>
         </mat-expansion-panel>
-
-        <!-- subs; expects an array -->
-        <mat-expansion-panel>
-          <mat-expansion-panel-header>
-            <mat-panel-title>Subscriptions</mat-panel-title>
-          </mat-expansion-panel-header>
-          <app-user-card [user]="user.subscribedTo"></app-user-card>
-        </mat-expansion-panel>
-
-        <!-- topics ; expects an array  -->
-        <mat-expansion-panel>
-          <mat-expansion-panel-header>
-            <mat-panel-title>Topics</mat-panel-title>
-          </mat-expansion-panel-header>
-          <app-user-card [user]="user.topics"></app-user-card>
-        </mat-expansion-panel>
-        <!-- hr -->
+        <!--  -->
       </div>
     </div>
   </div>

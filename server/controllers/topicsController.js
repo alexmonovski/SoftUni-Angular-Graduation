@@ -12,7 +12,7 @@ topicsController.get("/", async (req, res) => {
     const topics = await getAllTopics();
     res.status(200).json({ message: "Topics retrieved successfully", topics });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).json({ error: "Internal server error" });
   }
 });
@@ -23,7 +23,7 @@ topicsController.get("/:id", async (req, res) => {
     const topic = await getSingleTopic(req.params.id);
     res.status(200).json({ message: "Topic retrieved successfully", topic });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).json({ error: "Internal server error" });
   }
 });
@@ -41,7 +41,7 @@ topicsController.get("/:id/articles", async (req, res) => {
       res.status(404).json({ error: "No articles found for the given topic" });
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).json({ error: "Internal server error" });
   }
 });
@@ -52,7 +52,7 @@ topicsController.post("/", async (req, res) => {
     const newTopic = await createTopic(req.params.id);
     res.status(201).json({ message: "Topic created successfully", newTopic });
   } catch (err) {
-    console.log(err);
+    console.error(err);
     res.status(500).json({ error: "Internal server error" });
   }
 });

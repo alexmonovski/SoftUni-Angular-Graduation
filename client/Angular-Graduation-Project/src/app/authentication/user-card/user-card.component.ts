@@ -41,7 +41,7 @@ export class UserCardComponent {
     // вземаме от сториджа
     const currentUserId = this.authService.getUserId();
 
-    this.apiCalls.getSingleUserSimple(currentUserId).subscribe({
+    this.apiCalls.getSingleUserLean(currentUserId).subscribe({
       next: (currentUser) => {
         if (currentUser.user.subscribedTo.includes(this.user._id)) {
           this.userHasSubscribed = true;

@@ -14,3 +14,19 @@
   flex-grow: 1; /* Take full vertical space within the container */
   padding: 10px; /* Adjust as needed */
 }
+
+::ng-deep .subscribed-topic-card {
+  font-size: 0.9rem; /* Adjust the font size as needed */
+  /* Add any other styles you want */
+}
+
+::ng-deep .mat-card-title {
+  font-size: 0.9rem; /* Adjust the font size for the title */
+  /* Add any other styles you want */
+}
+
+mat-card {
+  font-size: 0.9rem; /* Adjust the font size as needed */
+  width: 100%; /* Adjust the width as needed */
+  margin-bottom: 10px; /* Add margin between cards */
+}

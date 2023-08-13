@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 
 async function validateInput(body, command) {
   if (command == "createArticle" || command == "editArticle") {
-    console.log(body);
+    console.error(body);
     let { title, description, content } = body;
     if (title == "" || description == "" || content == "") {
       throw new Error("All fields are required.");
@@ -20,7 +20,7 @@ async function validateInput(body, command) {
     const emailTaken = await User.findOne({ email: email });
     const nameTaken = await User.findOne({ name: name });
 
-    console.log(emailTaken, nameTaken);
+    console.error(emailTaken, nameTaken);
     if (emailTaken || nameTaken) {
       throw new Error("A user with this email or username already exists.");
     }

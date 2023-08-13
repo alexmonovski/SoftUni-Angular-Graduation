@@ -22,7 +22,7 @@ usersController.get("/", async (req, res) => {
 usersController.get("/:id", async (req, res) => {
   try {
     const userId = req.params.id;
-    if (req.query.action == "simple") {
+    if (req.query.action == "lean") {
       const user = await getUserByIdSimple(userId);
       res.status(200).json({ message: "User retrieved successfully", user });
     } else {

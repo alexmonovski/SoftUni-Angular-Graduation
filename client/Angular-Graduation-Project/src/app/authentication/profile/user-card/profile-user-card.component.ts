@@ -7,18 +7,5 @@ import { ApiCallsService } from 'src/app/core/services/api-calls.service';
   styleUrls: ['./profile-user-card.component.css'],
 })
 export class ProfileUserCardComponent {
-  @Input() userId: any;
-  user: any;
-
-  constructor(private apiCalls: ApiCallsService) {}
-
-  ngOnInit() {
-    this.apiCalls.getSingleUser(this.userId).subscribe({
-      next: (response) => {
-        this.user = response.user;
-      },
-      error: (err) => console.error(err),
-      complete: () => {},
-    });
-  }
+  @Input() user: any;
 }

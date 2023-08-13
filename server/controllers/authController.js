@@ -11,7 +11,7 @@ authController.post("/register", async (req, res) => {
       .status(201)
       .json({ message: "Registration successful", session });
   } catch (err) {
-    console.log(err);
+    console.error(err);
     return res
       .status(500)
       .json({ error: "An error occurred. Please try again later." });
@@ -25,7 +25,7 @@ authController.post("/login", async (req, res) => {
     const session = await loginUser(formData);
     return res.status(200).json({ message: "Login successful", session });
   } catch (err) {
-    console.log(err);
+    console.error(err);
     return res
       .status(500)
       .json({ error: "An error occurred. Please try again later." });

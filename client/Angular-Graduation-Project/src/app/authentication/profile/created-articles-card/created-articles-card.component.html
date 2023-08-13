@@ -1,0 +1,16 @@
+<ng-container *ngIf="article">
+  <mat-card class="article-card">
+    <mat-card-header>
+      <mat-card-title>{{ article.title }}</mat-card-title>
+      <mat-card-subtitle>{{ article.author.name }}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <p>{{ article.description }}</p>
+      <p>Likes: {{ article.likes?.length || 0 }}</p>
+      <p>Topics: {{ topics.join(", ") }}</p>
+    </mat-card-content>
+    <mat-card-actions>
+      <a mat-button [routerLink]="['/articles', article._id]">Read more</a>
+    </mat-card-actions>
+  </mat-card>
+</ng-container>
