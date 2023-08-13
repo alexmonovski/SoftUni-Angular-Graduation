@@ -7,7 +7,10 @@
     <mat-card-content>
       <p>{{ article.description }}</p>
       <p>Likes: {{ article.likes?.length || 0 }}</p>
-      <p>Topics: {{ topics.join(", ") }}</p>
+      <p>
+        Topics:
+        {{ topics.length > 0 ? topics.join(", ") : "No topics added yet." }}
+      </p>
     </mat-card-content>
     <mat-card-actions>
       <a mat-button [routerLink]="['/articles', article._id]">Read more</a>

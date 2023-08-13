@@ -104,9 +104,9 @@ async function editArticle(id, body) {
   await article.save();
 }
 
-async function likeArticle(id, userId) {
-  await Article.findByIdAndUpdate(id, { $push: { usersLiked: userId } });
-  await User.findByIdAndUpdate(userId, { $push: { subscribedTo: id } });
+async function likeArticle(articleId, userId) {
+  await Article.findByIdAndUpdate(articleId, { $push: { usersLiked: userId } });
+  await User.findByIdAndUpdate(userId, { $push: { articlesLiked: articleId } });
 }
 
 async function commentArticle(articleId, commentBody, authorId) {

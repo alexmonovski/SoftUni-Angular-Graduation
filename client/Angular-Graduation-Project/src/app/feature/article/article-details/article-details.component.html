@@ -16,7 +16,7 @@
       <p class="article-description">{{ article.description }}</p>
       <p class="article-content">{{ article.content }}</p>
     </mat-card-content>
-    <mat-card-actions *ngIf="!isAuthor">
+    <mat-card-actions *ngIf="!isAuthor && !hasLiked">
       <a mat-button (click)="onLike()">Like</a>
     </mat-card-actions>
   </mat-card>

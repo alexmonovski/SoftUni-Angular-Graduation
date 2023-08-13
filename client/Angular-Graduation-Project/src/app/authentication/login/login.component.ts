@@ -30,6 +30,7 @@ export class LoginComponent {
     this.apiCalls.postLoginForm(formData).subscribe({
       next: (response) => {
         const tokens = Object.values(response);
+        console.log(tokens);
         this.authService.setTokens(tokens[1]);
         this.router.navigate(['/']);
       },

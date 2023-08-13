@@ -21,6 +21,8 @@ export class ArticleCardComponent {
       .pipe(
         mergeMap((articleResponse) => {
           this.article = articleResponse;
+          console.log(this.article);
+
           return this.apiCalls.getSingleUserLean(articleResponse.author._id);
         })
       )

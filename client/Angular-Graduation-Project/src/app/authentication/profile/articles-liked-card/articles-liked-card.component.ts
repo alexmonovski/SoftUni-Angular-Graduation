@@ -9,13 +9,20 @@ import { ApiCallsService } from 'src/app/core/services/api-calls.service';
 export class ArticlesLikedCardComponent {
   @Input() articleId: any;
   article: any;
+  parsedTopics: any[] = [];
 
   constructor(private apiCalls: ApiCallsService) {}
 
   ngOnInit() {
+    console.log(this.articleId);
+
     this.apiCalls.getSingleArticle(this.articleId).subscribe({
       next: (response) => {
-        this.article = response.article;
+        this.article = response;
+        console.log(this.article);
+        this.article.topics.forEach((topic: { name: string }) => {
+          this.parsedTopics.push(topic.name);
+        });
       },
       error: (err) => console.error(err),
       complete: () => {},

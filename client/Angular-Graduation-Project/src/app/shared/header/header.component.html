@@ -19,10 +19,11 @@
       <li>
         <a
           mat-button
-          [routerLink]="'/auth/profile/' + (userId$ | async)"
+          [routerLink]="['/auth/profile/', userId$ | async]"
           routerLinkActive="mat-accent"
-          >Profile</a
         >
+          Profile
+        </a>
       </li>
 
       <li>
