@@ -11,7 +11,10 @@ import { ApiCallsService } from 'src/app/core/services/api-calls.service';
 })
 export class ProfileComponent {
   articles: object[] = [];
-  articlesFetched = [];
+  articlesCreated = [];
+  articlesLiked = [];
+  authorSubscriptions = [];
+  topicSubscriptions = [];
   user: any;
   userId = '';
 
@@ -30,17 +33,20 @@ export class ProfileComponent {
       .pipe(
         tap((response) => {
           this.user = response.user;
-          this.articlesFetched = this.user.articlesCreated;
+          this.articlesCreated = this.user.articlesCreated;
         })
       )
       .subscribe({
         next: (response) => {
           this.user = response.user;
-          this.articlesFetched = this.user.articlesCreated;
+          this.articlesCreated = this.user.articlesCreated;
+          this.authorSubscriptions = this.user.subscribedTo;
+          this.articlesLiked = this.user.articlesLiked;
+          this.topicSubscriptions = this.user.topics;
         },
         error: (err) => console.error(err),
         complete: () => {
-          for (const article of this.articlesFetched) {
+          for (const article of this.articlesCreated) {
             this.apiCalls.getSingleArticle(article).subscribe({
               next: (response: any) => {
                 this.articles.push(response);

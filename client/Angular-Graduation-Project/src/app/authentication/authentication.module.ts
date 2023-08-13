@@ -12,6 +12,7 @@ import { SubscriptionCardComponent } from './profile/subscribed-users/subscripti
 import { UserCardComponent } from './profile/user-card/user-card.component';
 import { FeatureModule } from '../feature/feature.module';
 import { UsersComponent } from './users/users.component';
+import { RouterModule, Routes } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,13 @@ import { UsersComponent } from './users/users.component';
     UserCardComponent,
     UsersComponent,
   ],
-  imports: [CommonModule, MaterialModule, ReactiveFormsModule, FeatureModule],
+  imports: [
+    CommonModule,
+    MaterialModule,
+    ReactiveFormsModule,
+    FeatureModule,
+    RouterModule,
+  ],
   exports: [
     LoginComponent,
     RegisterComponent,

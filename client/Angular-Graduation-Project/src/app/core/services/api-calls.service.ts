@@ -52,6 +52,10 @@ export class ApiCallsService {
     const url = `http://localhost:3000/users/${id}`;
     return this.http.get(url);
   }
+  getSingleUserSimple(id: any): Observable<any> {
+    const url = `http://localhost:3000/users/${id}?action=simple`;
+    return this.http.get(url);
+  }
   getSelf(): Observable<any> {
     const url = `http://localhost:3000/users/current`;
     return this.http.get(url);
@@ -59,6 +63,11 @@ export class ApiCallsService {
   createArticle(formData: any): Observable<any> {
     const url = `http://localhost:3000/articles/create`;
     return this.http.post(url, formData);
+  }
+
+  subscribeToUser(subscribeeId: any): Observable<any> {
+    const url = `http://localhost:3000/users/${subscribeeId}/subscribe`;
+    return this.http.post(url, subscribeeId);
   }
 }
 

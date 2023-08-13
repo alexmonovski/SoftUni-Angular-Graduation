@@ -5,17 +5,36 @@ async function getAllUsers() {
 }
 
 async function getUserById(id) {
+  return await User.findById(id)
+    .populate("topics")
+    .populate("articlesCreated")
+    .populate("articlesLiked")
+    .populate("subscribedTo")
+    .populate("subscriptions")
+    .lean();
+}
+
+async function getUserByIdSimple(id) {
   return await User.findById(id).lean();
 }
 
 async function subscribeToUser(id, subscriberId) {
-  await User.findByIdAndUpdate(id, { $push: { subscriptions: subscriberId } });
-  await User.findByIdAndUpdate(subscriberId, { $push: { subscribedTo: id } });
-  return true;
+  const updatedSubscribee = await User.findByIdAndUpdate(
+    id,
+    { $push: { subscriptions: subscriberId } },
+    { new: true }
+  );
+  const updatedUser = await User.findByIdAndUpdate(
+    subscriberId,
+    { $push: { subscribedTo: id } },
+    { new: true } // Make sure to use the new option
+  );
+  return updatedUser;
 }
 
 module.exports = {
   getAllUsers,
   getUserById,
   subscribeToUser,
+  getUserByIdSimple,
 };
