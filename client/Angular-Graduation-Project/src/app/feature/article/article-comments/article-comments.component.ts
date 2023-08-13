@@ -28,20 +28,20 @@ export class ArticleCommentsComponent implements OnInit {
       content: new FormControl('', Validators.required),
     });
 
-    this.route.params.subscribe((params) => {
-      this.articleId = params['id'];
-    });
-    this.apiCalls.getSelf().subscribe({
-      next: (data) => {
-        this.author = data.user.username;
-      },
-      error: (err) => {
-        console.error(err);
-      },
-      complete: () => {
-        ('');
-      },
-    });
+    // this.route.params.subscribe((params) => {
+    //   this.articleId = params['id'];
+    // });
+    // this.apiCalls.getSelf().subscribe({
+    //   next: (data) => {
+    //     this.author = data.user.username;
+    //   },
+    //   error: (err) => {
+    //     console.error(err);
+    //   },
+    //   complete: () => {
+    //     ('');
+    //   },
+    // });
   }
 
   ngAfterViewInit() {}

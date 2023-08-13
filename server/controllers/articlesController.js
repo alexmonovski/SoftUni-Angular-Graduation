@@ -26,7 +26,6 @@ articlesController.get("/", async (req, res) => {
 articlesController.get("/:id", async (req, res) => {
   try {
     const article = await getArticleById(req.params.id);
-    console.log(article);
     if (!article) {
       res.status(404).json({ error: "Article not found" });
     } else {

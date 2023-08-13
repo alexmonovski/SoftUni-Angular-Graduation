@@ -37,6 +37,7 @@ async function validateInput(body, command) {
       throw new Error("Email or password do not match.");
     }
     const comparePass = await bcrypt.compare(body.password, user.password);
+    console.log(email, password);
     if (!comparePass) {
       throw new Error("Email or password do not match.");
     }
