@@ -3,6 +3,7 @@ const Comment = require("../models/Comment");
 const Topic = require("../models/Topic");
 const User = require("../models/User");
 const { validateInput } = require("../util/validateInput");
+const { createTopic } = require("./topicsServices");
 
 async function getAllArticles() {
   return Article.find().lean();
@@ -44,11 +45,27 @@ async function getArticlesByTopics(topicArray) {
 
 async function createArticle(body, userId) {
   await validateInput(body, "createArticle");
+  const existingTopics = await Topic.find({});
+  const topicsToCreate = [];
+  for (const topicName of body.topics) {
+    const existingTopic = existingTopics.find(
+      (topic) => topic.name === topicName
+    );
+    if (!existingTopic) {
+      topicsToCreate.push(topicName);
+    }
+  }
+  const createdTopics = [];
+  for (const topicName of topicsToCreate) {
+    const newTopic = await createTopic({ name: topicName });
+    createdTopics.push(newTopic);
+  }
   const newArticle = new Article({
     title: body.title,
     description: body.description,
     content: body.content,
     author: userId,
+    topics: createdTopics.map((topic) => topic._id), // Associate created topics with the article
   });
   await newArticle.save();
   await User.findByIdAndUpdate(userId, {

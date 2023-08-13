@@ -3,6 +3,10 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IArticle } from 'src/app/shared/interfaces/iarticle';
 import { ApiCallsService } from 'src/app/core/services/api-calls.service';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
+
+import { MatChipInputEvent } from '@angular/material/chips';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
   selector: 'app-article-create',
@@ -13,12 +17,15 @@ export class ArticleCreateComponent implements OnInit {
   createArticleFormGroup!: FormGroup;
   existingArticle: IArticle | null = null;
   formTitle = 'Create';
+  topicDocs = [];
+  topics: string[] = [];
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private apiCalls: ApiCallsService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private announcer: LiveAnnouncer
   ) {}
 
   ngOnInit(): void {
@@ -26,6 +33,7 @@ export class ArticleCreateComponent implements OnInit {
       title: ['', [Validators.required]],
       description: ['', [Validators.required]],
       content: ['', [Validators.required]],
+      topics: [[]],
     });
 
     const articleId = this.route.snapshot.params['id'];
@@ -63,5 +71,22 @@ export class ArticleCreateComponent implements OnInit {
         complete: () => '',
       });
     }
+  }
+
+  // topic functionality:
+  removeTopic(topic: string) {
+    const index = this.topics.indexOf(topic);
+    if (index >= 0) {
+      this.topics.splice(index, 1);
+      this.announcer.announce(`removed ${topic}`);
+    }
+  }
+
+  add(event: MatChipInputEvent): void {
+    const value = (event.value || '').trim();
+    if (value) {
+      this.topics.push(value);
+    }
+    event.chipInput!.clear();
   }
 }

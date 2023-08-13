@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 
 async function validateInput(body, command) {
   if (command == "createArticle" || command == "editArticle") {
+    console.log(body);
     let { title, description, content } = body;
     if (title == "" || description == "" || content == "") {
       throw new Error("All fields are required.");
