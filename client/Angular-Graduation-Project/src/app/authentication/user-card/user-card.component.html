@@ -9,7 +9,7 @@
         mat-button
         color="primary"
         (click)="subscribe(user._id)"
-        *ngIf="!userHasSubscribed && !isAuthor"
+        *ngIf="!userHasSubscribed && !isAuthor && auth"
       >
         Subscribe
       </button>

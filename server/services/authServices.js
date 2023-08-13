@@ -10,11 +10,7 @@ const bcrypt = require("bcrypt");
 async function registerUser(body) {
   const { name, email, description, topics, password } = body;
   await validateInput(body, "registerUser");
-
-  console.log(password);
   const hashedPassword = await bcrypt.hash(password, 10);
-
-  console.log(hashedPassword);
   const newUser = new User({
     name,
     email,
@@ -41,12 +37,13 @@ async function registerUser(body) {
 }
 
 async function loginUser(body) {
-  const user = validateInput(body, "loginUser");
+  const user = await validateInput(body, "loginUser");
   return createSession(user);
 }
 
 function createSession(user) {
   const userId = user._id.toString();
+
   const token = jwt.sign(userId, SECRET);
 
   const session = {

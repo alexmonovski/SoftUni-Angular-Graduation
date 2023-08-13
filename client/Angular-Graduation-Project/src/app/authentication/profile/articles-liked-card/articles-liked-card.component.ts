@@ -16,7 +16,6 @@ export class ArticlesLikedCardComponent {
     this.apiCalls.getSingleArticle(this.articleId).subscribe({
       next: (response) => {
         this.article = response.article;
-        console.log(this.article);
       },
       error: (err) => console.error(err),
       complete: () => {},

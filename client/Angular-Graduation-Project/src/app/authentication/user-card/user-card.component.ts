@@ -12,6 +12,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
 export class UserCardComponent {
   // няма нужда да го феча, той е тука.
   @Input() user: any;
+  auth = false;
 
   userHasSubscribed = false;
   isAuthor = false;
@@ -38,21 +39,22 @@ export class UserCardComponent {
   }
 
   ngOnInit() {
-    // вземаме от сториджа
+    // вземаме от сториджа;
     const currentUserId = this.authService.getUserId();
-
-    this.apiCalls.getSingleUserLean(currentUserId).subscribe({
-      next: (currentUser) => {
-        if (currentUser.user.subscribedTo.includes(this.user._id)) {
-          this.userHasSubscribed = true;
-        }
-        if (currentUserId == this.user._id) {
-          this.isAuthor = true;
-        }
-      },
-    });
+    if (currentUserId) {
+      this.auth = true;
+      this.apiCalls.getSingleUserLean(currentUserId).subscribe({
+        next: (currentUser) => {
+          if (currentUser.user.subscribedTo.includes(this.user._id)) {
+            this.userHasSubscribed = true;
+          }
+          if (currentUserId == this.user._id) {
+            this.isAuthor = true;
+          }
+        },
+      });
+    }
   }
-
   visitUserProfile(userId: any) {
     this.router.navigate(['/auth/profile', userId]);
   }
