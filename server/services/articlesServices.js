@@ -45,35 +45,54 @@ async function getArticlesByTopics(topicArray) {
 
 async function createArticle(body, userId) {
   await validateInput(body, "createArticle");
-  const existingTopics = await Topic.find({});
+  const existingTopics = await Topic.find();
   const topicsToCreate = [];
+  const createdTopics = [];
+
   for (const topicName of body.topics) {
+    console.log("topicName", topicName);
     const existingTopic = existingTopics.find(
       (topic) => topic.name === topicName
     );
     if (!existingTopic) {
       topicsToCreate.push(topicName);
+    } else {
+      createdTopics.push(existingTopic);
     }
   }
-  const createdTopics = [];
+
   for (const topicName of topicsToCreate) {
     const newTopic = await createTopic({ name: topicName });
     createdTopics.push(newTopic);
   }
+
+  const existingTopicsWithMatchingNames = existingTopics.filter((topic) =>
+    body.topics.includes(topic.name)
+  );
+
+  const allTopicIds = [
+    ...createdTopics.map((topic) => topic._id),
+    ...existingTopicsWithMatchingNames.map((topic) => topic._id),
+  ];
+
+  // Create a new array with unique topic IDs
+  const uniqueTopicIds = Array.from(new Set(allTopicIds));
+
   const newArticle = new Article({
     title: body.title,
     description: body.description,
     content: body.content,
     author: userId,
-    topics: createdTopics.map((topic) => topic._id), // Associate created topics with the article
+    topics: uniqueTopicIds,
   });
+
   await newArticle.save();
   await User.findByIdAndUpdate(userId, {
     $push: { articlesCreated: newArticle._id },
   });
+
   return newArticle;
 }
-
 async function editArticle(id, body) {
   await validateInput(body, "editArticle");
   const article = await Article.findById(id);

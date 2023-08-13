@@ -65,7 +65,7 @@ export class ArticleCreateComponent implements OnInit {
       this.apiCalls.createArticle(formData).subscribe({
         next: (response) => {
           const id = response._id;
-          this.router.navigate([`/articles/${id}`]);
+          // this.router.navigate([`/articles/${id}`]);
         },
         error: (err) => console.error(err),
         complete: () => '',
