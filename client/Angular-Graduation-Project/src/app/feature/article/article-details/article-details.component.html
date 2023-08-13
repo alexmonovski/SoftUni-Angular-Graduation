@@ -11,7 +11,7 @@
           Last edited on: {{ article.lastEdit | date }}
         </p>
         <p class="metadata-item">Likes: {{ article.usersLiked.length || 0 }}</p>
-        <p class="metadata-item">Topics: {{ article.topics.join(", ") }}</p>
+        <p class="metadata-item">Topics: {{ parsedTopics.join(", ") }}</p>
       </div>
       <p class="article-description">{{ article.description }}</p>
       <p class="article-content">{{ article.content }}</p>

@@ -1,14 +1,12 @@
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IArticle } from 'src/app/shared/interfaces/iarticle';
 import { ApiCallsService } from 'src/app/core/services/api-calls.service';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
 
 import { MatChipInputEvent } from '@angular/material/chips';
 import { AuthService } from 'src/app/core/services/auth.service';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 @Component({
   selector: 'app-article-create',
@@ -16,7 +14,7 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
   styleUrls: ['./article-create.component.css'],
 })
 export class ArticleCreateComponent implements OnInit {
-  formGroup!: FormGroup;
+  createArticleFormGroup!: FormGroup;
   existingArticle: IArticle | null = null;
   formTitle = 'Create';
   topicDocs = [];
@@ -31,20 +29,8 @@ export class ArticleCreateComponent implements OnInit {
     private announcer: LiveAnnouncer
   ) {}
 
-  separatorKeysCodes: number[] = [ENTER, COMMA];
-  @ViewChild('topicInput') topicInput!: ElementRef<HTMLInputElement>;
-
-  selected(event: MatAutocompleteSelectedEvent): void {
-    this.topics.push(event.option.viewValue);
-    this.topicInput.nativeElement.value = '';
-    const topicsControl = this.formGroup.get('topics');
-    if (topicsControl) {
-      topicsControl.setValue(null);
-    }
-  }
-
   ngOnInit(): void {
-    this.formGroup = this.formBuilder.group({
+    this.createArticleFormGroup = this.formBuilder.group({
       title: ['', [Validators.required]],
       description: ['', [Validators.required]],
       content: ['', [Validators.required]],
@@ -77,7 +63,7 @@ export class ArticleCreateComponent implements OnInit {
   }
 
   populateForm() {
-    this.formGroup.patchValue({
+    this.createArticleFormGroup.patchValue({
       title: this.existingArticle?.title || '',
       description: this.existingArticle?.description || '',
       content: this.existingArticle?.content || '',
@@ -85,8 +71,8 @@ export class ArticleCreateComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.formGroup.valid) {
-      const formData = this.formGroup.value;
+    if (this.createArticleFormGroup.valid) {
+      const formData = this.createArticleFormGroup.value;
       this.apiCalls.createArticle(formData).subscribe({
         next: (response) => {
           const id = response._id;

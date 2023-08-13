@@ -1,6 +1,6 @@
 <div class="createArticle">
   <h2>{{ formTitle }} Article Form</h2>
-  <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+  <form [formGroup]="createArticleFormGroup" (ngSubmit)="onSubmit()">
     <mat-form-field>
       <mat-label>Title</mat-label>
       <input matInput formControlName="title" placeholder="Title" />
@@ -47,16 +47,11 @@
       </mat-chip-grid>
       <input
         placeholder="New topic..."
-        #topicInput
         [matChipInputFor]="chipGrid"
         (matChipInputTokenEnd)="add($event)"
         [matAutocomplete]="auto"
-        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
       />
-      <mat-autocomplete
-        #auto="matAutocomplete"
-        (optionSelected)="selected($event)"
-      >
+      <mat-autocomplete #auto="matAutocomplete">
         <mat-option *ngFor="let option of options" [value]="option">
           {{ option }}
         </mat-option>

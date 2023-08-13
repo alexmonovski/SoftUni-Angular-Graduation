@@ -11,20 +11,6 @@ mat-form-field ::ng-deep .mat-form-field-flex {
   justify-content: center;
 }
 
-button {
-  width: 100%;
-  margin-top: 20px;
-  color: white;
-  border: none;
-  padding: 10px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #0056b3;
-}
-
 .createArticle {
   margin: auto;
   width: 40%;

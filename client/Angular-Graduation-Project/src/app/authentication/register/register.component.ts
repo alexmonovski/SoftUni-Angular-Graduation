@@ -1,6 +1,12 @@
 import { ITopic } from './../../shared/interfaces/itopic';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { Component, OnInit, inject } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+  inject,
+} from '@angular/core';
 import {
   FormGroup,
   AbstractControl,
@@ -14,6 +20,7 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { startWith, map } from 'rxjs/operators';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { Router } from '@angular/router';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
 
 //todo: add autofill on the topics; maybe try implementing each topic as a button chip; clean the code and get acquainted with it.
 
@@ -26,6 +33,8 @@ export class RegisterComponent implements OnInit {
   topicDocs = [];
   topics: string[] = [];
   options: any[] = [];
+  separatorKeysCodes: number[] = [ENTER, COMMA];
+  @ViewChild('topicInput') topicInput!: ElementRef<HTMLInputElement>;
 
   removeTopic(topic: string) {
     const index = this.topics.indexOf(topic);
@@ -41,6 +50,15 @@ export class RegisterComponent implements OnInit {
       this.topics.push(value);
     }
     event.chipInput!.clear();
+  }
+
+  selected(event: MatAutocompleteSelectedEvent): void {
+    this.topics.push(event.option.viewValue);
+    this.topicInput.nativeElement.value = '';
+    const topicsControl = this.formGroup.get('topics');
+    if (topicsControl) {
+      topicsControl.setValue(null);
+    }
   }
 
   formGroup!: FormGroup;

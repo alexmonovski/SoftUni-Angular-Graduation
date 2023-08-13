@@ -19,6 +19,7 @@ export class ArticleDetailsComponent {
   userId: any;
   isAuthor = false;
   hasLiked = false;
+  parsedTopics: any[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -48,13 +49,14 @@ export class ArticleDetailsComponent {
           this.hasLiked = this.article.usersLiked.some(
             (user: any) => user._id === this.userId
           );
+          this.article.topics.forEach((topic: any) => {
+            this.parsedTopics.push(topic.name);
+          });
         },
         error: (err) => {
           console.error(err);
         },
-        complete: () => {
-          ('');
-        },
+        complete: () => {},
       });
     });
   }

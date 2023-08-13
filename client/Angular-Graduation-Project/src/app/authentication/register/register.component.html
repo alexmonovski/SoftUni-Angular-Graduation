@@ -99,8 +99,13 @@
             [matChipInputFor]="chipGrid"
             (matChipInputTokenEnd)="add($event)"
             [matAutocomplete]="auto"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            #topicInput
           />
-          <mat-autocomplete #auto="matAutocomplete">
+          <mat-autocomplete
+            #auto="matAutocomplete"
+            (optionSelected)="selected($event)"
+          >
             <mat-option *ngFor="let option of options" [value]="option">
               {{ option }}
             </mat-option>

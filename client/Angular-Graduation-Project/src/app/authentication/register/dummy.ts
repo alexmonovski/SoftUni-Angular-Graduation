@@ -25,6 +25,7 @@ import { Router } from '@angular/router';
 export class RegisterComponent implements OnInit {
   topicDocs = [];
   topics: string[] = [];
+  options: any[] = [];
 
   removeTopic(topic: string) {
     const index = this.topics.indexOf(topic);
@@ -72,7 +73,7 @@ export class RegisterComponent implements OnInit {
     this.apiCalls.getAllTopics().subscribe({
       next: (data) => {
         for (const dataObj of data.topics) {
-          // this.topics.push(dataObj.title);
+          this.options.push(dataObj.name);
         }
       },
       error: (err) => console.error(err),

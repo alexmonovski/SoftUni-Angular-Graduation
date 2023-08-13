@@ -15,7 +15,6 @@ export class ApiCallsService {
 
   getSingleArticle(id: any): Observable<any> {
     const url = `http://localhost:3000/articles/${id}`;
-    console.log(url);
     return this.http.get(url);
   }
 
