@@ -1,28 +1,40 @@
-.article-container {
+.article-card {
+  margin: 16px;
+  border-radius: 8px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.article-card:hover {
+  transform: translateY(-4px);
+}
+
+.article-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.article-description {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 12px;
+}
+
+.article-details {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
 }
 
-.article-card {
-  max-width: 800px;
-  width: 100%;
-  margin: 20px;
+.article-author,
+.article-created,
+.article-likes {
+  font-size: 12px;
+  color: #888;
 }
 
-.article-avatar {
-  width: 40px;
-  height: 40px;
-  background-color: #ccc;
-  border-radius: 50%;
-}
-
-mat-card-title,
-mat-card-subtitle {
-  font-size: 18px;
-}
-
-mat-card-content {
-  font-size: 16px;
-  line-height: 1.6;
+.article-likes {
+  color: #f39c12;
 }

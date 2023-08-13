@@ -1,15 +1,23 @@
-<div class="article-detail" *ngIf="article">
-  <mat-card>
+<ng-container *ngIf="article">
+  <mat-card class="article-card">
     <mat-card-header>
-      <div mat-card-avatar class="article-avatar"></div>
       <mat-card-title>{{ article.title }}</mat-card-title>
-      <mat-card-subtitle
-        >Author: {{ article.author?.username }}</mat-card-subtitle
-      >
+      <mat-card-subtitle>By {{ article.author.name }}</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
-      {{ article.content }}
+      <div class="article-metadata">
+        <p class="metadata-item">Created on: {{ article.createdAt | date }}</p>
+        <p class="metadata-item">
+          Last edited on: {{ article.lastEdit | date }}
+        </p>
+        <p class="metadata-item">Likes: {{ article.usersLiked.length || 0 }}</p>
+        <p class="metadata-item">Topics: {{ article.topics.join(", ") }}</p>
+      </div>
+      <p class="article-description">{{ article.description }}</p>
+      <p class="article-content">{{ article.content }}</p>
     </mat-card-content>
+    <mat-card-actions *ngIf="!isAuthor">
+      <a mat-button (click)="onLike()">Like</a>
+    </mat-card-actions>
   </mat-card>
-  <app-article-comments [comments]="comments" [id]="id"></app-article-comments>
-</div>
+</ng-container>

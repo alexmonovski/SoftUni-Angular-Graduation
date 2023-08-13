@@ -73,13 +73,11 @@ export class RegisterComponent implements OnInit {
     this.apiCalls.getAllTopics().subscribe({
       next: (data) => {
         for (const dataObj of data.topics) {
-          console.log(this.options);
-
           this.options.push(dataObj.name);
         }
       },
       error: (err) => console.error(err),
-      complete: () => console.log(this.options),
+      complete: () => '',
     });
   }
 

@@ -15,6 +15,7 @@ export class ApiCallsService {
 
   getSingleArticle(id: any): Observable<any> {
     const url = `http://localhost:3000/articles/${id}`;
+    console.log(url);
     return this.http.get(url);
   }
 
@@ -32,6 +33,11 @@ export class ApiCallsService {
     const url = `http://localhost:3000/articles/${id}/comments/`;
     const requestBody = comment;
     return this.http.post<any>(url, requestBody);
+  }
+
+  likeArticle(id: any): Observable<any> {
+    const url = `http://localhost:3000/articles/${id}/like/`;
+    return this.http.get<any>(url);
   }
 
   postRegisterForm(formData: any) {

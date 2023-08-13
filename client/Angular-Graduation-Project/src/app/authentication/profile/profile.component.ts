@@ -30,9 +30,6 @@ export class ProfileComponent {
         this.user = response.user;
         this.userId = this.user._id;
         this.articlesCreated = this.user.articlesCreated;
-        // излиза, че масива е от 3 елемента. как става това?
-        console.log(this.user);
-
         this.subscribedTo = this.user.subscribedTo;
         this.articlesLiked = this.user.articlesLiked;
         this.topicSubscriptions = this.user.topics;

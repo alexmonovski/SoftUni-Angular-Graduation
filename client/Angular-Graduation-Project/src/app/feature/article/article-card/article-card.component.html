@@ -1,18 +1,15 @@
-<ng-container *ngIf="article">
-  <div class="article-container">
-    <mat-card class="article-card">
-      <mat-card-header>
-        <div mat-card-avatar class="article-avatar"></div>
-        <mat-card-title>{{ article?.title }}</mat-card-title>
-        <mat-card-subtitle
-          >Author Name {{ article?.author.name }} - Publication
-          Date</mat-card-subtitle
-        >
-      </mat-card-header>
-      <mat-card-content>
-        <!-- Your article content goes here -->
-        <p>{{ article?.content }}</p>
-      </mat-card-content>
-    </mat-card>
-  </div>
+<ng-container *ngIf="user && article">
+  <mat-card class="article-card" [routerLink]="['/articles', article._id]">
+    <mat-card-content>
+      <h2 class="article-title">{{ article.title }}</h2>
+      <p class="article-description">{{ article.description }}</p>
+      <div class="article-details">
+        <p class="article-author">Author: {{ user.name }}</p>
+        <p class="article-created">
+          Created on: {{ article.createdAt | date }}
+        </p>
+        <p class="article-likes">Likes: {{ article.likes || 0 }}</p>
+      </div>
+    </mat-card-content>
+  </mat-card>
 </ng-container>

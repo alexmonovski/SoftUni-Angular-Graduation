@@ -58,7 +58,7 @@ export class ArticleCreateComponent implements OnInit {
         }
       },
       error: (err) => console.error(err),
-      complete: () => console.log(this.options),
+      complete: () => '',
     });
   }
 

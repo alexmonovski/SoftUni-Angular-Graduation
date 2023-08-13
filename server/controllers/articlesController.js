@@ -26,6 +26,7 @@ articlesController.get("/", async (req, res) => {
 articlesController.get("/:id", async (req, res) => {
   try {
     const article = await getArticleById(req.params.id);
+
     if (!article) {
       res.status(404).json({ error: "Article not found" });
     } else {
@@ -44,6 +45,17 @@ articlesController.post("/:id/comments", async (req, res) => {
     const commentBody = req.body;
     const article = await commentArticle(articleId, commentBody, userId);
     res.status(201).json({ message: "Comment added successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+articlesController.get("/:id/like", async (req, res) => {
+  try {
+    const userId = await getUserIdFromToken(req.headers.authorization);
+    const articleId = req.params.id;
+    const article = await likeArticle(articleId, userId);
+    res.status(201).json({ message: "Like added successfully" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal server error" });
