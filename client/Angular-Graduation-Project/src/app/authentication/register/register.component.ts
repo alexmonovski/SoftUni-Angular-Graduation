@@ -101,7 +101,6 @@ export class RegisterComponent implements OnInit {
       });
     } else {
       console.error('Form has errors.');
-      console.log(this.formGroup.valid);
     }
   }
 

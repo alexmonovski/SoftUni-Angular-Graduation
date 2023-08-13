@@ -9,7 +9,5 @@ import { IArticle } from 'src/app/shared/interfaces/iarticle';
 export class ArticleCardComponent {
   @Input() article: any;
 
-  ngOnInit() {
-    console.log(this.article);
-  }
+  ngOnInit() {}
 }

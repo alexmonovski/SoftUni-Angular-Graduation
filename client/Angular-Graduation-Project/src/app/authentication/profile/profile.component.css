@@ -1,40 +1,16 @@
 .user-profile {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin: 20px;
+  height: 100vh; /* Take full viewport height */
 }
 
-.user-info {
-  flex: 1;
-  text-align: center;
-}
-
-.user-expansions {
-  flex: 1;
-  margin-left: 20px;
+.flex-container {
   display: flex;
-  flex-direction: column;
-  gap: 20px;
+  flex-direction: column; /* Stack flex items vertically */
+  flex: 1; /* Take full vertical space */
 }
 
-mat-expansion-panel {
-  width: 100%;
-}
-
-mat-expansion-panel-header {
-  display: flex;
-  align-items: center;
-}
-
-mat-panel-title {
-  flex-grow: 1;
-}
-
-/* Additional styles for specific content inside expansion panels */
-app-article-card,
-app-liked-articles,
-app-user-card {
-  margin-top: 20px;
+.first-flex,
+.second-flex {
+  flex-grow: 1; /* Take full vertical space within the container */
+  padding: 10px; /* Adjust as needed */
 }

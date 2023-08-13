@@ -27,8 +27,8 @@ export class UserCardComponent {
   // на бекенда ще върнеш самия юзър с новите му събове и ще си провериш динамично.
   subscribe(subscribeeId: any) {
     this.apiCalls.subscribeToUser(subscribeeId).subscribe({
-      next: (updatedUser) => {
-        if (updatedUser.subscribedTo.includes(this.user._id)) {
+      next: (response) => {
+        if (response.updatedUser.subscribedTo.includes(this.user._id)) {
           this.userHasSubscribed = true;
         }
       },

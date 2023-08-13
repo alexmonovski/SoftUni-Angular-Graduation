@@ -21,7 +21,7 @@ usersController.get("/", async (req, res) => {
 // get single user
 usersController.get("/:id", async (req, res) => {
   try {
-    const userId = await getUserIdFromToken(req.headers.authorization);
+    const userId = req.params.id;
     if (req.query.action == "simple") {
       const user = await getUserByIdSimple(userId);
       res.status(200).json({ message: "User retrieved successfully", user });
@@ -48,12 +48,13 @@ usersController.get("/current", async (req, res) => {
 
 usersController.post("/:id/subscribe", async (req, res) => {
   try {
-    const userId = getUserIdFromToken(req.headers.authorization);
+    const userId = await getUserIdFromToken(req.headers.authorization);
     const subscription = await subscribeToUser(req.params.id, userId);
     if (subscription) {
-      return res
-        .status(200)
-        .json({ message: "Subscribed successfully", updatedUser: subs });
+      return res.status(200).json({
+        message: "Subscribed successfully",
+        updatedUser: subscription,
+      });
     } else {
       return res.status(500).json({ error: "Subscription failed" });
     }

@@ -9,10 +9,12 @@ import { LikeCardComponent } from './profile/liked-articles/like-card/like-card.
 import { LikedArticlesComponent } from './profile/liked-articles/liked-articles.component';
 import { SubscribedUsersComponent } from './profile/subscribed-users/subscribed-users.component';
 import { SubscriptionCardComponent } from './profile/subscribed-users/subscription-card/subscription-card.component';
-import { UserCardComponent } from './profile/user-card/user-card.component';
+import { UserCardComponent } from './user-card/user-card.component';
 import { FeatureModule } from '../feature/feature.module';
 import { UsersComponent } from './users/users.component';
 import { RouterModule, Routes } from '@angular/router';
+import { CreatedArticlesComponent } from './profile/created-articles/created-articles.component';
+import { ProfileUserCardComponent } from './profile/user-card/profile-user-card.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +27,8 @@ import { RouterModule, Routes } from '@angular/router';
     SubscriptionCardComponent,
     UserCardComponent,
     UsersComponent,
+    CreatedArticlesComponent,
+    ProfileUserCardComponent,
   ],
   imports: [
     CommonModule,
