@@ -1,32 +1,30 @@
 .user-profile {
   display: flex;
-  height: 100vh; /* Take full viewport height */
+  height: 100vh;
 }
 
 .flex-container {
   display: flex;
-  flex-direction: column; /* Stack flex items vertically */
-  flex: 1; /* Take full vertical space */
+  flex-direction: column;
+  flex: 1;
 }
 
 .first-flex,
 .second-flex {
-  flex-grow: 1; /* Take full vertical space within the container */
-  padding: 10px; /* Adjust as needed */
+  flex-grow: 1;
+  padding: 10px;
 }
 
 ::ng-deep .subscribed-topic-card {
-  font-size: 0.9rem; /* Adjust the font size as needed */
-  /* Add any other styles you want */
+  font-size: 0.9rem;
 }
 
 ::ng-deep .mat-card-title {
-  font-size: 0.9rem; /* Adjust the font size for the title */
-  /* Add any other styles you want */
+  font-size: 0.9rem;
 }
 
 mat-card {
-  font-size: 0.9rem; /* Adjust the font size as needed */
-  width: 100%; /* Adjust the width as needed */
-  margin-bottom: 10px; /* Add margin between cards */
+  font-size: 0.9rem;
+  width: 100%;
+  margin-bottom: 10px;
 }
