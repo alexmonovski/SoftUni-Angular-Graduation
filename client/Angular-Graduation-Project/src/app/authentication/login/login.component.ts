@@ -30,28 +30,33 @@ export class LoginComponent {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   // знам, че е по-подредено отделен валидатор, но това е още 1 api call;
   onSubmit() {
-    const formData = this.loginFormGroup.value;
-    this.apiCalls.postLoginForm(formData).subscribe({
-      next: (response) => {
-        const tokens = Object.values(response);
-        this.authService.setTokens(tokens[1]);
-        this.router.navigate(['/']);
-      },
-      error: (err) => {
-        if (err.status === 401) {
-          this.loginFormGroup!.get('email')!.setErrors({
-            userNotFound: true,
-          });
-          this.loginFormGroup!.get('password')!.setErrors({
-            userNotFound: true,
-          });
-        }
-      },
-      complete: () => '',
-    });
+    if (this.loginFormGroup.valid) {
+      const formData = this.loginFormGroup.value;
+      this.apiCalls.postLoginForm(formData).subscribe({
+        next: (response) => {
+          const tokens = Object.values(response);
+          this.authService.setTokens(tokens[1]);
+          this.router.navigate(['/']);
+        },
+        error: (err) => {
+          if (err.status === 401) {
+            this.loginFormGroup!.get('email')!.setErrors({
+              userNotFound: true,
+            });
+            this.loginFormGroup!.get('password')!.setErrors({
+              userNotFound: true,
+            });
+          }
+        },
+        complete: () => '',
+      });
+    } else {
+      console.error('Form has errors.');
+
+    }
   }
 }

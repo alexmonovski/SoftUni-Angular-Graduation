@@ -6,16 +6,29 @@
         <input matInput formControlName="name" />
         <mat-error
           *ngIf="
-            registerFormGroup.get('personalDetailsGroup')?.get('name')?.invalid
+            registerFormGroup
+              .get('personalDetailsGroup')
+              ?.get('name')
+              ?.hasError('required')
           "
         >
           Full name is required.
+        </mat-error>
+        <mat-error
+          *ngIf="
+            registerFormGroup
+              .get('personalDetailsGroup')
+              ?.get('name')
+              ?.hasError('usernameOrEmailTaken')
+          "
+        >
+          Name or email already taken.
         </mat-error>
       </mat-form-field>
 
       <mat-form-field>
         <mat-label>Email</mat-label>
-        <input matInput formControlName="email" required />
+        <input matInput formControlName="email" />
         <mat-error
           *ngIf="
             registerFormGroup
@@ -34,13 +47,24 @@
               ?.hasError('email')
           "
         >
-          Invalid email format.
+          Please enter a valid email.
+        </mat-error>
+
+        <mat-error
+          *ngIf="
+            registerFormGroup
+              .get('personalDetailsGroup')
+              ?.get('email')
+              ?.hasError('usernameOrEmailTaken')
+          "
+        >
+          Name or email already taken.
         </mat-error>
       </mat-form-field>
 
       <mat-form-field>
         <mat-label>Description</mat-label>
-        <input matInput formControlName="description" required />
+        <input matInput formControlName="description" />
         <mat-error
           *ngIf="
             registerFormGroup

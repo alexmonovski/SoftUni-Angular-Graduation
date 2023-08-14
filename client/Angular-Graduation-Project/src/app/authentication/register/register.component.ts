@@ -3,6 +3,7 @@ import {
   FormBuilder,
   Validators,
   FormGroup,
+  FormControl,
 } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
@@ -18,18 +19,18 @@ import { passwordMatchValidator } from '../services/password-match-validator.ser
   styleUrls: ['./register.component.css'],
 })
 export class RegisterComponent implements OnInit {
-  // the selected topics the user has chosen; used to populate the chip grid;
+  // the topics array we fetch from outside
   topics: string[] = [];
-  // autocomplete options; prefetched topics;
+  // the options autocomplete
   options: string[] = [];
-  // keys defining what will trigger a topic submit;
+  // the keys that trigger chip submit
   separatorKeysCodes: number[] = [ENTER, COMMA];
 
   @ViewChild('topicInput') topicInput!: ElementRef<HTMLInputElement>;
 
-  // initialise the form
   registerFormGroup: FormGroup;
 
+  // init the form
   constructor(
     private formBuilder: FormBuilder,
     private apiCalls: ApiCallsService,
@@ -62,15 +63,14 @@ export class RegisterComponent implements OnInit {
     );
   }
 
-  // chips handle: 
-  // remove topic from chip list
+  // remove chip
   removeTopic(topic: string): void {
     const index = this.topics.indexOf(topic);
     if (index >= 0) {
       this.topics.splice(index, 1);
     }
   }
-  // add topic to chip list
+  // add chip
   add(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
     if (value) {
@@ -78,12 +78,12 @@ export class RegisterComponent implements OnInit {
     }
     event.chipInput!.clear();
   }
-  // select from the autocomplete and add chip
+  // add chip via autocomplete select
   selected(event: MatAutocompleteSelectedEvent): void {
     this.topics.push(event.option.viewValue);
     // nullify the autocomplete
     this.topicInput.nativeElement.value = '';
-    // nullify the chip input el
+    // nullify the topics input 
     this.registerFormGroup.get('topics')?.setValue(null);
   }
 
@@ -97,23 +97,37 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit(): void {
-    const { name, email, description } = this.registerFormGroup.value.personalDetailsGroup;
-    const { password } = this.registerFormGroup.value.passwordGroup;
-    const topics = this.registerFormGroup.value.topicsGroup.topics.slice();
-    const sendData = {
-      name,
-      email,
-      description,
-      password,
-      topics,
-    };
-    this.apiCalls.postRegisterForm(sendData).subscribe({
-      next: (response) => {
-        const tokens = Object.values(response);
-        this.authService.setTokens(tokens[1]);
-        this.router.navigate(['/']);
-      },
-      error: (err) => console.error(err),
-    });
+    if (this.registerFormGroup.valid) {
+      const { name, email, description } = this.registerFormGroup.value.personalDetailsGroup;
+      const { password } = this.registerFormGroup.value.passwordGroup;
+      const topics = this.registerFormGroup.value.topicsGroup.topics.slice();
+      const sendData = {
+        name,
+        email,
+        description,
+        password,
+        topics,
+      };
+      this.apiCalls.postRegisterForm(sendData).subscribe({
+        next: (response) => {
+          const tokens = Object.values(response);
+          this.authService.setTokens(tokens[1]);
+          this.router.navigate(['/']);
+        },
+        error: (err) => {
+          console.error(err)
+          if (err.status === 409) {
+            this.registerFormGroup.get('personalDetailsGroup.email')?.setErrors({
+              usernameOrEmailTaken: true,
+            })
+            this.registerFormGroup.get('personalDetailsGroup.name')?.setErrors({
+              usernameOrEmailTaken: true
+            })
+          }
+        },
+      });
+    } else {
+      console.error('Form has errors.');
+    }
   }
 }
