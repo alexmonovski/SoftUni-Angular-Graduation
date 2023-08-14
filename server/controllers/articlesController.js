@@ -6,6 +6,7 @@ const {
   editArticle,
   deleteArticle,
   commentArticle,
+  getAllUniqueArticles,
 } = require("../services/articlesServices");
 const { getUserIdFromToken } = require("../util/validateToken");
 const articlesController = require("express").Router();
@@ -18,6 +19,16 @@ articlesController.get("/", async (req, res) => {
   } catch (err) {
     console.error(err);
     // not a good practice to expose server errors to the client;
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+articlesController.get("/topics", async (req, res) => {
+  try {
+    const userId = await getUserIdFromToken(req.headers.authorization);
+    const articles = await getAllUniqueArticles(userId);
+    res.status(200).json(articles);
+  } catch (err) {
+    console.error(err);
     res.status(500).json({ error: "Internal server error" });
   }
 });

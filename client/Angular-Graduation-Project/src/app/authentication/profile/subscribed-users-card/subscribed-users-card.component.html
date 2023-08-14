@@ -9,7 +9,7 @@
       <p>{{ user.description }}</p>
     </mat-card-content>
     <mat-card-actions>
-      <a mat-button [routerLink]="['/users', user._id]">View Profile</a>
+      <a mat-button [routerLink]="['/auth/profile', user._id]">View Profile</a>
     </mat-card-actions>
   </mat-card>
 </ng-container>

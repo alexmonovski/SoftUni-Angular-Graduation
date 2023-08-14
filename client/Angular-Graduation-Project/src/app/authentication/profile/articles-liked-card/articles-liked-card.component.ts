@@ -14,12 +14,9 @@ export class ArticlesLikedCardComponent {
   constructor(private apiCalls: ApiCallsService) {}
 
   ngOnInit() {
-    console.log(this.articleId);
-
     this.apiCalls.getSingleArticle(this.articleId).subscribe({
       next: (response) => {
         this.article = response;
-        console.log(this.article);
         this.article.topics.forEach((topic: { name: string }) => {
           this.parsedTopics.push(topic.name);
         });

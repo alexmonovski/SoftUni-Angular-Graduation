@@ -18,16 +18,18 @@
           </ng-container>
         </mat-expansion-panel>
 
-        <mat-expansion-panel>
-          <mat-expansion-panel-header>
-            <mat-panel-title>Users Subscribed To</mat-panel-title>
-          </mat-expansion-panel-header>
-          <ng-container *ngFor="let userId of subscribedTo">
-            <app-subscribed-users-card
-              [userId]="userId"
-            ></app-subscribed-users-card>
-          </ng-container>
-        </mat-expansion-panel>
+        <ng-container *ngIf="isOwner">
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>Users Subscribed To</mat-panel-title>
+            </mat-expansion-panel-header>
+            <ng-container *ngFor="let userId of subscribedTo">
+              <app-subscribed-users-card
+                [userId]="userId"
+              ></app-subscribed-users-card>
+            </ng-container>
+          </mat-expansion-panel>
+        </ng-container>
 
         <mat-expansion-panel>
           <mat-expansion-panel-header>

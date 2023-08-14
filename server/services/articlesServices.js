@@ -3,10 +3,33 @@ const Comment = require("../models/Comment");
 const Topic = require("../models/Topic");
 const User = require("../models/User");
 const { validateInput } = require("../util/validateInput");
-const { createTopic } = require("./topicsServices");
+const {
+  createTopic,
+  getTopicsByArticle,
+  associateTopicWithArticle,
+  associateTopicsWithArticle,
+} = require("./topicsServices");
 
 async function getAllArticles() {
   return Article.find().lean();
+}
+
+async function getArticlesByTopics(userId) {
+  const user = await User.findById(userId).populate("topics");
+
+  // async function getTopicsByArticle(articleId) {
+  //   const articleDocument = await Article.findById(articleId).populate("topics");
+  //   return articleDocument.topics;
+  // }
+
+  const topicArticleMap = {};
+  for (const topic of user.topics) {
+    const articlesForTopic = await Article.find({ topics: topic._id }).select(
+      "_id"
+    );
+    const articleIds = articlesForTopic.map((article) => article._id);
+    topicArticleMap[topic.name] = articleIds;
+  }
 }
 
 async function getArticleById(id) {
@@ -31,17 +54,36 @@ async function getArticlesByAuthor(authorId) {
   return Article.find({ author: authorId });
 }
 
+async function getArticlesByTopics(userId) {
+  const user = await User.findById(userId).populate("topics");
+  const topicArticleMap = {};
+  for (const topic of user.topics) {
+    const topicWithArticles = await Topic.findById(topic._id).populate(
+      "articles"
+    );
+    if (topicWithArticles) {
+      topicArticleMap[topic.name] = topicWithArticles.articles;
+    }
+  }
+  return topicArticleMap;
+}
+
+async function getAllUniqueArticles(userId) {
+  const topicArticleMap = await getArticlesByTopics(userId);
+  const allArticles = Object.values(topicArticleMap)
+    .reduce((accumulator, articleArray) => {
+      return accumulator.concat(articleArray);
+    }, [])
+    .filter((article, index, self) => {
+      return self.findIndex((a) => a._id.equals(article._id)) === index;
+    });
+
+  return allArticles;
+}
+
 async function getArticlesByTopic(topicId) {
   const topicDocument = await Topic.findById(topicId).populate("articles");
   return topicDocument.articles;
-}
-
-async function getArticlesByTopics(topicArray) {
-  const articlesByTopics = {};
-  for (const topic of topicArray) {
-    articlesByTopics[topic] = await getArticlesByTopic(topic);
-  }
-  return articlesByTopics;
 }
 
 async function createArticle(body, userId) {
@@ -51,7 +93,6 @@ async function createArticle(body, userId) {
   const createdTopics = [];
 
   for (const topicName of body.topics) {
-    console.log("topicName", topicName);
     const existingTopic = existingTopics.find(
       (topic) => topic.name === topicName
     );
@@ -91,7 +132,7 @@ async function createArticle(body, userId) {
   await User.findByIdAndUpdate(userId, {
     $push: { articlesCreated: newArticle._id },
   });
-
+  await associateTopicsWithArticle(newArticle, uniqueTopicIds);
   return newArticle;
 }
 async function editArticle(id, body) {
@@ -128,6 +169,7 @@ module.exports = {
   getArticlesByDate,
   getArticlesByAuthor,
   getArticlesByTopics,
+  getAllUniqueArticles,
   createArticle,
   editArticle,
   likeArticle,

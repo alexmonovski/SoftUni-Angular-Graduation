@@ -19,10 +19,21 @@ async function createTopic(body) {
   const newTopic = await Topic.create(body);
   return newTopic;
 }
+
+async function associateTopicsWithArticle(articleId, topicsIds) {
+  for (const topicId of topicsIds) {
+    const topic = await Topic.findById(topicId);
+    topic.articles.push(articleId);
+    await topic.save();
+  }
+  return true;
+}
+
 module.exports = {
   getSingleTopic,
   getAllTopics,
   createTopic,
   getTopicsByArticle,
   createTopic,
+  associateTopicsWithArticle,
 };

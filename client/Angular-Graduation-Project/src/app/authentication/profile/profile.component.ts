@@ -1,41 +1,54 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { switchMap } from 'rxjs';
 import { ApiCallsService } from 'src/app/core/services/api-calls.service';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css'],
 })
-export class ProfileComponent {
+export class ProfileComponent implements OnInit {
   articlesCreated = [];
   subscribedTo = [];
   topicSubscriptions = [];
   articlesLiked = [];
-  userId: any;
+  ownerId: any;
   user: any;
+  userId: any;
+  isOwner: any;
 
   constructor(
     private apiCalls: ApiCallsService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
-    this.route.params.subscribe((params) => {
-      this.userId = params['id'];
-    });
-
-    this.apiCalls.getSingleUserLean(this.userId).subscribe({
-      next: (response) => {
-        this.user = response.user;
-        this.userId = this.user._id;
-        this.articlesCreated = this.user.articlesCreated;
-        this.subscribedTo = this.user.subscribedTo;
-        this.articlesLiked = this.user.articlesLiked;
-        this.topicSubscriptions = this.user.topics;
-      },
-      error: (err) => console.error(err),
-      complete: () => {},
-    });
+    this.route.paramMap
+      .pipe(
+        switchMap((params) => {
+          this.ownerId = params.get('id');
+          return this.apiCalls.getSingleUserLean(this.ownerId);
+        }),
+        switchMap((response) => {
+          this.user = response.user;
+          this.ownerId = this.user._id;
+          this.articlesCreated = this.user.articlesCreated;
+          this.subscribedTo = this.user.subscribedTo;
+          this.articlesLiked = this.user.articlesLiked;
+          this.topicSubscriptions = this.user.topics;
+          return this.authService.userIdToken$;
+        })
+      )
+      .subscribe({
+        next: (userId) => {
+          this.userId = userId;
+          this.isOwner = this.userId === this.ownerId;
+        },
+        error: (err) => console.error(err),
+        complete: () => {},
+      });
   }
 }

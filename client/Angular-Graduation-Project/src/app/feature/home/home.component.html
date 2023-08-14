@@ -1,3 +1,12 @@
+<select
+  [(ngModel)]="selectedFilter"
+  (ngModelChange)="toggleFilter()"
+  *ngIf="userId"
+>
+  <option value="all">Show All Articles</option>
+  <option value="topics">Filter by Topics</option>
+</select>
+
 <ng-container *ngIf="articles && articles.length > 0; else noArticles">
   <ng-container *ngFor="let article of articles">
     <app-article-card [articleId]="article._id"></app-article-card>

@@ -38,7 +38,6 @@ export class ArticleDetailsComponent {
           this.hasLiked = this.article.usersLiked.some(
             (user: any) => user._id === this.userId
           );
-          console.log(this.hasLiked);
         },
         error: (err) => {
           console.error(err);
@@ -66,7 +65,7 @@ export class ArticleDetailsComponent {
           console.error(err);
         },
         complete: () => {
-          console.log(this.hasLiked);
+          ('');
         },
       });
     });

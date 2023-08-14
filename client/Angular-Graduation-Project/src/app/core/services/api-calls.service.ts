@@ -27,6 +27,10 @@ export class ApiCallsService {
     const url = `http://localhost:3000/articles/${id}?action=populated`;
     return this.http.get(url);
   }
+  getArticlesByTopics(): Observable<any> {
+    const url = `http://localhost:3000/articles/topics`;
+    return this.http.get(url);
+  }
 
   addComment(comment: any, id: any): Observable<any> {
     const url = `http://localhost:3000/articles/${id}/comments/`;

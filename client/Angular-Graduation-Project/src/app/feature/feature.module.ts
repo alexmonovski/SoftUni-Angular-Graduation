@@ -10,7 +10,7 @@ import { ArticleCardComponent } from './article/article-card/article-card.compon
 import { CoreModule } from '../core/core.module';
 import { AppRoutingModule } from '../app-routing.module';
 import { ArticleCreateComponent } from './article/article-create/article-create.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CKEditorModule } from 'ckeditor4-angular';
 import { JoditAngularModule } from 'jodit-angular';
 import { ArticleCommentComponent } from './article/article-comment/article-comment.component';
@@ -35,6 +35,7 @@ import { TopicCardComponent } from './topic-card/topic-card.component';
     ReactiveFormsModule,
     CKEditorModule,
     JoditAngularModule,
+    FormsModule,
   ],
   exports: [
     ArticleDetailsComponent,
