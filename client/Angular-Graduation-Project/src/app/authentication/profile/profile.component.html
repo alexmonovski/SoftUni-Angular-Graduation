@@ -29,29 +29,30 @@
               ></app-subscribed-users-card>
             </ng-container>
           </mat-expansion-panel>
+
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>Topics Subscribed To</mat-panel-title>
+            </mat-expansion-panel-header>
+            <ng-container *ngFor="let topicId of topicSubscriptions">
+              <app-topics-subscribed-card
+                [topicId]="topicId"
+              ></app-topics-subscribed-card>
+            </ng-container>
+          </mat-expansion-panel>
+
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>Liked Articles</mat-panel-title>
+            </mat-expansion-panel-header>
+            <ng-container *ngFor="let articleId of articlesLiked">
+              <app-articles-liked-card
+                [articleId]="articleId"
+              ></app-articles-liked-card>
+            </ng-container>
+          </mat-expansion-panel>
         </ng-container>
 
-        <mat-expansion-panel>
-          <mat-expansion-panel-header>
-            <mat-panel-title>Topics Subscribed To</mat-panel-title>
-          </mat-expansion-panel-header>
-          <ng-container *ngFor="let topicId of topicSubscriptions">
-            <app-topics-subscribed-card
-              [topicId]="topicId"
-            ></app-topics-subscribed-card>
-          </ng-container>
-        </mat-expansion-panel>
-
-        <mat-expansion-panel>
-          <mat-expansion-panel-header>
-            <mat-panel-title>Liked Articles</mat-panel-title>
-          </mat-expansion-panel-header>
-          <ng-container *ngFor="let articleId of articlesLiked">
-            <app-articles-liked-card
-              [articleId]="articleId"
-            ></app-articles-liked-card>
-          </ng-container>
-        </mat-expansion-panel>
         <!--  -->
       </div>
     </div>
