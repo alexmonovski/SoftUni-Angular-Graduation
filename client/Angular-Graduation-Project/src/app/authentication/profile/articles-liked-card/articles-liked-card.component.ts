@@ -1,3 +1,4 @@
+import { Subscription } from 'rxjs';
 import { Component, Input } from '@angular/core';
 import { ApiCallsService } from 'src/app/core/services/api-calls.service';
 
@@ -11,10 +12,11 @@ export class ArticlesLikedCardComponent {
   article: any;
   parsedTopics: any[] = [];
 
-  constructor(private apiCalls: ApiCallsService) {}
+  constructor(private apiCalls: ApiCallsService) { }
+  subscription: Subscription = new Subscription()
 
   ngOnInit() {
-    this.apiCalls.getSingleArticle(this.articleId).subscribe({
+    this.subscription = this.apiCalls.getSingleArticle(this.articleId).subscribe({
       next: (response) => {
         this.article = response;
         this.article.topics.forEach((topic: { name: string }) => {
@@ -22,7 +24,13 @@ export class ArticlesLikedCardComponent {
         });
       },
       error: (err) => console.error(err),
-      complete: () => {},
+      complete: () => { },
     });
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe()
+    }
   }
 }

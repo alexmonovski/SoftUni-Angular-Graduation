@@ -1,3 +1,4 @@
+import { Subscription } from 'rxjs';
 import { Component, Input } from '@angular/core';
 import { ApiCallsService } from 'src/app/core/services/api-calls.service';
 
@@ -10,15 +11,23 @@ export class SubscribedUsersCardComponent {
   @Input() userId: any;
   user: any;
 
-  constructor(private apiCalls: ApiCallsService) {}
+  constructor(private apiCalls: ApiCallsService) { }
+  subscription: Subscription = new Subscription()
 
   ngOnInit() {
-    this.apiCalls.getSingleUser(this.userId).subscribe({
+    this.subscription = this.apiCalls.getSingleUser(this.userId).subscribe({
       next: (response) => {
         this.user = response.user;
       },
       error: (err) => console.error(err),
-      complete: () => {},
+      complete: () => { },
     });
   }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe()
+    }
+  }
+
 }

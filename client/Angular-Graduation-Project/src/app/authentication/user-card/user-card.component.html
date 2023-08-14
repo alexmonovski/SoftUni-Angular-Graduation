@@ -8,8 +8,8 @@
       <button
         mat-button
         color="primary"
-        (click)="subscribe(user._id)"
-        *ngIf="!userHasSubscribed && !isAuthor && auth"
+        (click)="subscribeToUser(user._id)"
+        *ngIf="!userHasSubscribed && !isAuthor && isAuth"
       >
         Subscribe
       </button>

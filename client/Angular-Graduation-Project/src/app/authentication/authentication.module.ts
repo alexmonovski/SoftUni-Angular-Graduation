@@ -9,7 +9,7 @@ import { UserCardComponent } from './user-card/user-card.component';
 import { FeatureModule } from '../feature/feature.module';
 import { UsersComponent } from './users/users.component';
 import { RouterModule } from '@angular/router';
-import { ProfileUserCardComponent } from './profile/user-card/profile-user-card.component';
+import { ProfileUserCardComponent } from './profile/profile-user-card/profile-user-card.component';
 import { CreatedArticlesCardComponent } from './profile/created-articles-card/created-articles-card.component';
 import { TopicsSubscribedCardComponent } from './profile/topics-subscribed-card/topics-subscribed-card.component';
 import { ArticlesLikedCardComponent } from './profile/articles-liked-card/articles-liked-card.component';
@@ -38,4 +38,4 @@ import { SubscribedUsersCardComponent } from './profile/subscribed-users-card/su
   ],
   exports: [LoginComponent, RegisterComponent, ProfileComponent],
 })
-export class AuthenticationModule {}
+export class AuthenticationModule { }
