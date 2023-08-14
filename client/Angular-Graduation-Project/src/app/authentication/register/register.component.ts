@@ -1,28 +1,16 @@
-import { ITopic } from './../../shared/interfaces/itopic';
-import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import {
-  Component,
-  ElementRef,
-  OnInit,
-  ViewChild,
-  inject,
-} from '@angular/core';
-import {
-  FormGroup,
-  AbstractControl,
   FormBuilder,
   Validators,
+  FormGroup,
 } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
-import { passwordMatchValidator } from '../services/password-match-validator.service';
-import { ApiCallsService } from 'src/app/core/services/api-calls.service';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { startWith, map } from 'rxjs/operators';
+import { ApiCallsService } from 'src/app/core/services/api-calls.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { Router } from '@angular/router';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
-
-//todo: add autofill on the topics; maybe try implementing each topic as a button chip; clean the code and get acquainted with it.
+import { passwordMatchValidator } from '../services/password-match-validator.service';
 
 @Component({
   selector: 'app-register',
@@ -30,50 +18,32 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
   styleUrls: ['./register.component.css'],
 })
 export class RegisterComponent implements OnInit {
-  topicDocs = [];
+  // the selected topics the user has chosen; used to populate the chip grid;
   topics: string[] = [];
-  options: any[] = [];
+  // autocomplete options; prefetched topics;
+  options: string[] = [];
+  // keys defining what will trigger a topic submit;
   separatorKeysCodes: number[] = [ENTER, COMMA];
+
   @ViewChild('topicInput') topicInput!: ElementRef<HTMLInputElement>;
 
-  removeTopic(topic: string) {
-    const index = this.topics.indexOf(topic);
-    if (index >= 0) {
-      this.topics.splice(index, 1);
-      this.announcer.announce(`removed ${topic}`);
-    }
-  }
+  // initialise the form
+  registerFormGroup: FormGroup;
 
-  add(event: MatChipInputEvent): void {
-    const value = (event.value || '').trim();
-    if (value) {
-      this.topics.push(value);
-    }
-    event.chipInput!.clear();
-  }
-
-  selected(event: MatAutocompleteSelectedEvent): void {
-    this.topics.push(event.option.viewValue);
-    this.topicInput.nativeElement.value = '';
-    const topicsControl = this.formGroup.get('topics');
-    if (topicsControl) {
-      topicsControl.setValue(null);
-    }
-  }
-
-  formGroup!: FormGroup;
-  get formArray(): AbstractControl | null {
-    return this.formGroup.get('formArray');
-  }
-  ngOnInit() {
-    this.formGroup = this._formBuilder.group({
-      formArray: this._formBuilder.array([
-        this._formBuilder.group({
+  constructor(
+    private formBuilder: FormBuilder,
+    private apiCalls: ApiCallsService,
+    private authService: AuthService,
+    private router: Router
+  ) {
+    this.registerFormGroup = this.formBuilder.group(
+      {
+        personalDetailsGroup: this.formBuilder.group({
           name: ['', [Validators.required]],
           email: ['', [Validators.required, Validators.email]],
           description: ['', [Validators.required]],
         }),
-        this._formBuilder.group(
+        passwordGroup: this.formBuilder.group(
           {
             password: ['', [Validators.required]],
             repass: ['', [Validators.required]],
@@ -82,52 +52,68 @@ export class RegisterComponent implements OnInit {
             validators: passwordMatchValidator(),
           }
         ),
-        this._formBuilder.group({
+        topicsGroup: this.formBuilder.group({
           topics: [[]],
         }),
-      ]),
-    });
-
-    this.apiCalls.getAllTopics().subscribe({
-      next: (data) => {
-        for (const dataObj of data.topics) {
-          this.options.push(dataObj.name);
-        }
       },
-      error: (err) => console.error(err),
-      complete: () => '',
-    });
+      {
+        validators: passwordMatchValidator(),
+      }
+    );
   }
 
-  // масив от 3 обекта, за всяка група.
-  onSubmit(): void {
-    if (this.formGroup.valid) {
-      const formData = this.formArray?.value;
-      const name = formData[0].name;
-      const email = formData[0].email;
-      const description = formData[0].description;
-      const password = formData[1].password;
-      const topics = formData[2].topics.slice();
-      const sendData = { name, email, description, password, topics };
-      this.apiCalls.postRegisterForm(sendData).subscribe({
-        next: (response) => {
-          const tokens = Object.values(response);
-          this.authService.setTokens(tokens[1]);
-          this.router.navigate(['/']);
-        },
-        error: (err) => console.error(err),
-        complete: () => '',
-      });
-    } else {
-      console.error('Form has errors.');
+  // chips handle: 
+  // remove topic from chip list
+  removeTopic(topic: string): void {
+    const index = this.topics.indexOf(topic);
+    if (index >= 0) {
+      this.topics.splice(index, 1);
     }
   }
+  // add topic to chip list
+  add(event: MatChipInputEvent): void {
+    const value = (event.value || '').trim();
+    if (value) {
+      this.topics.push(value);
+    }
+    event.chipInput!.clear();
+  }
+  // select from the autocomplete and add chip
+  selected(event: MatAutocompleteSelectedEvent): void {
+    this.topics.push(event.option.viewValue);
+    // nullify the autocomplete
+    this.topicInput.nativeElement.value = '';
+    // nullify the chip input el
+    this.registerFormGroup.get('topics')?.setValue(null);
+  }
 
-  constructor(
-    private _formBuilder: FormBuilder,
-    private announcer: LiveAnnouncer,
-    private apiCalls: ApiCallsService,
-    private authService: AuthService,
-    private router: Router
-  ) {}
+  ngOnInit(): void {
+    this.apiCalls.getAllTopics().subscribe({
+      next: (data) => {
+        this.options = data.topics.map((dataObj: any) => dataObj.name);
+      },
+      error: (err) => console.error(err),
+    });
+  }
+
+  onSubmit(): void {
+    const { name, email, description } = this.registerFormGroup.value.personalDetailsGroup;
+    const { password } = this.registerFormGroup.value.passwordGroup;
+    const topics = this.registerFormGroup.value.topicsGroup.topics.slice();
+    const sendData = {
+      name,
+      email,
+      description,
+      password,
+      topics,
+    };
+    this.apiCalls.postRegisterForm(sendData).subscribe({
+      next: (response) => {
+        const tokens = Object.values(response);
+        this.authService.setTokens(tokens[1]);
+        this.router.navigate(['/']);
+      },
+      error: (err) => console.error(err),
+    });
+  }
 }

@@ -1,135 +1,138 @@
 <div class="form-container">
-  <form [formGroup]="formGroup">
-    <mat-vertical-stepper
-      #linearVerticalStepper="matVerticalStepper"
-      formArrayName="formArray"
-      [linear]="false"
-    >
-      <mat-step formGroupName="0" [stepControl]="formArray?.get([0])!">
-        <ng-template matStepLabel
-          >Fill out your name and email address</ng-template
+  <form [formGroup]="registerFormGroup" (ngSubmit)="onSubmit()">
+    <div formGroupName="personalDetailsGroup">
+      <mat-form-field>
+        <mat-label>Full name</mat-label>
+        <input matInput formControlName="name" />
+        <mat-error
+          *ngIf="
+            registerFormGroup.get('personalDetailsGroup')?.get('name')?.invalid
+          "
         >
-        <mat-form-field>
-          <mat-label>Full name</mat-label>
-          <input matInput formControlName="name" required />
-          <mat-error *ngIf="formArray?.get([0])?.get('name')?.invalid">
-            Full name is required.
-          </mat-error>
-        </mat-form-field>
+          Full name is required.
+        </mat-error>
+      </mat-form-field>
 
-        <mat-form-field>
-          <mat-label>Email</mat-label>
-          <input matInput formControlName="email" required />
-          <mat-error
-            *ngIf="formArray?.get([0])?.get('email')?.hasError('required')"
-          >
-            Email is required.
-          </mat-error>
-          <mat-error
-            *ngIf="formArray?.get([0])?.get('email')?.hasError('email')"
-          >
-            Invalid email format.
-          </mat-error>
-        </mat-form-field>
+      <mat-form-field>
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" required />
+        <mat-error
+          *ngIf="
+            registerFormGroup
+              .get('personalDetailsGroup')
+              ?.get('email')
+              ?.hasError('required')
+          "
+        >
+          Email is required.
+        </mat-error>
+        <mat-error
+          *ngIf="
+            registerFormGroup
+              .get('personalDetailsGroup')
+              ?.get('email')
+              ?.hasError('email')
+          "
+        >
+          Invalid email format.
+        </mat-error>
+      </mat-form-field>
 
-        <mat-form-field>
-          <mat-label>Description</mat-label>
-          <input matInput formControlName="description" required />
-          <mat-error
-            *ngIf="
-              formArray?.get([0])?.get('description')?.hasError('required')
-            "
-          >
-            Field is required.
-          </mat-error>
-        </mat-form-field>
+      <mat-form-field>
+        <mat-label>Description</mat-label>
+        <input matInput formControlName="description" required />
+        <mat-error
+          *ngIf="
+            registerFormGroup
+              .get('personalDetailsGroup')
+              ?.get('description')
+              ?.hasError('required')
+          "
+        >
+          Field is required.
+        </mat-error>
+      </mat-form-field>
+    </div>
 
-        <div>
-          <button mat-button matStepperNext>Next</button>
-        </div>
-      </mat-step>
+    <div formGroupName="passwordGroup">
+      <mat-form-field>
+        <mat-label>Password</mat-label>
+        <input matInput formControlName="password" type="password" />
+        <mat-error
+          *ngIf="
+            registerFormGroup
+              .get('passwordGroup')
+              ?.get('password')
+              ?.hasError('required')
+          "
+        >
+          Field is required.
+        </mat-error>
+      </mat-form-field>
 
-      <mat-step formGroupName="1" [stepControl]="formArray?.get([1])!">
-        <ng-template matStepLabel>
-          <div>Enter your password</div>
-        </ng-template>
-        <mat-form-field>
-          <mat-label>Password</mat-label>
-          <input matInput formControlName="password" type="password" />
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>Repeat password</mat-label>
-          <input matInput formControlName="repass" type="password" />
-          <mat-error *ngIf="formArray?.get([1])?.hasError('passwordMismatch')">
-            Passwords do not match.
-          </mat-error>
-        </mat-form-field>
-        <div>
-          <button mat-button matStepperPrevious>Back</button>
-          <button mat-button matStepperNext>Next</button>
-        </div>
-      </mat-step>
+      <mat-form-field>
+        <mat-label>Repeat password</mat-label>
+        <input matInput formControlName="repass" type="password" />
+        <mat-error
+          *ngIf="
+            registerFormGroup
+              .get('passwordGroup')
+              ?.get('repass')
+              ?.hasError('required')
+          "
+        >
+          Field is required.
+        </mat-error>
+        <mat-error
+          *ngIf="
+            registerFormGroup.get('passwordGroup')?.hasError('passwordMismatch')
+          "
+        >
+          Passwords do not match.
+        </mat-error>
+      </mat-form-field>
+    </div>
 
-      <mat-step formGroupName="2" [stepControl]="formArray?.get([2])!">
-        <ng-template matStepLabel>
-          <div>
-            Please enter your topics of interest and press enter to save them
-            (optional)
-          </div>
-        </ng-template>
-        <mat-form-field class="example-form-field">
-          <mat-label>Topic keys</mat-label>
-          <mat-chip-grid
-            #chipGrid
-            aria-label="Enter keywords"
-            formControlName="topics"
+    <div formGroupName="topicsGroup">
+      <mat-form-field>
+        <mat-label>Topic keys</mat-label>
+        <mat-chip-grid
+          #chipGrid
+          aria-label="Enter keywords"
+          formControlName="topics"
+        >
+          <mat-chip-row
+            *ngFor="let topic of topics"
+            (removed)="removeTopic(topic)"
           >
-            <mat-chip-row
-              *ngFor="let topic of topics"
-              (removed)="removeTopic(topic)"
-            >
-              {{ topic }}
-              <button matChipRemove aria-label="'remove ' + topic">
-                <mat-icon>cancel</mat-icon>
-              </button>
-            </mat-chip-row>
-          </mat-chip-grid>
-          <input
-            placeholder="New topic..."
-            [matChipInputFor]="chipGrid"
-            (matChipInputTokenEnd)="add($event)"
-            [matAutocomplete]="auto"
-            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-            #topicInput
-          />
-          <mat-autocomplete
-            #auto="matAutocomplete"
-            (optionSelected)="selected($event)"
-          >
-            <mat-option *ngFor="let option of options" [value]="option">
-              {{ option }}
-            </mat-option>
-          </mat-autocomplete>
-        </mat-form-field>
-        <div>
-          <button mat-button matStepperPrevious>Back</button>
-          <button mat-button matStepperNext>Next</button>
-        </div>
-      </mat-step>
-      <mat-step>
-        <ng-template matStepLabel>Confirm your information</ng-template>
-        Everything seems correct.
-        <div>
-          <button
-            type="button"
-            mat-button
-            (click)="linearVerticalStepper.reset()"
-          >
-            Reset
-          </button>
-          <button mat-button (click)="onSubmit()">Done</button>
-        </div>
-      </mat-step>
-    </mat-vertical-stepper>
+            {{ topic }}
+            <button matChipRemove aria-label="'remove ' + topic">
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </mat-chip-row>
+        </mat-chip-grid>
+        <input
+          placeholder="New topic..."
+          [matChipInputFor]="chipGrid"
+          (matChipInputTokenEnd)="add($event)"
+          [matAutocomplete]="auto"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          #topicInput
+        />
+        <mat-autocomplete
+          #auto="matAutocomplete"
+          (optionSelected)="selected($event)"
+        >
+          <mat-option *ngFor="let option of options" [value]="option">
+            {{ option }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+    <div>
+      <button class="submit" mat-raised-button color="primary" type="submit">
+        Register
+      </button>
+    </div>
   </form>
 </div>

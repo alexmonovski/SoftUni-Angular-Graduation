@@ -1,15 +1,34 @@
 <div class="login">
   <form [formGroup]="loginFormGroup" (ngSubmit)="onSubmit()">
     <mat-form-field>
+      <mat-label>Email</mat-label>
       <input matInput formControlName="email" placeholder="Email" />
+      <mat-error *ngIf="loginFormGroup?.get('email')?.hasError('required')">
+        Email is required.
+      </mat-error>
+      <mat-error *ngIf="loginFormGroup?.get('email')?.hasError('email')">
+        Invalid email format.
+      </mat-error>
+      <mat-error *ngIf="loginFormGroup?.get('email')?.hasError('userNotFound')">
+        Incorrect email or password.
+      </mat-error>
     </mat-form-field>
     <mat-form-field>
+      <mat-label>Password</mat-label>
       <input
         matInput
         formControlName="password"
         type="password"
         placeholder="Password"
       />
+      <mat-error
+        *ngIf="loginFormGroup?.get('password')?.hasError('userNotFound')"
+      >
+        Incorrect email or password.
+      </mat-error>
+      <mat-error *ngIf="loginFormGroup?.get('password')?.hasError('required')">
+        Password is required.
+      </mat-error>
     </mat-form-field>
     <button mat-raised-button color="primary" type="submit">Login</button>
   </form>

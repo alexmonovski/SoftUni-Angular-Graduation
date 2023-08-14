@@ -25,10 +25,13 @@ authController.post("/login", async (req, res) => {
     const session = await loginUser(formData);
     return res.status(200).json({ message: "Login successful", session });
   } catch (err) {
-    console.error(err);
-    return res
-      .status(500)
-      .json({ error: "An error occurred. Please try again later." });
+    if (err == "Error: Email or password do not match.") {
+      return res.status(401).json({ error: "Invalid credentials" });
+    } else {
+      return res
+        .status(500)
+        .json({ error: "An error occurred. Please try again later." });
+    }
   }
 });
 

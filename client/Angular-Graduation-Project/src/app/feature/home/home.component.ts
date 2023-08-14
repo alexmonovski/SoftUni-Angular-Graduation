@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApiCallsService } from 'src/app/core/services/api-calls.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { switchMap } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -18,20 +19,20 @@ export class HomeComponent implements OnInit {
     private authService: AuthService
   ) {}
 
+  private subscription: Subscription = new Subscription();
+
+  num = 0;
+
   ngOnInit(): void {
-    this.authService.userIdToken$.subscribe({
+    const userIdTokenSub = this.authService.userIdToken$.subscribe({
       next: (userId) => {
         this.userId = userId;
-        if (this.userId) {
-          this.selectedFilter = 'topics';
-        } else {
-          this.selectedFilter = 'all';
-        }
-        return this.toggleFilter();
+        this.selectedFilter = userId ? 'topics' : 'all';
+        this.toggleFilter();
       },
       error: (err) => console.error(err),
-      complete: () => '',
     });
+    this.subscription.add(userIdTokenSub);
   }
 
   toggleFilter() {
@@ -40,7 +41,7 @@ export class HomeComponent implements OnInit {
         ? this.apiCalls.getArticlesByTopics()
         : this.apiCalls.getAllArticles();
 
-    articlesObservable.subscribe({
+    const articlesSub = articlesObservable.subscribe({
       next: (data) => {
         this.articles = data;
         this.articles.sort((a, b) => b.lastEdit - a.lastEdit);
@@ -48,5 +49,10 @@ export class HomeComponent implements OnInit {
       error: (err) => console.error(err),
       complete: () => '',
     });
+    this.subscription.add(articlesSub);
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }
