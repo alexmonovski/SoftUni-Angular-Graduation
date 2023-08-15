@@ -13,6 +13,10 @@ usersController.get("/", async (req, res) => {
     const users = await getAllUsers();
     res.status(200).json({ users });
   } catch (err) {
+    console.log(
+      "🚀 ~ file: usersController.js:20 ~ usersController.get ~ get:",
+      get
+    );
     console.error("Error is: " + err);
     res.status(500).json({ error: "Internal server error" });
   }
@@ -30,6 +34,9 @@ usersController.get("/:id", async (req, res) => {
       res.status(200).json({ user });
     }
   } catch (err) {
+    console.log(
+      "🚀 ~ file: usersController.js:24 ~ usersController.get ~ async:"
+    );
     console.error("Error is: " + err);
     res.status(500).json({ error: "Internal server error" });
   }
@@ -41,6 +48,10 @@ usersController.get("/current", async (req, res) => {
     const user = await getUserById(userId);
     res.status(200).json({ user });
   } catch (err) {
+    console.log(
+      "🚀 ~ file: usersController.js:50 ~ usersController.get ~ current:",
+      current
+    );
     console.error("Error is: " + err);
     res.status(500).json({ error: "Internal server error" });
   }
@@ -56,6 +67,9 @@ usersController.post("/:id/subscribe", async (req, res) => {
       return res.status(500).json({ error: "Subscription failed" });
     }
   } catch (err) {
+    console.log(
+      "🚀 ~ file: usersController.js:53 ~ usersController.post ~ async:"
+    );
     console.error("Error is: " + err);
     return res
       .status(500)

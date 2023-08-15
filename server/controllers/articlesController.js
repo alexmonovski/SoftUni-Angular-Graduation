@@ -17,7 +17,11 @@ articlesController.get("/", async (req, res) => {
     const articles = await getAllArticles();
     res.status(200).json(articles);
   } catch (err) {
-    console.error("error is" + error);
+    console.log(
+      "🚀 ~ file: articlesController.js:24 ~ articlesController.get ~ articlesController:",
+      articlesController
+    );
+    console.error("error is " + err);
     res.status(500).json({ error: "Internal server error" });
   }
 });
@@ -28,19 +32,19 @@ articlesController.get("/:id", async (req, res) => {
     let article;
     if (req.query.action == "lean") {
       article = await getArticleByIdSimple(req.params.id);
-      res.status(200).json({ user });
     } else {
       article = await getArticleById(req.params.id);
-      res.status(200).json({ user });
     }
-
     if (!article) {
       res.status(404).json({ error: "Article not found" });
     } else {
       res.status(200).json(article);
     }
   } catch (err) {
-    console.error("error is" + err);
+    console.log(
+      "🚀 ~ file: articlesController.js:48 ~ articlesController.get ~ id:"
+    );
+    console.error("error is " + err);
     res.status(500).json({ error: "Internal server error" });
   }
 });
@@ -54,7 +58,11 @@ articlesController.post("/:id/comments", async (req, res) => {
     await commentArticle(articleId, commentBody, commentAuthorId);
     res.status(201).json({ message: "Comment added successfully" });
   } catch (err) {
-    console.error("error is" + err);
+    console.log(
+      "🚀 ~ file: articlesController.js:63 ~ articlesController.post ~ post:",
+      post
+    );
+    console.error("error is " + err);
     res.status(500).json({ error: "Internal server error" });
   }
 });
@@ -67,7 +75,11 @@ articlesController.post("/:id/like", async (req, res) => {
     await likeArticle(articleId, userId);
     res.status(200).json({ message: "Like added successfully" });
   } catch (err) {
-    console.error("error is" + err);
+    console.log(
+      "🚀 ~ file: articlesController.js:77 ~ articlesController.post ~ articlesController:",
+      articlesController
+    );
+    console.error("error is " + err);
     res.status(500).json({ error: "Internal server error" });
   }
 });
@@ -83,7 +95,11 @@ articlesController.post("/create", async (req, res) => {
       res.status(400).json({ error: "Bad Request" });
     }
   } catch (err) {
-    console.error("error is" + err);
+    console.log(
+      "🚀 ~ file: articlesController.js:100 ~ articlesController.post ~ post:",
+      post
+    );
+    console.error("error is " + err);
     if (err == "An article with this title already exists.") {
       return res
         .status(409)
@@ -100,7 +116,11 @@ articlesController.post("/:id/edit", async (req, res) => {
     await editArticle(req.params.id, req.body);
     res.status(200).json({ message: "Article edited successfully" });
   } catch (err) {
-    console.error("error is" + err);
+    console.log(
+      "🚀 ~ file: articlesController.js:104 ~ articlesController.post ~ async:",
+      async
+    );
+    console.error("error is " + err);
     res.status(500).json({ error: "Internal server error" });
   }
 });
@@ -113,7 +133,11 @@ articlesController.post("/:id/delete", async (req, res) => {
     await deleteArticle(articleId, userId);
     res.status(204).send({ message: "Article deleted successfully" });
   } catch (err) {
-    console.error("error is" + err);
+    console.log(
+      "🚀 ~ file: articlesController.js:126 ~ articlesController.post ~ articlesController:",
+      articlesController
+    );
+    console.error("error is " + err);
     res.status(500).json({ error: "Internal server error" });
   }
 });

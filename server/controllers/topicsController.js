@@ -12,7 +12,11 @@ topicsController.get("/", async (req, res) => {
     const topics = await getAllTopics();
     res.status(200).json({ topics });
   } catch (err) {
-    console.error("error is" + err);
+    console.log(
+      "🚀 ~ file: topicsController.js:11 ~ topicsController.get ~ async:",
+      async
+    );
+    console.error("error is " + err);
     res.status(500).json({ error: "Internal server error" });
   }
 });
@@ -23,7 +27,11 @@ topicsController.get("/:id", async (req, res) => {
     const topic = await getSingleTopic(req.params.id);
     res.status(200).json({ topic });
   } catch (err) {
-    console.error("error is" + err);
+    console.log(
+      "🚀 ~ file: topicsController.js:31 ~ topicsController.get ~ topicsController:",
+      topicsController
+    );
+    console.error("error is " + err);
     res.status(500).json({ error: "Internal server error" });
   }
 });
@@ -38,7 +46,11 @@ topicsController.get("/:id/articles", async (req, res) => {
       res.status(404).json({ error: "No articles found for the given topic" });
     }
   } catch (err) {
-    console.error("error is" + err);
+    console.log(
+      "🚀 ~ file: topicsController.js:47 ~ topicsController.get ~ articles:",
+      articles
+    );
+    console.error("error is " + err);
     res.status(500).json({ error: "Internal server error" });
   }
 });
@@ -49,7 +61,11 @@ topicsController.post("/", async (req, res) => {
     const newTopic = await createTopic(req.params.id);
     res.status(201).json({ newTopic });
   } catch (err) {
-    console.error("error is" + err);
+    console.log(
+      "🚀 ~ file: topicsController.js:51 ~ topicsController.post ~ async:",
+      async
+    );
+    console.error("error is " + err);
     res.status(500).json({ error: "Internal server error" });
   }
 });

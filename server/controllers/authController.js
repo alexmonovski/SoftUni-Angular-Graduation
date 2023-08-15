@@ -8,6 +8,10 @@ authController.post("/register", async (req, res) => {
     const jwt = await registerUser(formData);
     return res.status(201).json({ jwt });
   } catch (err) {
+    console.log(
+      "🚀 ~ file: authController.js:23 ~ authController.post ~ post:",
+      post
+    );
     console.log("error is: ", err);
     if (err == "Error: A user with this email or username already exists.") {
       return res
@@ -28,6 +32,10 @@ authController.post("/login", async (req, res) => {
     const jwt = await loginUser(formData);
     return res.status(200).json({ jwt });
   } catch (err) {
+    console.log(
+      "🚀 ~ file: authController.js:42 ~ authController.post ~ authController:",
+      authController
+    );
     console.log("error is: ", err);
     if (err == "Error: Email or password do not match.") {
       return res.status(401).json({ error: "Invalid credentials" });
