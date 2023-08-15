@@ -6,7 +6,6 @@ const {
   editArticle,
   deleteArticle,
   commentArticle,
-  getAllUniqueArticles,
 } = require("../services/articlesServices");
 const { getUserIdFromToken } = require("../util/validateToken");
 const articlesController = require("express").Router();
@@ -17,18 +16,7 @@ articlesController.get("/", async (req, res) => {
     const articles = await getAllArticles();
     res.status(200).json(articles);
   } catch (err) {
-    console.error(err);
-    // not a good practice to expose server errors to the client;
-    res.status(500).json({ error: "Internal server error" });
-  }
-});
-articlesController.get("/topics", async (req, res) => {
-  try {
-    const userId = await getUserIdFromToken(req.headers.authorization);
-    const articles = await getAllUniqueArticles(userId);
-    res.status(200).json(articles);
-  } catch (err) {
-    console.error(err);
+    console.error("error is" + error);
     res.status(500).json({ error: "Internal server error" });
   }
 });
@@ -37,38 +25,40 @@ articlesController.get("/topics", async (req, res) => {
 articlesController.get("/:id", async (req, res) => {
   try {
     const article = await getArticleById(req.params.id);
-
     if (!article) {
       res.status(404).json({ error: "Article not found" });
     } else {
       res.status(200).json(article);
     }
-  } catch (error) {
-    console.error(error);
+  } catch (err) {
+    console.error("error is" + err);
     res.status(500).json({ error: "Internal server error" });
   }
 });
 
+// post comment
 articlesController.post("/:id/comments", async (req, res) => {
   try {
     const userId = await getUserIdFromToken(req.headers.authorization);
     const articleId = req.params.id;
     const commentBody = req.body;
-    const article = await commentArticle(articleId, commentBody, userId);
+    await commentArticle(articleId, commentBody, userId);
     res.status(201).json({ message: "Comment added successfully" });
-  } catch (error) {
-    console.error(error);
+  } catch (err) {
+    console.error("error is" + err);
     res.status(500).json({ error: "Internal server error" });
   }
 });
-articlesController.get("/:id/like", async (req, res) => {
+
+// post like
+articlesController.post("/:id/like", async (req, res) => {
   try {
     const userId = await getUserIdFromToken(req.headers.authorization);
     const articleId = req.params.id;
-    const article = await likeArticle(articleId, userId);
-    res.status(201).json({ message: "Like added successfully" });
-  } catch (error) {
-    console.error(error);
+    await likeArticle(articleId, userId);
+    res.status(200).json({ message: "Like added successfully" });
+  } catch (err) {
+    console.error("error is" + err);
     res.status(500).json({ error: "Internal server error" });
   }
 });
@@ -84,41 +74,31 @@ articlesController.post("/create", async (req, res) => {
       res.status(400).json({ error: "Bad Request" });
     }
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Internal server error" }); // Status code 500 for server error
-  }
-});
-
-// edit an article
-articlesController.post(":id/edit", async (req, res) => {
-  try {
-    await editArticle(req.params.id, req.body);
-    res.status(200).json({ message: "Article edited successfully" });
-  } catch (err) {
-    console.error(err);
+    console.error("error is" + err);
     res.status(500).json({ error: "Internal server error" });
   }
 });
 
-// like an article
-articlesController.post(":id/like", async (req, res) => {
+// edit an article
+articlesController.post("/:id/edit", async (req, res) => {
   try {
-    await likeArticle(req.params.id, req.body);
-    res.status(200).json({ message: "Article liked successfully" });
+    await editArticle(req.params.id, req.body);
+    res.status(200).json({ message: "Article edited successfully" });
   } catch (err) {
-    console.error(err);
+    console.error("error is" + err);
     res.status(500).json({ error: "Internal server error" });
   }
 });
 
 // delete an article
-articlesController.post(":id/delete", async (req, res) => {
+articlesController.post("/:id/delete", async (req, res) => {
   try {
-    //TD: check if user is owner;
-    await deleteArticle(req.params.id);
+    const userId = await getUserIdFromToken(req.headers.authorization);
+    const articleId = req.params.id;
+    await deleteArticle(articleId, userId);
     res.status(204).send({ message: "Article deleted successfully" });
   } catch (err) {
-    console.error(err);
+    console.error("error is" + err);
     res.status(500).json({ error: "Internal server error" });
   }
 });

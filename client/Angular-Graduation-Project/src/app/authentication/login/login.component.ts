@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import {
   FormBuilder,
-  FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
@@ -32,12 +31,12 @@ export class LoginComponent {
 
   ngOnInit() { }
 
-  // знам, че е по-подредено отделен валидатор, но това е още 1 api call;
   onSubmit() {
     if (this.loginFormGroup.valid) {
       const formData = this.loginFormGroup.value;
       this.apiCalls.postLoginForm(formData).subscribe({
         next: (response) => {
+          // object with jwt key; 
           const tokens = Object.values(response);
           this.authService.setTokens(tokens[1]);
           this.router.navigate(['/']);

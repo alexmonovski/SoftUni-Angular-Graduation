@@ -4,13 +4,11 @@ const authController = require("express").Router();
 // register user
 authController.post("/register", async (req, res) => {
   try {
-    // possibly add a special res.status if username is already taken
     const formData = req.body;
-    const session = await registerUser(formData);
-    return res
-      .status(201)
-      .json({ message: "Registration successful", session });
+    const jwt = await registerUser(formData);
+    return res.status(201).json({ jwt });
   } catch (err) {
+    console.log("error is: ", err);
     if (err == "Error: A user with this email or username already exists.") {
       return res
         .status(409)
@@ -27,9 +25,10 @@ authController.post("/register", async (req, res) => {
 authController.post("/login", async (req, res) => {
   try {
     const formData = req.body;
-    const session = await loginUser(formData);
-    return res.status(200).json({ message: "Login successful", session });
+    const jwt = await loginUser(formData);
+    return res.status(200).json({ jwt });
   } catch (err) {
+    console.log("error is: ", err);
     if (err == "Error: Email or password do not match.") {
       return res.status(401).json({ error: "Invalid credentials" });
     } else {

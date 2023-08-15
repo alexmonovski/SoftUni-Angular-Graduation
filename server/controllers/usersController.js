@@ -11,9 +11,9 @@ const usersController = require("express").Router();
 usersController.get("/", async (req, res) => {
   try {
     const users = await getAllUsers();
-    res.status(200).json({ message: "Users retrieved successfully", users });
+    res.status(200).json({ users });
   } catch (err) {
-    console.error(err);
+    console.error("Error is: " + err);
     res.status(500).json({ error: "Internal server error" });
   }
 });
@@ -24,24 +24,24 @@ usersController.get("/:id", async (req, res) => {
     const userId = req.params.id;
     if (req.query.action == "lean") {
       const user = await getUserByIdSimple(userId);
-      res.status(200).json({ message: "User retrieved successfully", user });
+      res.status(200).json({ user });
     } else {
       const user = await getUserById(userId);
-      res.status(200).json({ message: "User retrieved successfully", user });
+      res.status(200).json({ user });
     }
   } catch (err) {
-    console.error(err);
+    console.error("Error is: " + err);
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
 usersController.get("/current", async (req, res) => {
   try {
-    // то хубаво, само че трябва да го вземеш от токена, защото сега това е адреса на статията, не на юзъра
     const userId = await getUserIdFromToken(req.headers.authorization);
     const user = await getUserById(userId);
-    res.status(200).json({ message: "User retrieved successfully", user });
+    res.status(200).json({ user });
   } catch (err) {
-    console.error(err);
+    console.error("Error is: " + err);
     res.status(500).json({ error: "Internal server error" });
   }
 });
@@ -49,17 +49,14 @@ usersController.get("/current", async (req, res) => {
 usersController.post("/:id/subscribe", async (req, res) => {
   try {
     const userId = await getUserIdFromToken(req.headers.authorization);
-    const subscription = await subscribeToUser(req.params.id, userId);
-    if (subscription) {
-      return res.status(200).json({
-        message: "Subscribed successfully",
-        updatedUser: subscription,
-      });
+    const updatedUser = await subscribeToUser(req.params.id, userId);
+    if (updatedUser) {
+      return res.status(200).json({ updatedUser });
     } else {
       return res.status(500).json({ error: "Subscription failed" });
     }
   } catch (err) {
-    console.error(err);
+    console.error("Error is: " + err);
     return res
       .status(500)
       .json({ error: "An error occurred. Please try again later." });

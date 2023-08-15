@@ -12,7 +12,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
 export class UserCardComponent {
   // няма нужда да го феча, той е тука.
   @Input() user: any;
-  auth = false;
+  isAuth = false;
 
   userHasSubscribed = false;
   isAuthor = false;
@@ -21,12 +21,9 @@ export class UserCardComponent {
     private router: Router,
     private apiCalls: ApiCallsService,
     private authService: AuthService
-  ) {}
+  ) { }
 
-  // maybe change the button color; or hide it. implement check to see if its present in his array. redirect to
-
-  // на бекенда ще върнеш самия юзър с новите му събове и ще си провериш динамично.
-  subscribe(subscribeeId: any) {
+  subscribeToUser(subscribeeId: any) {
     this.apiCalls.subscribeToUser(subscribeeId).subscribe({
       next: (response) => {
         if (response.updatedUser.subscribedTo.includes(this.user._id)) {
@@ -42,7 +39,7 @@ export class UserCardComponent {
     // вземаме от сториджа;
     const currentUserId = this.authService.getUserId();
     if (currentUserId) {
-      this.auth = true;
+      this.isAuth = true;
       this.apiCalls.getSingleUserLean(currentUserId).subscribe({
         next: (currentUser) => {
           if (currentUser.user.subscribedTo.includes(this.user._id)) {

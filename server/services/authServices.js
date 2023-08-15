@@ -43,14 +43,8 @@ async function loginUser(body) {
 
 function createSession(user) {
   const userId = user._id.toString();
-
   const token = jwt.sign(userId, SECRET);
-
-  const session = {
-    userId,
-    token,
-  };
-  return session;
+  return token;
 }
 
 module.exports = {

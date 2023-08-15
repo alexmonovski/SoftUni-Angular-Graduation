@@ -6,7 +6,9 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class ApiCallsService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
+
+  // todo: cast these and make unified responses
 
   getAllArticles(): Observable<any> {
     const url = `http://localhost:3000/articles/`;

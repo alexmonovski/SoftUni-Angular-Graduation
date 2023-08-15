@@ -1,42 +1,50 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import jwt_decode from 'jwt-decode';
+import { ApiCallsService } from './api-calls.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private authTokenSubject: BehaviorSubject<string | null>;
-  public authToken$: Observable<string | null>;
-  private userIdSubject = new BehaviorSubject<string | null>(null);
-  userIdToken$ = this.userIdSubject.asObservable();
+  private sessionSubject: BehaviorSubject<string | null>
+  public sessionObservable$: Observable<string | null>
 
-  constructor() {
-    const storedToken = localStorage.getItem('authToken');
-    const storedUserId = localStorage.getItem('userId');
-    this.authTokenSubject = new BehaviorSubject<string | null>(storedToken);
-    this.authToken$ = this.authTokenSubject.asObservable();
-    this.userIdSubject.next(storedUserId);
+  constructor(private apiCalls: ApiCallsService) {
+    this.sessionSubject = new BehaviorSubject<string | null>(null)
+    this.sessionObservable$ = this.sessionSubject.asObservable()
   }
 
-  getToken() {
-    return localStorage.getItem('authToken');
+  setJwt(jwt: any) {
+    localStorage.setItem('jwt', jwt)
   }
 
-  getUserId() {
-    return localStorage.getItem('userId');
+  decodeJwt(jwt: any) {
+    return jwt_decode(jwt)
   }
 
-  setTokens(tokens: any | null) {
-    if (tokens) {
-      localStorage.setItem('userId', tokens.userId);
-      localStorage.setItem('authToken', tokens.token);
-      this.authTokenSubject.next(tokens.token);
-      this.userIdSubject.next(tokens.userId);
-    } else {
-      localStorage.removeItem('authToken');
-      localStorage.removeItem('userId');
-      this.authTokenSubject.next(null);
-      this.userIdSubject.next(null);
-    }
+  setUserDetails(user: any) {
+    // сетваш целия юзър обект (не популиран)
+    localStorage.setItem('user', user)
+    // емитваш информацията на всички заинтересовани
+    this.sessionSubject.next(user)
+  }
+
+  createSession(jwt: any) {
+    this.setJwt(jwt)
+    const userId = this.decodeJwt(jwt)
+    this.apiCalls.getSingleUserLean(userId).subscribe({
+      next: (response) => {
+        this.setUserDetails(response)
+      },
+      error: (err) => { },
+      complete: () => { }
+    })
+  }
+
+  destroySession() {
+    localStorage.removeItem('jwt')
+    localStorage.removeItem('user')
+    this.sessionSubject.next(null)
   }
 }

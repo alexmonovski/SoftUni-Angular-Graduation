@@ -46,7 +46,7 @@ async function subscribeToUser(id, subscriberId) {
     { new: true }
   );
 
-  return updatedUser;
+  return { updatedUser };
 }
 
 module.exports = {

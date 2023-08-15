@@ -142,7 +142,7 @@ async function editArticle(id, body) {
   article.description = body.description;
   article.topics = body.topics;
   article.lastEdit = Date.now();
-  await article.save();
+  return await article.save();
 }
 
 async function likeArticle(articleId, userId) {
@@ -159,9 +159,24 @@ async function commentArticle(articleId, commentBody, authorId) {
   article.comments.push(newComment._id);
   await article.save();
 }
-
-async function deleteArticle(id) {
-  await Article.findByIdAndDelete(id);
+async function deleteArticle(articleId, userId) {
+  try {
+    const article = await Article.findById(articleId).populate("author");
+    const user = await User.findById(userId);
+    if (!article) {
+      throw new Error("Article not found");
+    }
+    if (!user) {
+      throw new Error("User not found");
+    }
+    if (article.author._id.toString() !== user._id.toString()) {
+      throw new Error("User is not authorized to delete this article");
+    }
+    await Article.deleteOne({ _id: articleId });
+    return true; // Or you can return a success message or status code
+  } catch (error) {
+    throw error;
+  }
 }
 
 module.exports = {
