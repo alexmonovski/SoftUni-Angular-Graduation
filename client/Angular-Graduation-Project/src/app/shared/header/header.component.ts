@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { map, of, switchMap } from 'rxjs';
+import { Subscription, map, of, switchMap } from 'rxjs';
 import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
@@ -8,29 +8,30 @@ import { AuthService } from 'src/app/core/services/auth.service';
   styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent {
-  isLoggedIn$ = this.authService.authToken$.pipe(
-    switchMap((authToken: string | null) => {
-      if (authToken) {
-        return this.authService.userIdToken$.pipe(
-          map((userId: string | null) => !!userId)
-        );
-      } else {
-        return of(false);
-      }
-    })
-  );
+  isLoggedIn = false;
+  subscription: Subscription = new Subscription();
 
-  userId$ = this.authService.userIdToken$;
+  constructor(private authService: AuthService) {}
 
-  constructor(private authService: AuthService) {
-    this.isLoggedIn$.subscribe((isLoggedIn) => {
-      if (!isLoggedIn) {
-        this.authService.setTokens(null);
-      }
+  ngOnInit() {
+    this.subscription = this.authService.sessionObservable$.subscribe({
+      next: (user: any | null) => {
+        if (user) {
+          this.isLoggedIn = true;
+        } else {
+          this.isLoggedIn = false;
+        }
+      },
+      error: (err) => {},
+      complete: () => {},
     });
   }
 
   logout() {
-    this.authService.setTokens(null);
+    this.authService.destroySession();
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }

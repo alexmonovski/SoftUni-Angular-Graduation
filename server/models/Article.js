@@ -5,6 +5,7 @@ const articleSchema = new Schema({
   title: { type: String, required: true, unique: true },
   description: { type: String, required: true },
   content: { type: String, required: true },
+  authorName: { type: String, required: true },
   createdAt: { type: Date, default: Date.now },
   lastEdit: { type: Date, default: Date.now },
   author: { type: Types.ObjectId, ref: "User" },

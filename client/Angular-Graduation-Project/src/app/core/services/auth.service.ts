@@ -28,6 +28,11 @@ export class AuthService {
     return jwt_decode(jwt);
   }
 
+  getUserId() {
+    const jwt = this.getJwt();
+    return this.decodeJwt(jwt);
+  }
+
   // observable for the user details; no need to have observable for the jwt; we have interceptor for that.
   setUserDetails(user: any) {
     localStorage.setItem('user', user);
@@ -50,7 +55,6 @@ export class AuthService {
   destroySession() {
     localStorage.removeItem('jwt');
     localStorage.removeItem('user');
-    // adapt the subs to handle this case.
     this.sessionSubject.next(null);
   }
 }

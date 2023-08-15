@@ -1,8 +1,7 @@
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Component } from '@angular/core';
 import { ApiCallsService } from 'src/app/core/services/api-calls.service';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { mergeMap, switchMap } from 'rxjs';
+import { FormGroup } from '@angular/forms';
 import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
@@ -16,7 +15,7 @@ export class ArticleDetailsComponent {
   commentForm!: FormGroup;
   authorName: any;
   articleId: any;
-  userId: any;
+  loggedInUserId: any;
   isAuthor = false;
   hasLiked = false;
   parsedTopics: any[] = [];
@@ -24,42 +23,17 @@ export class ArticleDetailsComponent {
   constructor(
     private route: ActivatedRoute,
     private apiCalls: ApiCallsService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {}
-
-  onLike() {
-    this.apiCalls
-      .likeArticle(this.article._id)
-      .pipe(switchMap(() => this.apiCalls.getSingleArticle(this.article._id)))
-      .subscribe({
-        next: (article) => {
-          this.article = article;
-          this.isAuthor = this.userId == this.article.author._id;
-          this.hasLiked = this.article.usersLiked.some(
-            (user: any) => user._id === this.userId
-          );
-        },
-        error: (err) => {
-          console.error(err);
-        },
-        complete: () => '',
-      });
-  }
 
   ngOnInit() {
     this.route.params.subscribe((params: Params) => {
       this.articleId = params['id'];
-      this.apiCalls.getSingleArticle(this.articleId).subscribe({
+      this.apiCalls.getSingleArticleLean(this.articleId).subscribe({
         next: (article) => {
           this.article = article;
-          this.userId = this.authService.getUserId();
-          this.isAuthor = this.userId == this.article.author._id;
-          this.hasLiked = this.article.usersLiked.some(
-            (user: any) => user._id === this.userId
-          );
-          this.article.topics.forEach((topic: any) => {
-            this.parsedTopics.push(topic.name);
-          });
+          this.setFlags();
         },
         error: (err) => {
           console.error(err);
@@ -69,5 +43,33 @@ export class ArticleDetailsComponent {
         },
       });
     });
+  }
+
+  setFlags() {
+    this.loggedInUserId = this.authService.getUserId();
+    this.isAuthor = this.loggedInUserId == this.article.author._id;
+    this.hasLiked = this.article.usersLiked.some(
+      (likedUserId: any) => likedUserId === this.loggedInUserId
+    );
+  }
+
+  onLike() {
+    this.apiCalls.likeArticle().subscribe({
+      next: (response: any) => {
+        this.setFlags();
+        console.log(response);
+      },
+      error: (err: any) => {
+        console.error(err);
+      },
+      complete: () => '',
+    });
+  }
+
+  onComment() {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.router.navigate([`/articles/${id}/add-comment`]);
+    }
   }
 }

@@ -1,17 +1,18 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './feature/home/home.component';
+
 import { LoginComponent } from './authentication/components/login/login.component';
 import { RegisterComponent } from './authentication/components/register/register.component';
 import { AboutComponent } from './shared/about/about.component';
-import { ProfileComponent } from './authentication/profile/profile.component';
 import { ArticleDetailsComponent } from './feature/article/article-details/article-details.component';
 import { ArticleCreateComponent } from './feature/article/article-create/article-create.component';
-import { ArticleCommentComponent } from './feature/article/article-comment/article-comment.component';
 import { UsersComponent } from './authentication/components/users/users.component';
+import { ArticleListComponent } from './feature/article-list/article-list.component';
+import { ProfileComponent } from './authentication/components/profile/profile.component';
+import { ArticleCommentFormComponent } from './feature/article/article-details/article-comments/article-comment-form/article-comment-form.component';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent },
+  { path: '', component: ArticleListComponent },
   { path: 'auth', component: UsersComponent },
   { path: 'auth/login', component: LoginComponent },
   { path: 'auth/register', component: RegisterComponent },
@@ -19,7 +20,7 @@ const routes: Routes = [
   { path: 'about', component: AboutComponent },
   { path: 'articles/create', component: ArticleCreateComponent },
   { path: 'articles/:id', component: ArticleDetailsComponent },
-  { path: 'articles/:id/add-comment', component: ArticleCommentComponent },
+  { path: 'articles/:id/add-comment', component: ArticleCommentFormComponent },
 ];
 
 @NgModule({

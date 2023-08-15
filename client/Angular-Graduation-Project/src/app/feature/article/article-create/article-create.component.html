@@ -1,64 +1,28 @@
 <div class="form-container">
-  <form [formGroup]="registerFormGroup" (ngSubmit)="onSubmit()">
-    <div formGroupName="personalDetailsGroup">
+  <form [formGroup]="createArticleFormGroup" (ngSubmit)="onSubmit()">
+    <div formGroupName="articleDataGroup">
       <mat-form-field>
-        <mat-label>Full name</mat-label>
-        <input matInput formControlName="name" />
+        <mat-label>Article title</mat-label>
+        <input matInput formControlName="title" />
         <mat-error
           *ngIf="
-            registerFormGroup
-              .get('personalDetailsGroup')
-              ?.get('name')
+            createArticleFormGroup
+              .get('articleDataGroup')
+              ?.get('title')
               ?.hasError('required')
           "
         >
-          Full name is required.
+          Article title is required.
         </mat-error>
         <mat-error
           *ngIf="
-            registerFormGroup
-              .get('personalDetailsGroup')
-              ?.get('name')
-              ?.hasError('usernameOrEmailTaken')
+            createArticleFormGroup
+              .get('articleDataGroup')
+              ?.get('title')
+              ?.hasError('titleTaken')
           "
         >
-          Name or email already taken.
-        </mat-error>
-      </mat-form-field>
-
-      <mat-form-field>
-        <mat-label>Email</mat-label>
-        <input matInput formControlName="email" />
-        <mat-error
-          *ngIf="
-            registerFormGroup
-              .get('personalDetailsGroup')
-              ?.get('email')
-              ?.hasError('required')
-          "
-        >
-          Email is required.
-        </mat-error>
-        <mat-error
-          *ngIf="
-            registerFormGroup
-              .get('personalDetailsGroup')
-              ?.get('email')
-              ?.hasError('email')
-          "
-        >
-          Please enter a valid email.
-        </mat-error>
-
-        <mat-error
-          *ngIf="
-            registerFormGroup
-              .get('personalDetailsGroup')
-              ?.get('email')
-              ?.hasError('usernameOrEmailTaken')
-          "
-        >
-          Name or email already taken.
+          An article with this title already exists.
         </mat-error>
       </mat-form-field>
 
@@ -67,52 +31,28 @@
         <input matInput formControlName="description" />
         <mat-error
           *ngIf="
-            registerFormGroup
-              .get('personalDetailsGroup')
+            createArticleFormGroup
+              .get('articleDataGroup')
               ?.get('description')
               ?.hasError('required')
           "
         >
-          Field is required.
-        </mat-error>
-      </mat-form-field>
-    </div>
-
-    <div formGroupName="passwordGroup">
-      <mat-form-field>
-        <mat-label>Password</mat-label>
-        <input matInput formControlName="password" type="password" />
-        <mat-error
-          *ngIf="
-            registerFormGroup
-              .get('passwordGroup')
-              ?.get('password')
-              ?.hasError('required')
-          "
-        >
-          Field is required.
+          Article description is required.
         </mat-error>
       </mat-form-field>
 
       <mat-form-field>
-        <mat-label>Repeat password</mat-label>
-        <input matInput formControlName="repass" type="password" />
+        <mat-label>Content</mat-label>
+        <input matInput formControlName="content" />
         <mat-error
           *ngIf="
-            registerFormGroup
-              .get('passwordGroup')
-              ?.get('repass')
+            createArticleFormGroup
+              .get('articleDataGroup')
+              ?.get('content')
               ?.hasError('required')
           "
         >
-          Field is required.
-        </mat-error>
-        <mat-error
-          *ngIf="
-            registerFormGroup.get('passwordGroup')?.hasError('passwordMismatch')
-          "
-        >
-          Passwords do not match.
+          Article content is required.
         </mat-error>
       </mat-form-field>
     </div>

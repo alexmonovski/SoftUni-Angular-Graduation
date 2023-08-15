@@ -6,6 +6,7 @@ const {
   editArticle,
   deleteArticle,
   commentArticle,
+  getArticleByIdSimple,
 } = require("../services/articlesServices");
 const { getUserIdFromToken } = require("../util/validateToken");
 const articlesController = require("express").Router();
@@ -24,7 +25,15 @@ articlesController.get("/", async (req, res) => {
 // get article by id
 articlesController.get("/:id", async (req, res) => {
   try {
-    const article = await getArticleById(req.params.id);
+    let article;
+    if (req.query.action == "lean") {
+      article = await getArticleByIdSimple(req.params.id);
+      res.status(200).json({ user });
+    } else {
+      article = await getArticleById(req.params.id);
+      res.status(200).json({ user });
+    }
+
     if (!article) {
       res.status(404).json({ error: "Article not found" });
     } else {
@@ -39,10 +48,10 @@ articlesController.get("/:id", async (req, res) => {
 // post comment
 articlesController.post("/:id/comments", async (req, res) => {
   try {
-    const userId = await getUserIdFromToken(req.headers.authorization);
+    const commentAuthorId = await getUserIdFromToken(req.headers.authorization);
     const articleId = req.params.id;
     const commentBody = req.body;
-    await commentArticle(articleId, commentBody, userId);
+    await commentArticle(articleId, commentBody, commentAuthorId);
     res.status(201).json({ message: "Comment added successfully" });
   } catch (err) {
     console.error("error is" + err);
@@ -75,7 +84,13 @@ articlesController.post("/create", async (req, res) => {
     }
   } catch (err) {
     console.error("error is" + err);
-    res.status(500).json({ error: "Internal server error" });
+    if (err == "An article with this title already exists.") {
+      return res
+        .status(409)
+        .json({ error: "An article with this title already exists." });
+    } else {
+      res.status(500).json({ error: "Internal server error" });
+    }
   }
 });
 

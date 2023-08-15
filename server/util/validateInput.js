@@ -1,13 +1,17 @@
+const Article = require("../models/Article");
 const Topic = require("../models/Topic");
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
 
 async function validateInput(body, command) {
   if (command == "createArticle" || command == "editArticle") {
-    console.error(body);
     let { title, description, content } = body;
     if (title == "" || description == "" || content == "") {
       throw new Error("All fields are required.");
+    }
+    const titleTaken = await Article.findOne({ title: title });
+    if (emailTaken) {
+      throw new Error("An article with this title already exists.");
     }
     return true;
   }

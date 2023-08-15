@@ -1,4 +1,8 @@
+<!-- td: implement pagination  -->
+<!-- ngmodelchange: listen to changes to the selectedFilter variable -->
+<!-- When a user selects an option, the selectedFilter variable in the component is updated, and the toggleFilter() method is called to respond to the selection.  -->
 <select
+  *ngIf="userId"
   [(ngModel)]="selectedFilter"
   (ngModelChange)="toggleFilter()"
   *ngIf="userId"

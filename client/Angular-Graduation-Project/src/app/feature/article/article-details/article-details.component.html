@@ -4,20 +4,27 @@
       <mat-card-title>{{ article.title }}</mat-card-title>
       <mat-card-subtitle>By {{ article.author.name }}</mat-card-subtitle>
     </mat-card-header>
+
     <mat-card-content>
       <div class="article-metadata">
         <p class="metadata-item">Created on: {{ article.createdAt | date }}</p>
         <p class="metadata-item">
           Last edited on: {{ article.lastEdit | date }}
         </p>
-        <p class="metadata-item">Likes: {{ article.usersLiked.length || 0 }}</p>
-        <p class="metadata-item">Topics: {{ parsedTopics.join(", ") }}</p>
+        <app-article-topics [topicIds]="article.topics"></app-article-topics>
       </div>
       <p class="article-description">{{ article.description }}</p>
       <p class="article-content">{{ article.content }}</p>
     </mat-card-content>
-    <mat-card-actions *ngIf="!isAuthor && !hasLiked && userId">
-      <a mat-button (click)="onLike()">Like</a>
+
+    <mat-card-actions *ngIf="!isAuthor && loggedInUserId">
+      <a mat-button *ngIf="!hasLiked" (click)="onLike()">Like</a>
+      <a mat-button (click)="onComment()">Comment</a>
     </mat-card-actions>
+
+    <!-- Display comments below actions -->
+    <app-article-comments
+      [commentIds]="article.comments"
+    ></app-article-comments>
   </mat-card>
 </ng-container>

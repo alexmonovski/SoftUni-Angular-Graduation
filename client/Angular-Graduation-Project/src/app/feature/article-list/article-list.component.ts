@@ -2,17 +2,18 @@ import { Component, OnInit } from '@angular/core';
 import { ApiCallsService } from 'src/app/core/services/api-calls.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { switchMap } from 'rxjs/operators';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css'],
+  selector: 'app-article-list',
+  templateUrl: './app-article-list.component.html',
+  styleUrls: ['./app-article-list.component.css'],
 })
-export class HomeComponent implements OnInit {
+export class ArticleListComponent implements OnInit {
   articles!: any[];
   userId: string | null = null;
-  selectedFilter: string = 'all'; // Use 'all' or 'topics'
+  selectedFilter: string = 'all';
+  private articlesObservable$!: Observable<string | null>;
 
   constructor(
     private apiCalls: ApiCallsService,
@@ -21,35 +22,32 @@ export class HomeComponent implements OnInit {
 
   private subscription: Subscription = new Subscription();
 
-  num = 0;
-
   ngOnInit(): void {
-    const userIdTokenSub = this.authService.userIdToken$.subscribe({
-      next: (userId) => {
-        this.userId = userId;
-        this.selectedFilter = userId ? 'topics' : 'all';
+    const sessionSubscription = this.authService.sessionObservable$.subscribe({
+      next: (user: any) => {
+        this.userId = user?._id;
+        this.selectedFilter = this.userId ? 'topics' : 'all';
         this.toggleFilter();
       },
       error: (err) => console.error(err),
     });
-    this.subscription.add(userIdTokenSub);
+    this.subscription.add(sessionSubscription);
   }
 
   toggleFilter() {
-    const articlesObservable =
+    this.articlesObservable$ =
       this.selectedFilter === 'topics'
         ? this.apiCalls.getArticlesByTopics()
         : this.apiCalls.getAllArticles();
 
-    const articlesSub = articlesObservable.subscribe({
-      next: (data) => {
-        this.articles = data;
-        this.articles.sort((a, b) => b.lastEdit - a.lastEdit);
+    const articlesSubscription = this.articlesObservable$.subscribe({
+      next: (data: any) => {
+        this.articles = data.sort((a: any, b: any) => b.lastEdit - a.lastEdit);
       },
       error: (err) => console.error(err),
       complete: () => '',
     });
-    this.subscription.add(articlesSub);
+    this.subscription.add(articlesSubscription);
   }
 
   ngOnDestroy(): void {

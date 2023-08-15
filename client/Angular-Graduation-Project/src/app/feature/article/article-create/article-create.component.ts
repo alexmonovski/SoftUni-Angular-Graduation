@@ -3,7 +3,6 @@ import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { ApiCallsService } from 'src/app/core/services/api-calls.service';
-import { AuthService } from 'src/app/core/services/auth.service';
 import { Router } from '@angular/router';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 
@@ -28,7 +27,6 @@ export class ArticleCreateComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private apiCalls: ApiCallsService,
-    private authService: AuthService,
     private router: Router
   ) {
     this.createArticleFormGroup = this.formBuilder.group({
@@ -78,8 +76,10 @@ export class ArticleCreateComponent implements OnInit {
 
   onSubmit(): void {
     if (this.createArticleFormGroup.valid) {
-      const { title, description, content } = this.createArticleFormGroup.value.articleDataGroup;
-      const topics = this.createArticleFormGroup.value.topicsGroup.topics.slice();
+      const { title, description, content } =
+        this.createArticleFormGroup.value.articleDataGroup;
+      const topics =
+        this.createArticleFormGroup.value.topicsGroup.topics.slice();
       const sendData = {
         title,
         description,

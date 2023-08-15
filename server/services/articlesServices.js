@@ -40,6 +40,10 @@ async function getArticleById(id) {
     .populate("comments");
   return article;
 }
+async function getArticleByIdSimple(id) {
+  const article = await Article.findById(id).lean();
+  return article;
+}
 
 async function getArticlesByDate(startDate, endDate) {
   return Article.find({
@@ -92,6 +96,8 @@ async function createArticle(body, userId) {
   const topicsToCreate = [];
   const createdTopics = [];
 
+  const author = await User.findById(userId);
+
   for (const topicName of body.topics) {
     const existingTopic = existingTopics.find(
       (topic) => topic.name === topicName
@@ -124,6 +130,7 @@ async function createArticle(body, userId) {
     title: body.title,
     description: body.description,
     content: body.content,
+    authorName: author.name,
     author: userId,
     topics: uniqueTopicIds,
   });
@@ -150,9 +157,9 @@ async function likeArticle(articleId, userId) {
   await User.findByIdAndUpdate(userId, { $push: { articlesLiked: articleId } });
 }
 
-async function commentArticle(articleId, commentBody, authorId) {
+async function commentArticle(articleId, commentBody, commentAuthorId) {
   const newComment = new Comment(commentBody);
-  newComment.author = authorId;
+  newComment.author = commentAuthorId;
   await newComment.save();
 
   const article = await Article.findById(articleId);
@@ -192,4 +199,5 @@ module.exports = {
   getArticleById,
   getArticlesByTopic,
   commentArticle,
+  getArticleByIdSimple,
 };

@@ -50,6 +50,10 @@ export class ApiCallsService {
     const url = `http://localhost:3000/articles/${id}`;
     return this.http.get(url);
   }
+  getSingleArticleLean(id: any): Observable<any> {
+    const url = `http://localhost:3000/articles/${id}?action=lean`;
+    return this.http.get(url);
+  }
   getSingleArticlePopulated(id: any): Observable<any> {
     const url = `http://localhost:3000/articles/${id}?action=populated`;
     return this.http.get(url);
@@ -62,12 +66,11 @@ export class ApiCallsService {
     const url = `http://localhost:3000/articles/topics`;
     return this.http.get(url);
   }
-  addComment(comment: any, id: any): Observable<any> {
+  addComment(formData: any): Observable<any> {
     const url = `http://localhost:3000/articles/${id}/comments/`;
-    const requestBody = comment;
-    return this.http.post<any>(url, requestBody);
+    return this.http.post<any>(url, formData);
   }
-  likeArticle(id: any): Observable<any> {
+  likeArticle(): Observable<any> {
     const url = `http://localhost:3000/articles/${id}/like/`;
     return this.http.get<any>(url);
   }
@@ -85,6 +88,11 @@ export class ApiCallsService {
   //comments
   getAllComments(): Observable<any> {
     const url = `http://localhost:3000/comments/`;
+    return this.http.get(url);
+  }
+  //comments
+  getCommentById(id: any): Observable<any> {
+    const url = `http://localhost:3000/comments/${id}`;
     return this.http.get(url);
   }
 }
