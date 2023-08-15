@@ -15,6 +15,7 @@ export class SubscribedUsersCardComponent {
   subscription: Subscription = new Subscription()
 
   ngOnInit() {
+    // better to take the most up to date information; 
     this.subscription = this.apiCalls.getSingleUser(this.userId).subscribe({
       next: (response) => {
         this.user = response.user;

@@ -7,7 +7,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
-import { passwordMatchValidator } from '../services/password-match-validator.service';
+import { passwordMatchValidator } from '../../services/password-match-validator.service';
 import { ApiCallsService } from 'src/app/core/services/api-calls.service';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { AuthService } from 'src/app/core/services/auth.service';

@@ -7,6 +7,5 @@ import { ApiCallsService } from 'src/app/core/services/api-calls.service';
   styleUrls: ['./profile-user-card.component.css'],
 })
 export class ProfileUserCardComponent {
-  // no need to fetch, we already have the leaned obj; 
   @Input() user: any;
 }

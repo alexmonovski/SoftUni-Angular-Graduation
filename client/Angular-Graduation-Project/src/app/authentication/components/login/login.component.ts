@@ -36,9 +36,8 @@ export class LoginComponent {
       const formData = this.loginFormGroup.value;
       this.apiCalls.postLoginForm(formData).subscribe({
         next: (response) => {
-          // object with jwt key; 
-          const tokens = Object.values(response);
-          this.authService.setTokens(tokens[1]);
+          // {"jwt":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NGQ4Y2UzMWQ3ZGIwNWI0NDYxNzc0ZjkiLCJpYXQiOjE2OTIwODY4MTIsImV4cCI6MTY5MjA5MDQxMn0.Do23l1Z9wjXJ1IAi6yG-Fm_UmPPCPQsSW8-XEjXVAKQ"}
+          this.authService.createSession(response)
           this.router.navigate(['/']);
         },
         error: (err) => {
@@ -55,7 +54,6 @@ export class LoginComponent {
       });
     } else {
       console.error('Form has errors.');
-
     }
   }
 }

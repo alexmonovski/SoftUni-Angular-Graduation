@@ -11,14 +11,14 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class JWTInterceptor implements HttpInterceptor {
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService) {}
 
   intercept(
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     // takes token, if token, set headers
-    const token = this.authService.getToken();
+    const token = this.authService.getJwt();
     if (token) {
       request = request.clone({
         setHeaders: {

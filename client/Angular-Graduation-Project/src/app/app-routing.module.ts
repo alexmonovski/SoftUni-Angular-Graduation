@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './feature/home/home.component';
-import { LoginComponent } from './authentication/login/login.component';
-import { RegisterComponent } from './authentication/register/register.component';
+import { LoginComponent } from './authentication/components/login/login.component';
+import { RegisterComponent } from './authentication/components/register/register.component';
 import { AboutComponent } from './shared/about/about.component';
 import { ProfileComponent } from './authentication/profile/profile.component';
 import { ArticleDetailsComponent } from './feature/article/article-details/article-details.component';
 import { ArticleCreateComponent } from './feature/article/article-create/article-create.component';
 import { ArticleCommentComponent } from './feature/article/article-comment/article-comment.component';
-import { UsersComponent } from './authentication/users/users.component';
+import { UsersComponent } from './authentication/components/users/users.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },

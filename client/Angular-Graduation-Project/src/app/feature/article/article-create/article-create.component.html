@@ -1,70 +1,162 @@
-<div class="createArticle">
-  <h2>{{ formTitle }} Article Form</h2>
-  <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
-    <mat-form-field>
-      <mat-label>Title</mat-label>
-      <input matInput formControlName="title" placeholder="Title" />
-    </mat-form-field>
-
-    <mat-form-field>
-      <mat-label>Description</mat-label>
-      <textarea
-        cdkTextareaAutosize
-        cdkAutosizeMinRows="4"
-        matInput
-        formControlName="description"
-        placeholder="Description"
-      ></textarea>
-    </mat-form-field>
-
-    <mat-form-field>
-      <mat-label>Content</mat-label>
-      <textarea
-        cdkTextareaAutosize
-        cdkAutosizeMinRows="10"
-        matInput
-        formControlName="content"
-        placeholder="Content"
-      ></textarea>
-    </mat-form-field>
-
-    <mat-form-field class="example-form-field">
-      <mat-label>Topic keys</mat-label>
-      <mat-chip-grid
-        #chipGrid
-        aria-label="Enter keywords"
-        formControlName="topics"
-      >
-        <mat-chip-row
-          *ngFor="let topic of topics"
-          (removed)="removeTopic(topic)"
+<div class="form-container">
+  <form [formGroup]="registerFormGroup" (ngSubmit)="onSubmit()">
+    <div formGroupName="personalDetailsGroup">
+      <mat-form-field>
+        <mat-label>Full name</mat-label>
+        <input matInput formControlName="name" />
+        <mat-error
+          *ngIf="
+            registerFormGroup
+              .get('personalDetailsGroup')
+              ?.get('name')
+              ?.hasError('required')
+          "
         >
-          {{ topic }}
-          <button matChipRemove aria-label="'remove ' + topic">
-            <mat-icon>cancel</mat-icon>
-          </button>
-        </mat-chip-row>
-      </mat-chip-grid>
-      <input
-        placeholder="New topic..."
-        #topicInput
-        [matChipInputFor]="chipGrid"
-        (matChipInputTokenEnd)="add($event)"
-        [matAutocomplete]="auto"
-        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-      />
-      <mat-autocomplete
-        #auto="matAutocomplete"
-        (optionSelected)="selected($event)"
-      >
-        <mat-option *ngFor="let option of options" [value]="option">
-          {{ option }}
-        </mat-option>
-      </mat-autocomplete>
-    </mat-form-field>
+          Full name is required.
+        </mat-error>
+        <mat-error
+          *ngIf="
+            registerFormGroup
+              .get('personalDetailsGroup')
+              ?.get('name')
+              ?.hasError('usernameOrEmailTaken')
+          "
+        >
+          Name or email already taken.
+        </mat-error>
+      </mat-form-field>
 
-    <button mat-raised-button type="submit" color="primary">
-      Create Article
-    </button>
+      <mat-form-field>
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" />
+        <mat-error
+          *ngIf="
+            registerFormGroup
+              .get('personalDetailsGroup')
+              ?.get('email')
+              ?.hasError('required')
+          "
+        >
+          Email is required.
+        </mat-error>
+        <mat-error
+          *ngIf="
+            registerFormGroup
+              .get('personalDetailsGroup')
+              ?.get('email')
+              ?.hasError('email')
+          "
+        >
+          Please enter a valid email.
+        </mat-error>
+
+        <mat-error
+          *ngIf="
+            registerFormGroup
+              .get('personalDetailsGroup')
+              ?.get('email')
+              ?.hasError('usernameOrEmailTaken')
+          "
+        >
+          Name or email already taken.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Description</mat-label>
+        <input matInput formControlName="description" />
+        <mat-error
+          *ngIf="
+            registerFormGroup
+              .get('personalDetailsGroup')
+              ?.get('description')
+              ?.hasError('required')
+          "
+        >
+          Field is required.
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div formGroupName="passwordGroup">
+      <mat-form-field>
+        <mat-label>Password</mat-label>
+        <input matInput formControlName="password" type="password" />
+        <mat-error
+          *ngIf="
+            registerFormGroup
+              .get('passwordGroup')
+              ?.get('password')
+              ?.hasError('required')
+          "
+        >
+          Field is required.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Repeat password</mat-label>
+        <input matInput formControlName="repass" type="password" />
+        <mat-error
+          *ngIf="
+            registerFormGroup
+              .get('passwordGroup')
+              ?.get('repass')
+              ?.hasError('required')
+          "
+        >
+          Field is required.
+        </mat-error>
+        <mat-error
+          *ngIf="
+            registerFormGroup.get('passwordGroup')?.hasError('passwordMismatch')
+          "
+        >
+          Passwords do not match.
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div formGroupName="topicsGroup">
+      <mat-form-field>
+        <mat-label>Topic keys</mat-label>
+        <mat-chip-grid
+          #chipGrid
+          aria-label="Enter keywords"
+          formControlName="topics"
+        >
+          <mat-chip-row
+            *ngFor="let topic of topics"
+            (removed)="removeTopic(topic)"
+          >
+            {{ topic }}
+            <button matChipRemove aria-label="'remove ' + topic">
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </mat-chip-row>
+        </mat-chip-grid>
+        <input
+          placeholder="New topic..."
+          [matChipInputFor]="chipGrid"
+          (matChipInputTokenEnd)="add($event)"
+          [matAutocomplete]="auto"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          #topicInput
+        />
+        <mat-autocomplete
+          #auto="matAutocomplete"
+          (optionSelected)="selected($event)"
+        >
+          <mat-option *ngFor="let option of options" [value]="option">
+            {{ option }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+    <div>
+      <button class="submit" mat-raised-button color="primary" type="submit">
+        Register
+      </button>
+    </div>
   </form>
 </div>

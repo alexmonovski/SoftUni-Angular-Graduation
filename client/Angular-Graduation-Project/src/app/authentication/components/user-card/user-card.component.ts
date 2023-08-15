@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { switchMap } from 'rxjs';
+import { EMPTY, map, switchMap, tap, Subscription } from 'rxjs';
 import { ApiCallsService } from 'src/app/core/services/api-calls.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 
@@ -10,9 +10,10 @@ import { AuthService } from 'src/app/core/services/auth.service';
   styleUrls: ['./user-card.component.css'],
 })
 export class UserCardComponent {
-  // няма нужда да го феча, той е тука.
   @Input() user: any;
   isAuth = false;
+  currentUserId: any;
+  subscription: Subscription = new Subscription();
 
   userHasSubscribed = false;
   isAuthor = false;
@@ -21,7 +22,7 @@ export class UserCardComponent {
     private router: Router,
     private apiCalls: ApiCallsService,
     private authService: AuthService
-  ) { }
+  ) {}
 
   subscribeToUser(subscribeeId: any) {
     this.apiCalls.subscribeToUser(subscribeeId).subscribe({
@@ -36,23 +37,34 @@ export class UserCardComponent {
   }
 
   ngOnInit() {
-    // вземаме от сториджа;
-    const currentUserId = this.authService.getUserId();
-    if (currentUserId) {
-      this.isAuth = true;
-      this.apiCalls.getSingleUserLean(currentUserId).subscribe({
-        next: (currentUser) => {
-          if (currentUser.user.subscribedTo.includes(this.user._id)) {
-            this.userHasSubscribed = true;
+    this.subscription = this.authService.sessionObservable$
+      .pipe(
+        switchMap((loggedInUser: any) => {
+          this.currentUserId = loggedInUser?._id;
+          if (this.currentUserId) {
+            this.isAuth = true;
+            return this.apiCalls.getSingleUserLean(this.currentUserId).pipe(
+              tap((currentUser: any) => {
+                if (currentUser.user.subscribedTo.includes(this.user._id)) {
+                  this.userHasSubscribed = true;
+                }
+                if (this.currentUserId == this.user._id) {
+                  this.isAuthor = true;
+                }
+              })
+            );
+          } else {
+            return EMPTY;
           }
-          if (currentUserId == this.user._id) {
-            this.isAuthor = true;
-          }
-        },
-      });
-    }
+        })
+      )
+      .subscribe();
   }
   visitUserProfile(userId: any) {
     this.router.navigate(['/auth/profile', userId]);
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }

@@ -3,7 +3,7 @@
   <ng-container *ngIf="comments">
     <mat-card *ngFor="let comment of comments" class="comment-card">
       <mat-card-content>
-        {{ comment.content }} - {{ author }}
+        {{ comment.content }} - {{ comment.author }}
       </mat-card-content>
     </mat-card>
   </ng-container>

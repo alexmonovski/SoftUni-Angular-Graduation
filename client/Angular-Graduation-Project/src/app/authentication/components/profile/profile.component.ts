@@ -23,7 +23,7 @@ export class ProfileComponent implements OnInit {
     private apiCalls: ApiCallsService,
     private route: ActivatedRoute,
     private authService: AuthService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.route.paramMap
@@ -39,16 +39,16 @@ export class ProfileComponent implements OnInit {
           this.subscribedTo = this.user.subscribedTo;
           this.articlesLiked = this.user.articlesLiked;
           this.topicSubscriptions = this.user.topics;
-          return this.authService.userIdToken$;
+          return this.authService.sessionObservable$;
         })
       )
       .subscribe({
-        next: (userId) => {
-          this.userId = userId;
+        next: (user: any) => {
+          this.userId = user.userId;
           this.isOwner = this.userId === this.ownerId;
         },
         error: (err) => console.error(err),
-        complete: () => {},
+        complete: () => { },
       });
   }
 }
