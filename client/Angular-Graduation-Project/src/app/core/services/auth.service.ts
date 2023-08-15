@@ -14,6 +14,7 @@ export class AuthService {
   constructor(private apiCalls: ApiCallsService) {
     this.sessionSubject = new BehaviorSubject<string | null>(null);
     this.sessionObservable$ = this.sessionSubject.asObservable();
+    this.sessionSubject.next(this.getJwt());
   }
 
   setJwt(jwt: any) {
@@ -33,7 +34,6 @@ export class AuthService {
     return this.decodeJwt(jwt);
   }
 
-  // observable for the user details; no need to have observable for the jwt; we have interceptor for that.
   setUserDetails(user: any) {
     localStorage.setItem('user', user);
     this.sessionSubject.next(user);
@@ -42,10 +42,10 @@ export class AuthService {
   createSession(jwt: any) {
     const token = jwt.jwt;
     this.setJwt(token);
-    const userId = this.decodeJwt(token);
-    this.apiCalls.getSingleUserLean(userId).subscribe({
+    const decodedToken: any = this.decodeJwt(token);
+    this.apiCalls.getSingleUserLean(decodedToken?.userId).subscribe({
       next: (response) => {
-        this.setUserDetails(response);
+        this.setUserDetails(JSON.stringify(response.user));
       },
       error: (err) => {},
       complete: () => {},

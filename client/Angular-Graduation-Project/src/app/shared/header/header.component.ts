@@ -14,6 +14,7 @@ export class HeaderComponent {
 
   constructor(private authService: AuthService) {}
 
+  // на рефреш се губи. значи самия сървис ли кво трябва да си вземе динамично нещата?
   ngOnInit() {
     this.subscription = this.authService.sessionObservable$.subscribe({
       next: (user: any | null) => {

@@ -18,8 +18,7 @@ articlesController.get("/", async (req, res) => {
     res.status(200).json(articles);
   } catch (err) {
     console.log(
-      "🚀 ~ file: articlesController.js:24 ~ articlesController.get ~ articlesController:",
-      articlesController
+      "🚀 ~ file: articlesController.js:24 ~ articlesController.get ~ articlesController:"
     );
     console.error("error is " + err);
     res.status(500).json({ error: "Internal server error" });
@@ -59,8 +58,7 @@ articlesController.post("/:id/comments", async (req, res) => {
     res.status(201).json({ message: "Comment added successfully" });
   } catch (err) {
     console.log(
-      "🚀 ~ file: articlesController.js:63 ~ articlesController.post ~ post:",
-      post
+      "🚀 ~ file: articlesController.js:63 ~ articlesController.post ~ post:"
     );
     console.error("error is " + err);
     res.status(500).json({ error: "Internal server error" });
@@ -76,8 +74,7 @@ articlesController.post("/:id/like", async (req, res) => {
     res.status(200).json({ message: "Like added successfully" });
   } catch (err) {
     console.log(
-      "🚀 ~ file: articlesController.js:77 ~ articlesController.post ~ articlesController:",
-      articlesController
+      "🚀 ~ file: articlesController.js:77 ~ articlesController.post ~ articlesController:"
     );
     console.error("error is " + err);
     res.status(500).json({ error: "Internal server error" });
@@ -96,8 +93,7 @@ articlesController.post("/create", async (req, res) => {
     }
   } catch (err) {
     console.log(
-      "🚀 ~ file: articlesController.js:100 ~ articlesController.post ~ post:",
-      post
+      "🚀 ~ file: articlesController.js:100 ~ articlesController.post ~ post:"
     );
     console.error("error is " + err);
     if (err == "An article with this title already exists.") {
@@ -117,8 +113,7 @@ articlesController.post("/:id/edit", async (req, res) => {
     res.status(200).json({ message: "Article edited successfully" });
   } catch (err) {
     console.log(
-      "🚀 ~ file: articlesController.js:104 ~ articlesController.post ~ async:",
-      async
+      "🚀 ~ file: articlesController.js:104 ~ articlesController.post ~ async:"
     );
     console.error("error is " + err);
     res.status(500).json({ error: "Internal server error" });
@@ -134,8 +129,7 @@ articlesController.post("/:id/delete", async (req, res) => {
     res.status(204).send({ message: "Article deleted successfully" });
   } catch (err) {
     console.log(
-      "🚀 ~ file: articlesController.js:126 ~ articlesController.post ~ articlesController:",
-      articlesController
+      "🚀 ~ file: articlesController.js:126 ~ articlesController.post ~ articlesController:"
     );
     console.error("error is " + err);
     res.status(500).json({ error: "Internal server error" });

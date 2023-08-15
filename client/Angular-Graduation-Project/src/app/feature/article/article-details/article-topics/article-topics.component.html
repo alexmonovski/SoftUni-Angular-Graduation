@@ -1,1 +1,3 @@
-<p class="metadata-item">Topics: {{ parsedTopics.join(", ") }}</p>
+<p class="metadata-item" *ngIf="parsedTopics">
+  Topics: {{ parsedTopics.join(", ") }}
+</p>

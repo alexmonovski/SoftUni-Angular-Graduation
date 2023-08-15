@@ -15,7 +15,7 @@ usersController.get("/", async (req, res) => {
   } catch (err) {
     console.log(
       "🚀 ~ file: usersController.js:20 ~ usersController.get ~ get:",
-      get
+      
     );
     console.error("Error is: " + err);
     res.status(500).json({ error: "Internal server error" });
@@ -50,7 +50,7 @@ usersController.get("/current", async (req, res) => {
   } catch (err) {
     console.log(
       "🚀 ~ file: usersController.js:50 ~ usersController.get ~ current:",
-      current
+      
     );
     console.error("Error is: " + err);
     res.status(500).json({ error: "Internal server error" });

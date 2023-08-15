@@ -9,8 +9,7 @@ authController.post("/register", async (req, res) => {
     return res.status(201).json({ jwt });
   } catch (err) {
     console.log(
-      "🚀 ~ file: authController.js:23 ~ authController.post ~ post:",
-      post
+      "🚀 ~ file: authController.js:23 ~ authController.post ~ post:"
     );
     console.log("error is: ", err);
     if (err == "Error: A user with this email or username already exists.") {
@@ -33,8 +32,7 @@ authController.post("/login", async (req, res) => {
     return res.status(200).json({ jwt });
   } catch (err) {
     console.log(
-      "🚀 ~ file: authController.js:42 ~ authController.post ~ authController:",
-      authController
+      "🚀 ~ file: authController.js:42 ~ authController.post ~ authController:"
     );
     console.log("error is: ", err);
     if (err == "Error: Email or password do not match.") {

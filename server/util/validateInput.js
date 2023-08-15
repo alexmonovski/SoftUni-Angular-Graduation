@@ -10,7 +10,7 @@ async function validateInput(body, command) {
       throw new Error("All fields are required.");
     }
     const titleTaken = await Article.findOne({ title: title });
-    if (emailTaken) {
+    if (titleTaken) {
       throw new Error("An article with this title already exists.");
     }
     return true;

@@ -95,7 +95,6 @@ async function createArticle(body, userId) {
   const existingTopics = await Topic.find();
   const topicsToCreate = [];
   const createdTopics = [];
-
   const author = await User.findById(userId);
 
   for (const topicName of body.topics) {

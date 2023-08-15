@@ -77,6 +77,8 @@ export class ApiCallsService {
 
   // topics
   getSingleTopic(id: any): Observable<any> {
+    console.log('we reach here');
+
     const url = `http://localhost:3000/topics/${id}`;
     return this.http.get(url);
   }

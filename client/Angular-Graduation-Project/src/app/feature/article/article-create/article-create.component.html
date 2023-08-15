@@ -28,7 +28,11 @@
 
       <mat-form-field>
         <mat-label>Description</mat-label>
-        <input matInput formControlName="description" />
+        <textarea
+          matInput
+          formControlName="description"
+          matTextareaAutosize
+        ></textarea>
         <mat-error
           *ngIf="
             createArticleFormGroup
@@ -43,7 +47,11 @@
 
       <mat-form-field>
         <mat-label>Content</mat-label>
-        <input matInput formControlName="content" />
+        <textarea
+          matInput
+          formControlName="content"
+          matTextareaAutosize
+        ></textarea>
         <mat-error
           *ngIf="
             createArticleFormGroup
@@ -95,7 +103,7 @@
     </div>
     <div>
       <button class="submit" mat-raised-button color="primary" type="submit">
-        Register
+        Create article
       </button>
     </div>
   </form>

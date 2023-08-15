@@ -13,18 +13,20 @@ export class ArticleTopicsComponent {
   constructor(private apiCalls: ApiCallsService) {}
 
   ngOnInit() {
-    this.topicIds.forEach((topicId) => {
-      this.apiCalls.getSingleTopic(topicId).subscribe({
-        next: (topic: any) => {
-          this.parsedTopics.push(topic);
-        },
-        error: (error: any) => {
-          console.error('Error fetching comment:', error);
-        },
-        complete: () => {
-          console.log('Comment fetching completed.');
-        },
+    if (this.topicIds.length > 0) {
+      this.topicIds.forEach((topicId) => {
+        this.apiCalls.getSingleTopic(topicId).subscribe({
+          next: (topic: any) => {
+            this.parsedTopics.push(topic);
+          },
+          error: (error: any) => {
+            console.error('Error fetching comment:', error);
+          },
+          complete: () => {
+            console.log('Comment fetching completed.');
+          },
+        });
       });
-    });
+    }
   }
 }

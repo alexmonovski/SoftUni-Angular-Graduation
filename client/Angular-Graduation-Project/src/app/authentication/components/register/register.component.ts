@@ -106,7 +106,6 @@ export class RegisterComponent implements OnInit {
       };
       this.apiCalls.postRegisterForm(sendData).subscribe({
         next: (response) => {
-          // {"jwt":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NGRiMzllZjYxNmZiMzA4YTk5ZDAyMzIiLCJpYXQiOjE2OTIwODg4MTUsImV4cCI6MTY5MjA5MjQxNX0.xZyAwA0xGU7Kf-o5IbkW3A9TFbn4ndut_IOw8lN_tFY"}
           this.authService.createSession(response);
           this.router.navigate(['/']);
         },
@@ -126,6 +125,19 @@ export class RegisterComponent implements OnInit {
       });
     } else {
       console.error('Form has errors.');
+      for (const controlName in this.registerFormGroup.controls) {
+        if (this.registerFormGroup.controls.hasOwnProperty(controlName)) {
+          const control = this.registerFormGroup.controls[controlName];
+
+          if (control.errors) {
+            console.log(
+              `Validation errors for ${controlName}:`,
+              control.errors
+            );
+          }
+        }
+      }
+      console.log(this.registerFormGroup);
     }
   }
 }
