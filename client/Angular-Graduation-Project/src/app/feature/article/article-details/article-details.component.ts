@@ -54,7 +54,7 @@ export class ArticleDetailsComponent {
   }
 
   onLike() {
-    this.apiCalls.likeArticle().subscribe({
+    this.apiCalls.likeArticle(this.articleId).subscribe({
       next: (response: any) => {
         this.setFlags();
         console.log(response);

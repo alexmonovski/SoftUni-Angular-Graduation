@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiCallsService } from 'src/app/core/services/api-calls.service';
 import { AuthService } from 'src/app/core/services/auth.service';
-import { switchMap } from 'rxjs/operators';
 import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-article-list',
-  templateUrl: './app-article-list.component.html',
-  styleUrls: ['./app-article-list.component.css'],
+  templateUrl: './article-list.component.html',
+  styleUrls: ['./article-list.component.css'],
 })
 export class ArticleListComponent implements OnInit {
   articles!: any[];

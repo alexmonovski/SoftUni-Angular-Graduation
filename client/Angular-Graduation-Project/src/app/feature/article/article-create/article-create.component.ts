@@ -7,9 +7,9 @@ import { Router } from '@angular/router';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 
 @Component({
-  selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css'],
+  selector: 'app-article-create',
+  templateUrl: './article-create.component.html',
+  styleUrls: ['./article-create.component.css'],
 })
 export class ArticleCreateComponent implements OnInit {
   // the topics array we fetch from outside

@@ -66,11 +66,11 @@ export class ApiCallsService {
     const url = `http://localhost:3000/articles/topics`;
     return this.http.get(url);
   }
-  addComment(formData: any): Observable<any> {
+  addComment(formData: any, id: any): Observable<any> {
     const url = `http://localhost:3000/articles/${id}/comments/`;
     return this.http.post<any>(url, formData);
   }
-  likeArticle(): Observable<any> {
+  likeArticle(id: any): Observable<any> {
     const url = `http://localhost:3000/articles/${id}/like/`;
     return this.http.get<any>(url);
   }

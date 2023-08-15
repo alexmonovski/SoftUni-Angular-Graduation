@@ -3,7 +3,7 @@
     <li>
       <a mat-button routerLink="/" routerLinkActive="mat-accent">Home</a>
     </li>
-    <ng-container *ngIf="!(isLoggedIn$ | async)">
+    <ng-container *ngIf="!isLoggedIn">
       <li>
         <a mat-button routerLink="/auth/login" routerLinkActive="mat-accent"
           >Login</a
@@ -15,11 +15,11 @@
         >
       </li>
     </ng-container>
-    <ng-container *ngIf="isLoggedIn$ | async">
+    <ng-container *ngIf="isLoggedIn">
       <li>
         <a
           mat-button
-          [routerLink]="['/auth/profile/', userId$ | async]"
+          [routerLink]="['/auth/profile/', user._id]"
           routerLinkActive="mat-accent"
         >
           Profile
@@ -44,9 +44,7 @@
   </ul>
   <ul>
     <li>
-      <button mat-button (click)="logout()" *ngIf="isLoggedIn$ | async">
-        Logout
-      </button>
+      <button mat-button (click)="logout()" *ngIf="isLoggedIn">Logout</button>
     </li>
     <li>
       <app-dark-mode-toggle></app-dark-mode-toggle>

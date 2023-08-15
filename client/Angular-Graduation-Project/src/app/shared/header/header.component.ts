@@ -10,6 +10,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
 export class HeaderComponent {
   isLoggedIn = false;
   subscription: Subscription = new Subscription();
+  user: any;
 
   constructor(private authService: AuthService) {}
 
@@ -18,6 +19,7 @@ export class HeaderComponent {
       next: (user: any | null) => {
         if (user) {
           this.isLoggedIn = true;
+          this.user = user;
         } else {
           this.isLoggedIn = false;
         }

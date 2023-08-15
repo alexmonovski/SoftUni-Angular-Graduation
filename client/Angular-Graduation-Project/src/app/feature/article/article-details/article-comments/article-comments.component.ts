@@ -3,8 +3,8 @@ import { ApiCallsService } from 'src/app/core/services/api-calls.service';
 
 @Component({
   selector: 'app-article-comments',
-  templateUrl: './app-article-comments.component.html',
-  styleUrls: ['./app-article-comments.component.css'],
+  templateUrl: './article-comments.component.html',
+  styleUrls: ['./article-comments.component.css'],
 })
 export class ArticleCommentsComponent implements OnInit {
   @Input() commentIds: any[] = [];

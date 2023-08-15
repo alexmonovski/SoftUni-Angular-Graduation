@@ -1,4 +1,4 @@
-<ng-container *ngIf="user && article">
+<ng-container *ngIf="article">
   <mat-card class="article-card" [routerLink]="['/articles', article._id]">
     <mat-card-content>
       <h2 class="article-title">{{ article.title }}</h2>
