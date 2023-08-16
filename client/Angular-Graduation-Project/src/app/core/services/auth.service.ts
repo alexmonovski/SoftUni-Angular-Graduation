@@ -42,7 +42,7 @@ export class AuthService {
   getUserDetails() {
     const user = localStorage.getItem('user');
     if (user) {
-      return user;
+      return JSON.parse(user);
     } else {
       return null;
     }

@@ -45,7 +45,6 @@ export class ProfileComponent implements OnInit {
       .subscribe({
         next: (user: any) => {
           if (user) {
-            user = JSON.parse(user);
             this.userId = user._id;
             this.isOwner = this.userId === this.ownerId;
           }

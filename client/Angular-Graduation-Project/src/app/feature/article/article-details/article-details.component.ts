@@ -46,8 +46,9 @@ export class ArticleDetailsComponent {
   }
 
   setFlags() {
-    this.loggedInUserId = this.authService.getUserId();
-    this.isAuthor = this.loggedInUserId == this.article.author._id;
+    const loggedInUser = this.authService.getUserDetails();
+    this.loggedInUserId = loggedInUser._id;
+    this.isAuthor = this.loggedInUserId == this.article.author;
     this.hasLiked = this.article.usersLiked.some(
       (likedUserId: any) => likedUserId === this.loggedInUserId
     );

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { Subscription, map, of, switchMap } from 'rxjs';
 import { AuthService } from 'src/app/core/services/auth.service';
 
@@ -12,16 +13,17 @@ export class HeaderComponent {
   subscription: Subscription = new Subscription();
   user: any;
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit() {
     this.subscription = this.authService.sessionObservable$.subscribe({
       next: (user: any | null) => {
         if (user) {
           this.isLoggedIn = true;
-          this.user = JSON.parse(user);
+          this.user = user;
         } else {
           this.isLoggedIn = false;
+          this.user = null;
         }
       },
       error: (err) => {},
@@ -31,6 +33,7 @@ export class HeaderComponent {
 
   logout() {
     this.authService.destroySession();
+    this.router.navigate(['/']);
   }
 
   ngOnDestroy() {

@@ -3,33 +3,10 @@ const Comment = require("../models/Comment");
 const Topic = require("../models/Topic");
 const User = require("../models/User");
 const { validateInput } = require("../util/validateInput");
-const {
-  createTopic,
-  getTopicsByArticle,
-  associateTopicWithArticle,
-  associateTopicsWithArticle,
-} = require("./topicsServices");
+const { createTopic, associateTopicsWithArticle } = require("./topicsServices");
 
 async function getAllArticles() {
   return Article.find().lean();
-}
-
-async function getArticlesByTopics(userId) {
-  const user = await User.findById(userId).populate("topics");
-
-  // async function getTopicsByArticle(articleId) {
-  //   const articleDocument = await Article.findById(articleId).populate("topics");
-  //   return articleDocument.topics;
-  // }
-
-  const topicArticleMap = {};
-  for (const topic of user.topics) {
-    const articlesForTopic = await Article.find({ topics: topic._id }).select(
-      "_id"
-    );
-    const articleIds = articlesForTopic.map((article) => article._id);
-    topicArticleMap[topic.name] = articleIds;
-  }
 }
 
 async function getArticleById(id) {
@@ -57,21 +34,6 @@ async function getArticlesByDate(startDate, endDate) {
 async function getArticlesByAuthor(authorId) {
   return Article.find({ author: authorId });
 }
-
-async function getArticlesByTopics(userId) {
-  const user = await User.findById(userId).populate("topics");
-  const topicArticleMap = {};
-  for (const topic of user.topics) {
-    const topicWithArticles = await Topic.findById(topic._id).populate(
-      "articles"
-    );
-    if (topicWithArticles) {
-      topicArticleMap[topic.name] = topicWithArticles.articles;
-    }
-  }
-  return topicArticleMap;
-}
-
 async function getAllUniqueArticles(userId) {
   const topicArticleMap = await getArticlesByTopics(userId);
   const allArticles = Object.values(topicArticleMap)
@@ -183,6 +145,22 @@ async function deleteArticle(articleId, userId) {
   } catch (error) {
     throw error;
   }
+}
+
+async function getArticlesByTopics(topicsArr) {
+  const articlesByTopics = {};
+  for (const topicId of topicsArr) {
+    const topic = await Topic.findById(topicId);
+    articlesByTopics[topic.name] = [];
+    if (topic.articles.length > 0) {
+      topic.articles.forEach((article) => {
+        articlesByTopics[topic.name].push(article);
+      });
+    } else {
+      articlesByTopics[topic.name].push("");
+    }
+  }
+  return articlesByTopics;
 }
 
 module.exports = {

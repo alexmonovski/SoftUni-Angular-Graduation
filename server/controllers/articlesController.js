@@ -7,6 +7,7 @@ const {
   deleteArticle,
   commentArticle,
   getArticleByIdSimple,
+  getArticlesByTopics,
 } = require("../services/articlesServices");
 const { getUserIdFromToken } = require("../util/validateToken");
 const articlesController = require("express").Router();
@@ -17,7 +18,7 @@ articlesController.get("/", async (req, res) => {
     const articles = await getAllArticles();
     res.status(200).json(articles);
   } catch (err) {
-    console.log(
+    console.error(
       "🚀 ~ file: articlesController.js:24 ~ articlesController.get ~ articlesController:"
     );
     console.error("error is " + err);
@@ -40,7 +41,7 @@ articlesController.get("/:id", async (req, res) => {
       res.status(200).json(article);
     }
   } catch (err) {
-    console.log(
+    console.error(
       "🚀 ~ file: articlesController.js:48 ~ articlesController.get ~ id:"
     );
     console.error("error is " + err);
@@ -57,7 +58,7 @@ articlesController.post("/:id/comments", async (req, res) => {
     await commentArticle(articleId, commentBody, commentAuthorId);
     res.status(201).json({ message: "Comment added successfully" });
   } catch (err) {
-    console.log(
+    console.error(
       "🚀 ~ file: articlesController.js:63 ~ articlesController.post ~ post:"
     );
     console.error("error is " + err);
@@ -73,7 +74,22 @@ articlesController.post("/:id/like", async (req, res) => {
     await likeArticle(articleId, userId);
     res.status(200).json({ message: "Like added successfully" });
   } catch (err) {
-    console.log(
+    console.error(
+      "🚀 ~ file: articlesController.js:77 ~ articlesController.post ~ articlesController:"
+    );
+    console.error("error is " + err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// get articles by topics
+articlesController.post("/topics", async (req, res) => {
+  try {
+    const userTopics = req.body;
+    const articlesByTopics = await getArticlesByTopics(userTopics);
+    res.status(200).json(articlesByTopics);
+  } catch (err) {
+    console.error(
       "🚀 ~ file: articlesController.js:77 ~ articlesController.post ~ articlesController:"
     );
     console.error("error is " + err);
@@ -85,7 +101,6 @@ articlesController.post("/:id/like", async (req, res) => {
 articlesController.post("/create", async (req, res) => {
   try {
     const userId = await getUserIdFromToken(req.headers.authorization);
-    console.log(userId);
     const newArticle = await createArticle(req.body, userId);
 
     if (newArticle) {
@@ -94,7 +109,7 @@ articlesController.post("/create", async (req, res) => {
       res.status(400).json({ error: "Bad Request" });
     }
   } catch (err) {
-    console.log(
+    console.error(
       "🚀 ~ file: articlesController.js:100 ~ articlesController.post ~ post:"
     );
     console.error("error is " + err);
@@ -114,7 +129,7 @@ articlesController.post("/:id/edit", async (req, res) => {
     await editArticle(req.params.id, req.body);
     res.status(200).json({ message: "Article edited successfully" });
   } catch (err) {
-    console.log(
+    console.error(
       "🚀 ~ file: articlesController.js:104 ~ articlesController.post ~ async:"
     );
     console.error("error is " + err);
@@ -130,7 +145,7 @@ articlesController.post("/:id/delete", async (req, res) => {
     await deleteArticle(articleId, userId);
     res.status(204).send({ message: "Article deleted successfully" });
   } catch (err) {
-    console.log(
+    console.error(
       "🚀 ~ file: articlesController.js:126 ~ articlesController.post ~ articlesController:"
     );
     console.error("error is " + err);

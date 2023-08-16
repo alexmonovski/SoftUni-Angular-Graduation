@@ -62,9 +62,9 @@ export class ApiCallsService {
     const url = `http://localhost:3000/articles/create`;
     return this.http.post(url, formData);
   }
-  getArticlesByTopics(): Observable<any> {
+  getArticlesByTopics(topics: any): Observable<any> {
     const url = `http://localhost:3000/articles/topics`;
-    return this.http.get(url);
+    return this.http.post(url, topics);
   }
   addComment(formData: any, id: any): Observable<any> {
     const url = `http://localhost:3000/articles/${id}/comments/`;

@@ -8,17 +8,21 @@ import { ApiCallsService } from 'src/app/core/services/api-calls.service';
 })
 export class ArticleCardComponent {
   @Input() articleId: any;
+
   article: any;
 
   constructor(private apiCalls: ApiCallsService) {}
 
   ngOnInit() {
-    this.apiCalls.getSingleArticle(this.articleId).subscribe({
-      next: (articleResponse) => {
-        this.article = articleResponse;
-      },
-      error: (err) => console.error(err),
-      complete: () => {},
-    });
+    if (this.articleId) {
+      this.apiCalls.getSingleArticle(this.articleId).subscribe({
+        next: (articleResponse) => {
+          this.article = articleResponse;
+          console.log(articleResponse);
+        },
+        error: (err) => console.error(err),
+        complete: () => {},
+      });
+    }
   }
 }

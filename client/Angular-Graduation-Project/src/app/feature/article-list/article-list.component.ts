@@ -9,9 +9,10 @@ import { Observable, Subscription } from 'rxjs';
   styleUrls: ['./article-list.component.css'],
 })
 export class ArticleListComponent implements OnInit {
-  articles!: any[];
+  articles: any[] = [];
   userId: string | null = null;
   selectedFilter: string = 'all';
+  userTopics: any;
   private articlesObservable$!: Observable<string | null>;
 
   constructor(
@@ -24,11 +25,15 @@ export class ArticleListComponent implements OnInit {
   ngOnInit(): void {
     const sessionSubscription = this.authService.sessionObservable$.subscribe({
       next: (user: any) => {
-        this.userId = user?._id;
+        if (user) {
+          this.userTopics = user.topics.slice();
+          this.userId = user._id;
+        }
         this.selectedFilter = this.userId ? 'topics' : 'all';
         this.toggleFilter();
       },
       error: (err) => console.error(err),
+      complete: () => {},
     });
     this.subscription.add(sessionSubscription);
   }
@@ -36,15 +41,31 @@ export class ArticleListComponent implements OnInit {
   toggleFilter() {
     this.articlesObservable$ =
       this.selectedFilter === 'topics'
-        ? this.apiCalls.getArticlesByTopics()
+        ? this.apiCalls.getArticlesByTopics(this.userTopics)
         : this.apiCalls.getAllArticles();
 
     const articlesSubscription = this.articlesObservable$.subscribe({
       next: (data: any) => {
-        this.articles = data.sort((a: any, b: any) => b.lastEdit - a.lastEdit);
+        if (this.selectedFilter === 'topics') {
+          for (const key in data) {
+            for (const articleId of data[key]) {
+              if (this.articles.includes(articleId)) {
+                continue;
+              } else {
+                this.articles.push(articleId);
+              }
+            }
+          }
+        } else if (this.selectedFilter === 'all') {
+          data.forEach((articleObj: any) => {
+            this.articles.push(articleObj._id);
+          });
+        }
       },
       error: (err) => console.error(err),
-      complete: () => '',
+      complete: () => {
+        console.log(this.articles);
+      },
     });
     this.subscription.add(articlesSubscription);
   }
