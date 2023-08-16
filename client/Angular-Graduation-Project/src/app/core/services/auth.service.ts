@@ -14,7 +14,7 @@ export class AuthService {
   constructor(private apiCalls: ApiCallsService) {
     this.sessionSubject = new BehaviorSubject<string | null>(null);
     this.sessionObservable$ = this.sessionSubject.asObservable();
-    this.sessionSubject.next(this.getJwt());
+    this.sessionSubject.next(this.getUserDetails());
   }
 
   setJwt(jwt: any) {
@@ -37,6 +37,15 @@ export class AuthService {
   setUserDetails(user: any) {
     localStorage.setItem('user', user);
     this.sessionSubject.next(user);
+  }
+
+  getUserDetails() {
+    const user = localStorage.getItem('user');
+    if (user) {
+      return user;
+    } else {
+      return null;
+    }
   }
 
   createSession(jwt: any) {

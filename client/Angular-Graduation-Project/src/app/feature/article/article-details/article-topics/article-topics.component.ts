@@ -8,7 +8,7 @@ import { ApiCallsService } from 'src/app/core/services/api-calls.service';
 })
 export class ArticleTopicsComponent {
   @Input() topicIds!: any[];
-  parsedTopics!: any[];
+  parsedTopics: any[] = [];
 
   constructor(private apiCalls: ApiCallsService) {}
 
@@ -17,14 +17,12 @@ export class ArticleTopicsComponent {
       this.topicIds.forEach((topicId) => {
         this.apiCalls.getSingleTopic(topicId).subscribe({
           next: (topic: any) => {
-            this.parsedTopics.push(topic);
+            this.parsedTopics.push(topic.topic.name);
           },
           error: (error: any) => {
             console.error('Error fetching comment:', error);
           },
-          complete: () => {
-            console.log('Comment fetching completed.');
-          },
+          complete: () => {},
         });
       });
     }

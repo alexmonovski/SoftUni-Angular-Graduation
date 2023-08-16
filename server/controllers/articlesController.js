@@ -85,7 +85,9 @@ articlesController.post("/:id/like", async (req, res) => {
 articlesController.post("/create", async (req, res) => {
   try {
     const userId = await getUserIdFromToken(req.headers.authorization);
+    console.log(userId);
     const newArticle = await createArticle(req.body, userId);
+
     if (newArticle) {
       res.status(201).json(newArticle);
     } else {

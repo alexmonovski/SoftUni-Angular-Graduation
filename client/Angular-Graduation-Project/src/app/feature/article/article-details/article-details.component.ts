@@ -57,7 +57,6 @@ export class ArticleDetailsComponent {
     this.apiCalls.likeArticle(this.articleId).subscribe({
       next: (response: any) => {
         this.setFlags();
-        console.log(response);
       },
       error: (err: any) => {
         console.error(err);

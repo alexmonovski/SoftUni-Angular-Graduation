@@ -23,7 +23,7 @@ export class ProfileComponent implements OnInit {
     private apiCalls: ApiCallsService,
     private route: ActivatedRoute,
     private authService: AuthService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.route.paramMap
@@ -44,11 +44,14 @@ export class ProfileComponent implements OnInit {
       )
       .subscribe({
         next: (user: any) => {
-          this.userId = user.userId;
-          this.isOwner = this.userId === this.ownerId;
+          if (user) {
+            user = JSON.parse(user);
+            this.userId = user._id;
+            this.isOwner = this.userId === this.ownerId;
+          }
         },
         error: (err) => console.error(err),
-        complete: () => { },
+        complete: () => {},
       });
   }
 }

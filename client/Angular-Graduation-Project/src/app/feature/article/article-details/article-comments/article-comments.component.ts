@@ -21,9 +21,7 @@ export class ArticleCommentsComponent implements OnInit {
         error: (error: any) => {
           console.error('Error fetching comment:', error);
         },
-        complete: () => {
-          console.log('Comment fetching completed.');
-        },
+        complete: () => {},
       });
     });
   }

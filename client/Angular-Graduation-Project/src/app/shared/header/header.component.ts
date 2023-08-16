@@ -14,13 +14,12 @@ export class HeaderComponent {
 
   constructor(private authService: AuthService) {}
 
-  // на рефреш се губи. значи самия сървис ли кво трябва да си вземе динамично нещата?
   ngOnInit() {
     this.subscription = this.authService.sessionObservable$.subscribe({
       next: (user: any | null) => {
         if (user) {
           this.isLoggedIn = true;
-          this.user = user;
+          this.user = JSON.parse(user);
         } else {
           this.isLoggedIn = false;
         }
