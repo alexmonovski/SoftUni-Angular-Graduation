@@ -18,7 +18,6 @@ export class ArticleCardComponent {
       this.apiCalls.getSingleArticle(this.articleId).subscribe({
         next: (articleResponse) => {
           this.article = articleResponse;
-          console.log(articleResponse);
         },
         error: (err) => console.error(err),
         complete: () => {},

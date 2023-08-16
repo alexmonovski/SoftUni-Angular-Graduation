@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiCallsService } from 'src/app/core/services/api-calls.service';
 import { AuthService } from 'src/app/core/services/auth.service';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-article-list',
@@ -10,64 +10,59 @@ import { Observable, Subscription } from 'rxjs';
 })
 export class ArticleListComponent implements OnInit {
   articles: any[] = [];
-  userId: string | null = null;
+  filteredArticles: any[] = [];
+  user: any;
   selectedFilter: string = 'all';
-  userTopics: any;
+
   private articlesObservable$!: Observable<string | null>;
+  private subscription: Subscription = new Subscription();
 
   constructor(
     private apiCalls: ApiCallsService,
     private authService: AuthService
   ) {}
 
-  private subscription: Subscription = new Subscription();
-
   ngOnInit(): void {
-    const sessionSubscription = this.authService.sessionObservable$.subscribe({
-      next: (user: any) => {
-        if (user) {
-          this.userTopics = user.topics.slice();
-          this.userId = user._id;
-        }
-        this.selectedFilter = this.userId ? 'topics' : 'all';
-        this.toggleFilter();
-      },
-      error: (err) => console.error(err),
-      complete: () => {},
-    });
-    this.subscription.add(sessionSubscription);
+    const sessionSub = this.authService.sessionObservable$
+      .pipe(
+        switchMap((user: any) => {
+          this.user = user;
+          return this.apiCalls.getAllArticles();
+        })
+      )
+      .subscribe({
+        next: (data: any) => {
+          data.forEach((article: any) => {
+            this.articles.push(article);
+          });
+          this.filter();
+        },
+        error: (err) => console.error(err),
+        complete: () => {},
+      });
+    this.subscription.add(sessionSub);
   }
 
-  toggleFilter() {
-    this.articlesObservable$ =
-      this.selectedFilter === 'topics'
-        ? this.apiCalls.getArticlesByTopics(this.userTopics)
-        : this.apiCalls.getAllArticles();
-
-    const articlesSubscription = this.articlesObservable$.subscribe({
-      next: (data: any) => {
-        if (this.selectedFilter === 'topics') {
-          for (const key in data) {
-            for (const articleId of data[key]) {
-              if (this.articles.includes(articleId)) {
-                continue;
-              } else {
-                this.articles.push(articleId);
-              }
-            }
-          }
-        } else if (this.selectedFilter === 'all') {
-          data.forEach((articleObj: any) => {
-            this.articles.push(articleObj._id);
-          });
+  filter() {
+    this.filteredArticles = [];
+    if (this.selectedFilter == 'topics') {
+      const userTopicIds = this.user.topics;
+      this.articles.forEach((article) => {
+        const hasCommonTopic = article.topics.some((topicId: any) =>
+          userTopicIds.includes(topicId)
+        );
+        if (
+          hasCommonTopic &&
+          !this.filteredArticles.some(
+            (filteredArticle) => filteredArticle._id === article._id
+          )
+        ) {
+          this.filteredArticles.push(article);
         }
-      },
-      error: (err) => console.error(err),
-      complete: () => {
-        console.log(this.articles);
-      },
-    });
-    this.subscription.add(articlesSubscription);
+      });
+    } else if (this.selectedFilter == 'all') {
+      this.filteredArticles = this.articles.slice();
+    }
   }
 
   ngOnDestroy(): void {

@@ -36,7 +36,7 @@ export class AuthService {
 
   setUserDetails(user: any) {
     localStorage.setItem('user', user);
-    this.sessionSubject.next(user);
+    this.sessionSubject.next(JSON.parse(user));
   }
 
   getUserDetails() {
@@ -52,13 +52,19 @@ export class AuthService {
     const token = jwt.jwt;
     this.setJwt(token);
     const decodedToken: any = this.decodeJwt(token);
-    this.apiCalls.getSingleUserLean(decodedToken?.userId).subscribe({
-      next: (response) => {
-        this.setUserDetails(JSON.stringify(response.user));
-      },
-      error: (err) => {},
-      complete: () => {},
-    });
+    const userId = decodedToken?.userId;
+    if (userId) {
+      this.apiCalls.getSingleUserLean(userId).subscribe({
+        next: (response) => {
+          const user = response?.user;
+          if (user && user.topics) {
+            this.setUserDetails(JSON.stringify(user));
+          }
+        },
+        error: (err) => {},
+        complete: () => {},
+      });
+    }
   }
 
   destroySession() {
