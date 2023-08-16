@@ -3,6 +3,8 @@ import { Component } from '@angular/core';
 import { ApiCallsService } from 'src/app/core/services/api-calls.service';
 import { FormGroup } from '@angular/forms';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { forkJoin, of } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-article-details',
@@ -67,10 +69,35 @@ export class ArticleDetailsComponent {
     });
   }
 
+  onEdit() {
+    const topics: any[] = [];
+    const observables = this.article.topics.map((topic: any) => {
+      return this.apiCalls.getSingleTopic(topic).pipe(
+        catchError((err) => of(null)),
+        tap((data) => {
+          if (data) {
+            topics.push(data.topic.name);
+          }
+        })
+      );
+    });
+
+    forkJoin(observables).subscribe({
+      next: () => {
+        this.router.navigate([`/articles/${this.articleId}/edit`], {
+          state: {
+            article: this.article,
+            topics: topics,
+          },
+        });
+      },
+      error: (err) => {},
+    });
+  }
+
+  onDelete() {}
+
   onComment() {
-    const id = this.route.snapshot.params['id'];
-    if (id) {
-      this.router.navigate([`/articles/${id}/add-comment`]);
-    }
+    this.router.navigate([`/articles/${this.articleId}/add-comment`]);
   }
 }

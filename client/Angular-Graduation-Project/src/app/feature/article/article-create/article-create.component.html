@@ -102,8 +102,23 @@
       </mat-form-field>
     </div>
     <div>
-      <button class="submit" mat-raised-button color="primary" type="submit">
+      <button
+        class="submit"
+        mat-raised-button
+        color="primary"
+        type="submit"
+        *ngIf="createOrEdit == 'create'"
+      >
         Create article
+      </button>
+      <button
+        class="submit"
+        mat-raised-button
+        color="primary"
+        type="submit"
+        *ngIf="createOrEdit == 'edit'"
+      >
+        Edit article
       </button>
     </div>
   </form>

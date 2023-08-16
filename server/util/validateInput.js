@@ -9,9 +9,11 @@ async function validateInput(body, command) {
     if (title == "" || description == "" || content == "") {
       throw new Error("All fields are required.");
     }
-    const titleTaken = await Article.findOne({ title: title });
-    if (titleTaken) {
-      throw new Error("An article with this title already exists.");
+    const article = await Article.findOne({ title: title });
+    if (article) {
+      if (article.id != body.id) {
+        throw new Error("An article with this title already exists.");
+      }
     }
     return true;
   }

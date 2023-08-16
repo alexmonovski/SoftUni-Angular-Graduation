@@ -4,7 +4,6 @@ const commentsController = require("express").Router();
 
 // get comment by id;
 commentsController.get("/:id", async (req, res) => {
-  console.log("we reach");
   try {
     const comment = await getCommentById(req.params.id);
     if (!comment) {

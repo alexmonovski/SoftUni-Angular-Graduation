@@ -130,14 +130,14 @@ export class RegisterComponent implements OnInit {
           const control = this.registerFormGroup.controls[controlName];
 
           if (control.errors) {
-            console.log(
+            console.error(
               `Validation errors for ${controlName}:`,
               control.errors
             );
           }
         }
       }
-      console.log(this.registerFormGroup);
+      console.error(this.registerFormGroup);
     }
   }
 }

@@ -21,6 +21,7 @@ const routes: Routes = [
   { path: 'articles/create', component: ArticleCreateComponent },
   { path: 'articles/:id', component: ArticleDetailsComponent },
   { path: 'articles/:id/add-comment', component: ArticleCommentFormComponent },
+  { path: 'articles/:id/edit', component: ArticleCreateComponent },
 ];
 
 @NgModule({

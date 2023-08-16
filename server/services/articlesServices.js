@@ -103,10 +103,14 @@ async function createArticle(body, userId) {
   await associateTopicsWithArticle(newArticle, uniqueTopicIds);
   return newArticle;
 }
+
 async function editArticle(id, body) {
+  body.id = id;
   await validateInput(body, "editArticle");
   const article = await Article.findById(id);
-  article.name = body.name;
+  console.log(article.title);
+  article.title = body.title;
+  console.log(article.title);
   article.description = body.description;
   article.topics = body.topics;
   article.lastEdit = Date.now();

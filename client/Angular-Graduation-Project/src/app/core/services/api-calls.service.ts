@@ -74,6 +74,10 @@ export class ApiCallsService {
     const url = `http://localhost:3000/articles/${id}/like/`;
     return this.http.get<any>(url);
   }
+  editArticle(formData: any, id: any): Observable<any> {
+    const url = `http://localhost:3000/articles/${id}/edit`;
+    return this.http.post(url, formData);
+  }
 
   // topics
   getSingleTopic(id: any): Observable<any> {

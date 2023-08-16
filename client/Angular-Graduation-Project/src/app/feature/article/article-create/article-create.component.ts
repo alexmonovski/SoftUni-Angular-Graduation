@@ -3,7 +3,7 @@ import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { ApiCallsService } from 'src/app/core/services/api-calls.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 
 @Component({
@@ -20,6 +20,8 @@ export class ArticleCreateComponent implements OnInit {
   separatorKeysCodes: number[] = [ENTER, COMMA];
   // ref to the topic input el
   @ViewChild('topicInput') topicInput!: ElementRef<HTMLInputElement>;
+  createOrEdit = 'create';
+  article!: any;
 
   createArticleFormGroup: FormGroup;
 
@@ -27,7 +29,8 @@ export class ArticleCreateComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private apiCalls: ApiCallsService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {
     this.createArticleFormGroup = this.formBuilder.group({
       articleDataGroup: this.formBuilder.group({
@@ -56,6 +59,7 @@ export class ArticleCreateComponent implements OnInit {
     }
     event.chipInput!.clear();
   }
+
   // add chip via autocomplete select
   selected(event: MatAutocompleteSelectedEvent): void {
     this.topics.push(event.option.viewValue);
@@ -72,6 +76,23 @@ export class ArticleCreateComponent implements OnInit {
       },
       error: (err) => console.error(err),
     });
+
+    if (history.state && history.state.article) {
+      this.article = history.state.article;
+      const topics = history.state.topics;
+      this.createOrEdit = 'edit';
+      this.createArticleFormGroup.patchValue({
+        articleDataGroup: {
+          title: this.article.title,
+          description: this.article.description,
+          content: this.article.content,
+        },
+        topicsGroup: {
+          topics: this.article.topics.slice(),
+        },
+      });
+      this.topics = topics.slice();
+    }
   }
 
   onSubmit(): void {
@@ -86,22 +107,41 @@ export class ArticleCreateComponent implements OnInit {
         content,
         topics,
       };
-      this.apiCalls.createArticle(sendData).subscribe({
-        next: (response) => {
-          const id = response._id;
-          this.router.navigate([`/articles/${id}`]);
-        },
-        error: (err) => {
-          console.error(err);
-          if (err.status === 409) {
-            this.createArticleFormGroup
-              .get('articleDataGroup.title')
-              ?.setErrors({
-                titleTaken: true,
-              });
-          }
-        },
-      });
+
+      if (this.createOrEdit == 'create') {
+        this.apiCalls.createArticle(sendData).subscribe({
+          next: (response) => {
+            const id = response._id;
+            this.router.navigate([`/articles/${id}`]);
+          },
+          error: (err) => {
+            console.error(err);
+            if (err.status === 409) {
+              this.createArticleFormGroup
+                .get('articleDataGroup.title')
+                ?.setErrors({
+                  titleTaken: true,
+                });
+            }
+          },
+        });
+      } else if (this.createOrEdit == 'edit') {
+        this.apiCalls.editArticle(sendData, this.article._id).subscribe({
+          next: (response) => {
+            this.router.navigate([`/articles/${this.article._id}`]);
+          },
+          error: (err) => {
+            console.error(err);
+            if (err.status === 409) {
+              this.createArticleFormGroup
+                .get('articleDataGroup.title')
+                ?.setErrors({
+                  titleTaken: true,
+                });
+            }
+          },
+        });
+      }
     } else {
       console.error('Form has errors.');
     }

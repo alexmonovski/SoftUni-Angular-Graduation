@@ -19,13 +19,16 @@
 
     <mat-card-actions *ngIf="!isAuthor && loggedInUserId">
       <a mat-button *ngIf="!hasLiked" (click)="onLike()">Like</a>
+      <a mat-button (click)="onComment()">Comment</a>
     </mat-card-actions>
 
     <app-article-comments
       [commentIds]="article.comments"
     ></app-article-comments>
-    <mat-card-actions *ngIf="loggedInUserId">
-      <a mat-button (click)="onComment()">Comment</a>
+
+    <mat-card-actions *ngIf="isAuthor && loggedInUserId">
+      <a mat-button (click)="onEdit()" *ngIf="isAuthor">Edit article</a>
+      <a mat-button (click)="onDelete()">Delete article</a>
     </mat-card-actions>
   </mat-card>
 </ng-container>

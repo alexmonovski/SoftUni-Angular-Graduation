@@ -126,14 +126,20 @@ articlesController.post("/create", async (req, res) => {
 // edit an article
 articlesController.post("/:id/edit", async (req, res) => {
   try {
-    await editArticle(req.params.id, req.body);
-    res.status(200).json({ message: "Article edited successfully" });
+    const article = await editArticle(req.params.id, req.body);
+    if (article) {
+      res.status(201).json(article);
+    } else {
+      res.status(400).json({ error: "Bad Request" });
+    }
   } catch (err) {
-    console.error(
-      "🚀 ~ file: articlesController.js:104 ~ articlesController.post ~ async:"
-    );
-    console.error("error is " + err);
-    res.status(500).json({ error: "Internal server error" });
+    if (err == "An article with this title already exists.") {
+      return res
+        .status(409)
+        .json({ error: "An article with this title already exists." });
+    } else {
+      res.status(500).json({ error: "Internal server error" });
+    }
   }
 });
 

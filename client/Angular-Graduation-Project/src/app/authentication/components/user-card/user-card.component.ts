@@ -25,8 +25,6 @@ export class UserCardComponent {
   ) {}
 
   subscribeToUser(subscribeeId: any) {
-    console.log(subscribeeId);
-
     this.apiCalls.subscribeToUser(subscribeeId).subscribe({
       next: (response) => {
         if (response.updatedUser.subscribedTo.includes(this.user._id)) {

@@ -12,7 +12,7 @@ topicsController.get("/", async (req, res) => {
     const topics = await getAllTopics();
     res.status(200).json({ topics });
   } catch (err) {
-    console.log(
+    console.error(
       "🚀 ~ file: topicsController.js:11 ~ topicsController.get ~ async:"
     );
     console.error("error is " + err);
@@ -26,7 +26,7 @@ topicsController.get("/:id", async (req, res) => {
     const topic = await getSingleTopic(req.params.id);
     res.status(200).json({ topic });
   } catch (err) {
-    console.log(
+    console.error(
       "🚀 ~ file: topicsController.js:31 ~ topicsController.get ~ topicsController"
     );
     console.error("error is " + err);
@@ -44,7 +44,7 @@ topicsController.get("/:id/articles", async (req, res) => {
       res.status(404).json({ error: "No articles found for the given topic" });
     }
   } catch (err) {
-    console.log(
+    console.error(
       "🚀 ~ file: topicsController.js:47 ~ topicsController.get ~ articles:"
     );
     console.error("error is " + err);
@@ -58,7 +58,7 @@ topicsController.post("/", async (req, res) => {
     const newTopic = await createTopic(req.params.id);
     res.status(201).json({ newTopic });
   } catch (err) {
-    console.log(
+    console.error(
       "🚀 ~ file: topicsController.js:51 ~ topicsController.post ~ async:"
     );
     console.error("error is " + err);
