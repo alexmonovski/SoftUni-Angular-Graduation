@@ -2,7 +2,7 @@
   <mat-card class="article-card">
     <mat-card-header>
       <mat-card-title>{{ article.title }}</mat-card-title>
-      <mat-card-subtitle>By {{ article.author.name }}</mat-card-subtitle>
+      <mat-card-subtitle>By {{ article.authorName }}</mat-card-subtitle>
     </mat-card-header>
 
     <mat-card-content>
@@ -13,18 +13,19 @@
         </p>
         <app-article-topics [topicIds]="article.topics"></app-article-topics>
       </div>
-      <p class="article-description">{{ article.description }}</p>
-      <p class="article-content">{{ article.content }}</p>
+      <p class="article-description">Description: {{ article.description }}</p>
+      <p class="article-content">Content: {{ article.content }}</p>
     </mat-card-content>
 
     <mat-card-actions *ngIf="!isAuthor && loggedInUserId">
       <a mat-button *ngIf="!hasLiked" (click)="onLike()">Like</a>
-      <a mat-button (click)="onComment()">Comment</a>
     </mat-card-actions>
 
-    <!-- Display comments below actions -->
     <app-article-comments
       [commentIds]="article.comments"
     ></app-article-comments>
+    <mat-card-actions *ngIf="loggedInUserId">
+      <a mat-button (click)="onComment()">Comment</a>
+    </mat-card-actions>
   </mat-card>
 </ng-container>

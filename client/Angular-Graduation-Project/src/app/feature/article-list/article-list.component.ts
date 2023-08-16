@@ -3,16 +3,20 @@ import { ApiCallsService } from 'src/app/core/services/api-calls.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { Observable, Subscription, switchMap } from 'rxjs';
 
+// may add functionality to list the topic above the articles; screw the similarity
+// may add functionality to list the articles by every user ;
+
 @Component({
   selector: 'app-article-list',
   templateUrl: './article-list.component.html',
   styleUrls: ['./article-list.component.css'],
 })
 export class ArticleListComponent implements OnInit {
-  articles: any[] = [];
+  articles!: any[];
   filteredArticles: any[] = [];
   user: any;
   selectedFilter: string = 'all';
+  num = 1;
 
   private articlesObservable$!: Observable<string | null>;
   private subscription: Subscription = new Subscription();
@@ -32,6 +36,7 @@ export class ArticleListComponent implements OnInit {
       )
       .subscribe({
         next: (data: any) => {
+          this.articles = [];
           data.forEach((article: any) => {
             this.articles.push(article);
           });

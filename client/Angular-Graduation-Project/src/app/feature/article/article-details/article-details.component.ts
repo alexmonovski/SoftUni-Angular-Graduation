@@ -57,6 +57,7 @@ export class ArticleDetailsComponent {
   onLike() {
     this.apiCalls.likeArticle(this.articleId).subscribe({
       next: (response: any) => {
+        this.article = response.updatedArticle;
         this.setFlags();
       },
       error: (err: any) => {
@@ -67,7 +68,7 @@ export class ArticleDetailsComponent {
   }
 
   onComment() {
-    const id = this.route.snapshot.paramMap.get('id');
+    const id = this.route.snapshot.params['id'];
     if (id) {
       this.router.navigate([`/articles/${id}/add-comment`]);
     }

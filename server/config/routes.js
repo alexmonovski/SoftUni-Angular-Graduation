@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const articlesController = require("../controllers/articlesController");
 const authController = require("../controllers/authController");
+const commentsController = require("../controllers/commentsController");
 const topicsController = require("../controllers/topicsController");
 const usersController = require("../controllers/usersController");
 const cors = require("cors");
@@ -22,5 +23,6 @@ router.use("/users", cors(), usersController);
 router.use("/auth", cors(), authController);
 router.use("/articles", cors(), articlesController);
 router.use("/topics", cors(), topicsController);
+router.use("/comments", cors(), commentsController);
 
 module.exports = router;

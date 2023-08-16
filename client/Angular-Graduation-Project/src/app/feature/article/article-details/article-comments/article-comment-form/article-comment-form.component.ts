@@ -36,7 +36,7 @@ export class ArticleCommentFormComponent {
       const formData = this.commentFormGroup.value;
       this.apiCalls.addComment(formData, this.articleId).subscribe({
         next: (response) => {
-          this.router.navigate([`/articles/${this.articleId}/comments`]);
+          this.router.navigate([`/articles/${this.articleId}`]);
         },
         error: (err) => {
           console.error(err);

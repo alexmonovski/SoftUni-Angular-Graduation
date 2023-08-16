@@ -67,7 +67,7 @@ export class ApiCallsService {
     return this.http.post(url, topics);
   }
   addComment(formData: any, id: any): Observable<any> {
-    const url = `http://localhost:3000/articles/${id}/comments/`;
+    const url = `http://localhost:3000/articles/${id}/comment/`;
     return this.http.post<any>(url, formData);
   }
   likeArticle(id: any): Observable<any> {
@@ -85,11 +85,6 @@ export class ApiCallsService {
     return this.http.get(url);
   }
 
-  //comments
-  getAllComments(): Observable<any> {
-    const url = `http://localhost:3000/comments/`;
-    return this.http.get(url);
-  }
   //comments
   getCommentById(id: any): Observable<any> {
     const url = `http://localhost:3000/comments/${id}`;

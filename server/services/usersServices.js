@@ -45,8 +45,7 @@ async function subscribeToUser(id, subscriberId) {
     { $push: { subscribedTo: id } },
     { new: true }
   );
-
-  return { updatedUser };
+  return updatedUser;
 }
 
 module.exports = {

@@ -50,7 +50,7 @@ articlesController.get("/:id", async (req, res) => {
 });
 
 // post comment
-articlesController.post("/:id/comments", async (req, res) => {
+articlesController.post("/:id/comment", async (req, res) => {
   try {
     const commentAuthorId = await getUserIdFromToken(req.headers.authorization);
     const articleId = req.params.id;
@@ -67,12 +67,12 @@ articlesController.post("/:id/comments", async (req, res) => {
 });
 
 // post like
-articlesController.post("/:id/like", async (req, res) => {
+articlesController.get("/:id/like", async (req, res) => {
   try {
     const userId = await getUserIdFromToken(req.headers.authorization);
     const articleId = req.params.id;
-    await likeArticle(articleId, userId);
-    res.status(200).json({ message: "Like added successfully" });
+    const updatedArticle = await likeArticle(articleId, userId);
+    res.status(200).json({ updatedArticle });
   } catch (err) {
     console.error(
       "🚀 ~ file: articlesController.js:77 ~ articlesController.post ~ articlesController:"

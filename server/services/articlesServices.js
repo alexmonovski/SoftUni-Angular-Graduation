@@ -114,8 +114,21 @@ async function editArticle(id, body) {
 }
 
 async function likeArticle(articleId, userId) {
-  await Article.findByIdAndUpdate(articleId, { $push: { usersLiked: userId } });
-  await User.findByIdAndUpdate(userId, { $push: { articlesLiked: articleId } });
+  const article = await Article.findById(articleId);
+  if (article.usersLiked.includes(userId)) {
+    throw new Error("User has already liked this article.");
+  }
+  const user = await User.findById(userId);
+  if (user.articlesLiked.includes(articleId)) {
+    throw new Error("User has already liked this article.");
+  }
+  await Article.findByIdAndUpdate(articleId, {
+    $push: { usersLiked: userId },
+  });
+  await User.findByIdAndUpdate(userId, {
+    $push: { articlesLiked: articleId },
+  });
+  return await Article.findById(articleId);
 }
 
 async function commentArticle(articleId, commentBody, commentAuthorId) {
@@ -163,6 +176,11 @@ async function getArticlesByTopics(topicsArr) {
   return articlesByTopics;
 }
 
+async function getCommentById(commentId) {
+  const comment = await Comment.findById(commentId).lean();
+  return comment;
+}
+
 module.exports = {
   getAllArticles,
   getArticlesByDate,
@@ -177,4 +195,5 @@ module.exports = {
   getArticlesByTopic,
   commentArticle,
   getArticleByIdSimple,
+  getCommentById,
 };
