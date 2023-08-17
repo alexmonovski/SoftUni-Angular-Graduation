@@ -2,7 +2,12 @@
   <form [formGroup]="loginFormGroup" (ngSubmit)="onSubmit()">
     <mat-form-field>
       <mat-label>Email</mat-label>
-      <input matInput formControlName="email" placeholder="Email" />
+      <input
+        matInput
+        formControlName="email"
+        type="email"
+        placeholder="Email"
+      />
       <mat-error *ngIf="loginFormGroup?.get('email')?.hasError('required')">
         Email is required.
       </mat-error>

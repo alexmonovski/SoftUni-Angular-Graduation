@@ -99,6 +99,7 @@ articlesController.post("/topics", async (req, res) => {
 
 // create article
 articlesController.post("/create", async (req, res) => {
+  console.log("we reach");
   try {
     const userId = await getUserIdFromToken(req.headers.authorization);
     const newArticle = await createArticle(req.body, userId);

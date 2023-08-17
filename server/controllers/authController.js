@@ -63,6 +63,12 @@ authController.post("/:id/edit", async (req, res) => {
     console.error("error is: ", err);
     if (err == "Error: Email or password do not match.") {
       return res.status(401).json({ error: "Invalid credentials" });
+    } else if (
+      err == "Error: A user with this username or email already exists."
+    ) {
+      return res
+        .status(409)
+        .json({ error: "A user with this username or email already exists." });
     } else {
       return res
         .status(500)

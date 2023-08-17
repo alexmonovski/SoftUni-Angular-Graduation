@@ -12,8 +12,8 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { ProfileUserCardComponent } from './components/profile/profile-user-card/profile-user-card.component';
 import { CreatedArticlesCardComponent } from './components/profile/created-articles-card/created-articles-card.component';
 import { TopicsSubscribedCardComponent } from './components/profile/topics-subscribed-card/topics-subscribed-card.component';
-import { ArticlesLikedCardComponent } from './components/profile/articles-liked-card/articles-liked-card.component';
 import { SubscribedUsersCardComponent } from './components/profile/subscribed-users-card/subscribed-users-card.component';
+import { LikedArticlesCardComponent } from './components/profile/liked-articles-card/liked-articles-card.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +25,7 @@ import { SubscribedUsersCardComponent } from './components/profile/subscribed-us
     ProfileUserCardComponent,
     CreatedArticlesCardComponent,
     TopicsSubscribedCardComponent,
-    ArticlesLikedCardComponent,
+    LikedArticlesCardComponent,
     SubscribedUsersCardComponent,
   ],
   imports: [

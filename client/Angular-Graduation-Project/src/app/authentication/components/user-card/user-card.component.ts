@@ -14,6 +14,7 @@ export class UserCardComponent {
   isAuth = false;
   currentUserId: any;
   subscription: Subscription = new Subscription();
+  num = 0
 
   userHasSubscribed = false;
   isAuthor = false;
@@ -22,7 +23,7 @@ export class UserCardComponent {
     private router: Router,
     private apiCalls: ApiCallsService,
     private authService: AuthService
-  ) {}
+  ) { }
 
   subscribeToUser(subscribeeId: any) {
     this.apiCalls.subscribeToUser(subscribeeId).subscribe({
@@ -36,6 +37,7 @@ export class UserCardComponent {
     });
   }
 
+  // write comments here; 
   ngOnInit() {
     this.subscription = this.authService.sessionObservable$
       .pipe(

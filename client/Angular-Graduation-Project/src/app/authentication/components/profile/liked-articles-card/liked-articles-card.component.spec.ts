@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ArticlesLikedCardComponent } from './articles-liked-card.component';
+import { LikedArticlesCardComponent } from './liked-articles-card.component';
 
 describe('ArticlesLikedCardComponent', () => {
-  let component: ArticlesLikedCardComponent;
-  let fixture: ComponentFixture<ArticlesLikedCardComponent>;
+  let component: LikedArticlesCardComponent;
+  let fixture: ComponentFixture<LikedArticlesCardComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ArticlesLikedCardComponent]
+      declarations: [LikedArticlesCardComponent],
     });
-    fixture = TestBed.createComponent(ArticlesLikedCardComponent);
+    fixture = TestBed.createComponent(LikedArticlesCardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

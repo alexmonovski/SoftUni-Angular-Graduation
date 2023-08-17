@@ -29,11 +29,11 @@ async function validateInput(body, command) {
     const userWithTakenName = await User.findOne({ name: name });
 
     if (userWithTakenEmail && userWithTakenEmail._id.toString() !== _id) {
-      throw new Error("A user with this email already exists.");
+      throw new Error("A user with this username or email already exists.");
     }
 
     if (userWithTakenName && userWithTakenName._id.toString() !== _id) {
-      throw new Error("A user with this username already exists.");
+      throw new Error("A user with this username or email already exists.");
     }
 
     return true;

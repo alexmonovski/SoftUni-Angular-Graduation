@@ -6,10 +6,10 @@
     </mat-card-header>
     <mat-card-actions>
       <button
+        *ngIf="!userHasSubscribed && !isAuthor && isAuth"
         mat-button
         color="primary"
         (click)="subscribeToUser(user._id)"
-        *ngIf="!userHasSubscribed && !isAuthor && isAuth"
       >
         Subscribe
       </button>

@@ -11,22 +11,24 @@ export class TopicsSubscribedCardComponent {
   @Input() topicId: any;
   topic: any;
 
-  constructor(private apiCalls: ApiCallsService) { }
-  subscription: Subscription = new Subscription()
+  constructor(private apiCalls: ApiCallsService) {}
+  subscription: Subscription = new Subscription();
 
   ngOnInit() {
+    console.log('we reach');
+
     this.subscription = this.apiCalls.getSingleTopic(this.topicId).subscribe({
       next: (response) => {
         this.topic = response.topic;
       },
       error: (err) => console.error(err),
-      complete: () => { },
+      complete: () => {},
     });
   }
 
   ngOnDestroy() {
     if (this.subscription) {
-      this.subscription.unsubscribe()
+      this.subscription.unsubscribe();
     }
   }
 }

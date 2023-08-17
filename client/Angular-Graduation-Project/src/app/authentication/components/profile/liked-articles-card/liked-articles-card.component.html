@@ -1,3 +1,4 @@
+<!-- if check, because we pass from outside -->
 <ng-container *ngIf="article">
   <mat-card class="article-card">
     <mat-card-header>
@@ -6,10 +7,13 @@
     </mat-card-header>
     <mat-card-content>
       <p>Description: {{ article.description }}</p>
-      <p>Likes: {{ article.likes?.length || 0 }}</p>
+      <!-- cant create an article w/o topics. no need for if check here. -->
       <p>
         Topics:
-        {{ topics.length > 0 ? topics.join(", ") : "No topics added yet." }}
+        <ng-container *ngFor="let topic of parsedTopics; let last = last">
+          <!-- ng for last; directive that conditionally formats the last element of an array differently -->
+          {{ topic }}{{ last ? "" : ", " }}
+        </ng-container>
       </p>
     </mat-card-content>
     <mat-card-actions>
