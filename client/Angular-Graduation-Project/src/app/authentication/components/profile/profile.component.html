@@ -4,7 +4,12 @@
     <div class="first-flex">
       <app-profile-user-card [user]="user"></app-profile-user-card>
       <!-- Edit Button -->
-      <button mat-raised-button color="primary" (click)="onEdit()">
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="onEdit()"
+        *ngIf="isOwner"
+      >
         Edit profile
       </button>
     </div>

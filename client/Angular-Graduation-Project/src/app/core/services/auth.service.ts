@@ -31,7 +31,11 @@ export class AuthService {
 
   getUserId() {
     const jwt = this.getJwt();
-    return this.decodeJwt(jwt);
+    if (jwt) {
+      return this.decodeJwt(jwt);
+    } else {
+      return null;
+    }
   }
 
   setUserDetails(user: any) {

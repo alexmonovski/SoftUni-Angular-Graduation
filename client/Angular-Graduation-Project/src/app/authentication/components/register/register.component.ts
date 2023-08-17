@@ -96,8 +96,6 @@ export class RegisterComponent implements OnInit {
       this.user = history.state.user;
       const topics = history.state.topics;
       this.registerOrEdit = 'edit';
-      console.log(this.registerOrEdit);
-
       this.registerFormGroup.patchValue({
         personalDetailsGroup: {
           name: this.user.name,
