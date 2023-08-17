@@ -3,7 +3,11 @@ const Comment = require("../models/Comment");
 const Topic = require("../models/Topic");
 const User = require("../models/User");
 const { validateInput } = require("../util/validateInput");
-const { createTopic, associateTopicsWithArticle } = require("./topicsServices");
+const {
+  createTopic,
+  associateTopicsWithArticle,
+  deleteEmptyTopics,
+} = require("./topicsServices");
 
 async function getAllArticles() {
   return Article.find().lean();
@@ -17,6 +21,7 @@ async function getArticleById(id) {
     .populate("comments");
   return article;
 }
+
 async function getArticleByIdSimple(id) {
   const article = await Article.findById(id).lean();
   return article;
@@ -34,6 +39,7 @@ async function getArticlesByDate(startDate, endDate) {
 async function getArticlesByAuthor(authorId) {
   return Article.find({ author: authorId });
 }
+
 async function getAllUniqueArticles(userId) {
   const topicArticleMap = await getArticlesByTopics(userId);
   const allArticles = Object.values(topicArticleMap)
@@ -141,25 +147,63 @@ async function commentArticle(articleId, commentBody, commentAuthorId) {
   const article = await Article.findById(articleId);
   article.comments.push(newComment._id);
   await article.save();
+
+  const user = await User.findById(commentAuthorId);
+  user.comments.push(newComment._id);
+  await user.save();
 }
+
 async function deleteArticle(articleId, userId) {
-  try {
-    const article = await Article.findById(articleId).populate("author");
-    const user = await User.findById(userId);
-    if (!article) {
-      throw new Error("Article not found");
-    }
-    if (!user) {
-      throw new Error("User not found");
-    }
-    if (article.author._id.toString() !== user._id.toString()) {
-      throw new Error("User is not authorized to delete this article");
-    }
-    await Article.deleteOne({ _id: articleId });
-    return true;
-  } catch (error) {
-    throw error;
+  const article = await Article.findById(articleId)
+    .populate("author")
+    .populate("topics")
+    .populate("comments");
+  if (!article) {
+    throw new Error("Article not found");
   }
+
+  if (!article.author.equals(userId)) {
+    throw new Error("User is not authorized to delete this article");
+  }
+
+  const author = article.author;
+
+  // Remove the article from the author's articlesCreated array
+  author.articlesCreated.pull(articleId);
+
+  // Remove the article from any topics it's associated with
+  for (const topic of article.topics) {
+    topic.articles.pull(articleId);
+    await topic.save();
+  }
+
+  // Remove the article from users' articlesLiked array
+  await User.updateMany(
+    { articlesLiked: articleId },
+    { $pull: { articlesLiked: articleId } }
+  );
+
+  // Delete the associated comments and update user's comments arrays
+  for (const commentId of article.comments) {
+    const comment = await Comment.findByIdAndDelete(commentId);
+    if (comment) {
+      await User.updateMany(
+        { $or: [{ commentsCreated: commentId }, { commentsLiked: commentId }] },
+        { $pull: { commentsCreated: commentId, commentsLiked: commentId } }
+      );
+    }
+  }
+
+  // Delete the article itself
+  await Article.deleteOne({ _id: articleId });
+
+  // Save the modified author
+  await author.save();
+
+  // Find and remove empty topics that have no users or articles associated with them
+  await deleteEmptyTopics();
+
+  return true;
 }
 
 async function getArticlesByTopics(topicsArr) {

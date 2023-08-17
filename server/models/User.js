@@ -8,6 +8,8 @@ const userSchema = new Schema({
   description: { type: String, required: true },
   password: { type: String, required: true },
   topics: { type: [Types.ObjectId], ref: "Topic", default: [] },
+  commentsCreated: { type: [Types.ObjectId], ref: "Comment", default: [] },
+  commentsLiked: { type: [Types.ObjectId], ref: "Comment", default: [] },
   articlesCreated: { type: [Types.ObjectId], ref: "Article", default: [] },
   articlesLiked: { type: [Types.ObjectId], ref: "Article", default: [] },
   subscribedTo: { type: [Types.ObjectId], ref: "User", default: [] },

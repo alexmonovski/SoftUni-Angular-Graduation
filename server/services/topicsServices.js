@@ -29,6 +29,21 @@ async function associateTopicsWithArticle(articleId, topicsIds) {
   return true;
 }
 
+async function deleteEmptyTopics() {
+  // Find topics where both 'articles' and 'users' arrays are empty
+  const emptyTopics = await Topic.find({
+    articles: { $size: 0 },
+    users: { $size: 0 },
+  });
+
+  // Delete the empty topics
+  for (const topic of emptyTopics) {
+    await Topic.deleteOne({ _id: topic._id });
+  }
+
+  return true;
+}
+
 module.exports = {
   getSingleTopic,
   getAllTopics,
@@ -36,4 +51,5 @@ module.exports = {
   getTopicsByArticle,
   createTopic,
   associateTopicsWithArticle,
+  deleteEmptyTopics,
 };

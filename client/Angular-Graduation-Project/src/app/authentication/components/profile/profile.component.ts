@@ -4,6 +4,8 @@ import { switchMap } from 'rxjs';
 import { ApiCallsService } from 'src/app/core/services/api-calls.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 
+// бъгва, когато изтриеш даден артикъл. трябва да правиш нов феч тука. явно не се прави. аха не го маха от юзър id-то. ясно.
+
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
