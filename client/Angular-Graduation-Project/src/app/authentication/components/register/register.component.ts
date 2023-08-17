@@ -22,6 +22,8 @@ export class RegisterComponent implements OnInit {
   separatorKeysCodes: number[] = [ENTER, COMMA];
   // ref to the topic input el
   @ViewChild('topicInput') topicInput!: ElementRef<HTMLInputElement>;
+  registerOrEdit = 'register';
+  user!: any;
 
   registerFormGroup: FormGroup;
 
@@ -89,6 +91,25 @@ export class RegisterComponent implements OnInit {
       },
       error: (err) => console.error(err),
     });
+
+    if (history.state && history.state.user) {
+      this.user = history.state.user;
+      const topics = history.state.topics;
+      this.registerOrEdit = 'edit';
+      console.log(this.registerOrEdit);
+
+      this.registerFormGroup.patchValue({
+        personalDetailsGroup: {
+          name: this.user.name,
+          email: this.user.email,
+          description: this.user.description,
+        },
+        topicsGroup: {
+          topics: topics.slice(),
+        },
+      });
+      this.topics = topics.slice();
+    }
   }
 
   onSubmit(): void {
@@ -104,25 +125,53 @@ export class RegisterComponent implements OnInit {
         password,
         topics,
       };
-      this.apiCalls.postRegisterForm(sendData).subscribe({
-        next: (response) => {
-          this.authService.createSession(response);
-          this.router.navigate(['/']);
-        },
-        error: (err) => {
-          console.error(err);
-          if (err.status === 409) {
-            this.registerFormGroup
-              .get('personalDetailsGroup.email')
-              ?.setErrors({
-                usernameOrEmailTaken: true,
-              });
-            this.registerFormGroup.get('personalDetailsGroup.name')?.setErrors({
-              usernameOrEmailTaken: true,
-            });
-          }
-        },
-      });
+
+      if (this.registerOrEdit == 'register') {
+        this.apiCalls.postRegisterForm(sendData).subscribe({
+          next: (response) => {
+            this.authService.createSession(response);
+            this.router.navigate(['/']);
+          },
+          error: (err) => {
+            console.error(err);
+            if (err.status === 409) {
+              this.registerFormGroup
+                .get('personalDetailsGroup.email')
+                ?.setErrors({
+                  usernameOrEmailTaken: true,
+                });
+              this.registerFormGroup
+                .get('personalDetailsGroup.name')
+                ?.setErrors({
+                  usernameOrEmailTaken: true,
+                });
+            }
+          },
+        });
+      } else {
+        this.apiCalls.postEditUserForm(sendData, this.user._id).subscribe({
+          next: (response) => {
+            this.authService.destroySession();
+            alert('Your credentials have changed. Please login again.');
+            this.router.navigate(['/']);
+          },
+          error: (err) => {
+            console.error(err);
+            if (err.status === 409) {
+              this.registerFormGroup
+                .get('personalDetailsGroup.email')
+                ?.setErrors({
+                  usernameOrEmailTaken: true,
+                });
+              this.registerFormGroup
+                .get('personalDetailsGroup.name')
+                ?.setErrors({
+                  usernameOrEmailTaken: true,
+                });
+            }
+          },
+        });
+      }
     } else {
       console.error('Form has errors.');
       for (const controlName in this.registerFormGroup.controls) {

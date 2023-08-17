@@ -40,6 +40,10 @@ export class ApiCallsService {
     const url = `http://localhost:3000/auth/login`;
     return this.http.post(url, formData);
   }
+  postEditUserForm(formData: any, userId: any) {
+    const url = `http://localhost:3000/auth/${userId}/edit`;
+    return this.http.post(url, formData);
+  }
 
   // articles
   getAllArticles(): Observable<any> {

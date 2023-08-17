@@ -154,8 +154,23 @@
       </mat-form-field>
     </div>
     <div>
-      <button class="submit" mat-raised-button color="primary" type="submit">
+      <button
+        class="submit"
+        mat-raised-button
+        color="primary"
+        type="submit"
+        *ngIf="registerOrEdit == 'register'"
+      >
         Register
+      </button>
+      <button
+        class="submit"
+        mat-raised-button
+        color="primary"
+        type="submit"
+        *ngIf="registerOrEdit == 'edit'"
+      >
+        Edit
       </button>
     </div>
   </form>

@@ -11,25 +11,31 @@ async function validateInput(body, command) {
     }
     const article = await Article.findOne({ title: title });
     if (article) {
-      if (article.id != body.id) {
+      if (article._id.toString() != body._id) {
         throw new Error("An article with this title already exists.");
       }
     }
     return true;
   }
   //
-  else if (command == "registerUser") {
-    const { name, email, description, password, topics } = body;
-    if (email == "" || name == "" || description == "" || password == "") {
+  else if (command == "registerUser" || command == "editUser") {
+    const { _id, name, email, description, password, topics } = body;
+
+    if (email === "" || name === "" || description === "" || password === "") {
       throw new Error("All fields are required.");
     }
-    const emailTaken = await User.findOne({ email: email });
-    const nameTaken = await User.findOne({ name: name });
 
-    console.error(emailTaken, nameTaken);
-    if (emailTaken || nameTaken) {
-      throw new Error("A user with this email or username already exists.");
+    const userWithTakenEmail = await User.findOne({ email: email });
+    const userWithTakenName = await User.findOne({ name: name });
+
+    if (userWithTakenEmail && userWithTakenEmail._id.toString() !== _id) {
+      throw new Error("A user with this email already exists.");
     }
+
+    if (userWithTakenName && userWithTakenName._id.toString() !== _id) {
+      throw new Error("A user with this username already exists.");
+    }
+
     return true;
   }
   //

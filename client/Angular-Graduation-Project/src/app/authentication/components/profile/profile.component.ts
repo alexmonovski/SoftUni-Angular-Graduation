@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { switchMap } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { catchError, forkJoin, of, switchMap, tap } from 'rxjs';
 import { ApiCallsService } from 'src/app/core/services/api-calls.service';
 import { AuthService } from 'src/app/core/services/auth.service';
-
-// бъгва, когато изтриеш даден артикъл. трябва да правиш нов феч тука. явно не се прави. аха не го маха от юзър id-то. ясно.
 
 @Component({
   selector: 'app-profile',
@@ -24,7 +22,8 @@ export class ProfileComponent implements OnInit {
   constructor(
     private apiCalls: ApiCallsService,
     private route: ActivatedRoute,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -54,5 +53,30 @@ export class ProfileComponent implements OnInit {
         error: (err) => console.error(err),
         complete: () => {},
       });
+  }
+
+  onEdit() {
+    const topics: any[] = [];
+    const observables = this.user.topics.map((topic: any) => {
+      return this.apiCalls.getSingleTopic(topic).pipe(
+        catchError((err) => of(null)),
+        tap((data) => {
+          if (data) {
+            topics.push(data.topic.name);
+          }
+        })
+      );
+    });
+    forkJoin(observables).subscribe({
+      next: () => {
+        this.router.navigate([`/auth/profile/${this.userId}/edit`], {
+          state: {
+            user: this.user,
+            topics: topics,
+          },
+        });
+      },
+      error: (err) => {},
+    });
   }
 }

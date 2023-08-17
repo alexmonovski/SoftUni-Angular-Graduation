@@ -3,10 +3,14 @@
     <!-- user card; expects an id -->
     <div class="first-flex">
       <app-profile-user-card [user]="user"></app-profile-user-card>
+      <!-- Edit Button -->
+      <button mat-raised-button color="primary" (click)="onEdit()">
+        Edit profile
+      </button>
     </div>
     <div class="second-flex">
       <div class="user-expansions">
-        <!--  -->
+        <!-- Created Articles -->
         <mat-expansion-panel>
           <mat-expansion-panel-header>
             <mat-panel-title>Created Articles</mat-panel-title>
@@ -19,6 +23,7 @@
         </mat-expansion-panel>
 
         <ng-container *ngIf="isOwner">
+          <!-- Users Subscribed To -->
           <mat-expansion-panel>
             <mat-expansion-panel-header>
               <mat-panel-title>Users Subscribed To</mat-panel-title>
@@ -30,6 +35,7 @@
             </ng-container>
           </mat-expansion-panel>
 
+          <!-- Topics Subscribed To -->
           <mat-expansion-panel>
             <mat-expansion-panel-header>
               <mat-panel-title>Topics Subscribed To</mat-panel-title>
@@ -41,6 +47,7 @@
             </ng-container>
           </mat-expansion-panel>
 
+          <!-- Liked Articles -->
           <mat-expansion-panel>
             <mat-expansion-panel-header>
               <mat-panel-title>Liked Articles</mat-panel-title>
@@ -52,8 +59,6 @@
             </ng-container>
           </mat-expansion-panel>
         </ng-container>
-
-        <!--  -->
       </div>
     </div>
   </div>

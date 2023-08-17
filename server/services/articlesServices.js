@@ -111,7 +111,7 @@ async function createArticle(body, userId) {
 }
 
 async function editArticle(id, body) {
-  body.id = id;
+  body._id = id;
   await validateInput(body, "editArticle");
   const article = await Article.findById(id);
   article.title = body.title;

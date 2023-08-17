@@ -88,7 +88,7 @@ export class ArticleCreateComponent implements OnInit {
           content: this.article.content,
         },
         topicsGroup: {
-          topics: this.article.topics.slice(),
+          topics: topics.slice(),
         },
       });
       this.topics = topics.slice();
