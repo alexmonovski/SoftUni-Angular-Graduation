@@ -1,10 +1,10 @@
-import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Component } from '@angular/core';
-import { ApiCallsService } from 'src/app/core/services/api-calls.service';
 import { FormGroup } from '@angular/forms';
-import { AuthService } from 'src/app/core/services/auth.service';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { forkJoin, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
+import { ApiCallsService } from 'src/app/core/services/api-calls.service';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
   selector: 'app-article-details',
@@ -95,7 +95,17 @@ export class ArticleDetailsComponent {
     });
   }
 
-  onDelete() {}
+  onDelete() {
+    this.apiCalls.deleteArticle(this.articleId).subscribe({
+      next: (response: any) => {
+        this.router.navigate(['']);
+      },
+      error: (err: any) => {
+        console.error(err);
+      },
+      complete: () => '',
+    });
+  }
 
   onComment() {
     this.router.navigate([`/articles/${this.articleId}/add-comment`]);

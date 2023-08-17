@@ -144,7 +144,7 @@ articlesController.post("/:id/edit", async (req, res) => {
 });
 
 // delete an article
-articlesController.post("/:id/delete", async (req, res) => {
+articlesController.get("/:id/delete", async (req, res) => {
   try {
     const userId = await getUserIdFromToken(req.headers.authorization);
     const articleId = req.params.id;

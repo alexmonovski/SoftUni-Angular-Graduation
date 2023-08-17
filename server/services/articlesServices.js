@@ -108,9 +108,7 @@ async function editArticle(id, body) {
   body.id = id;
   await validateInput(body, "editArticle");
   const article = await Article.findById(id);
-  console.log(article.title);
   article.title = body.title;
-  console.log(article.title);
   article.description = body.description;
   article.topics = body.topics;
   article.lastEdit = Date.now();
@@ -158,7 +156,7 @@ async function deleteArticle(articleId, userId) {
       throw new Error("User is not authorized to delete this article");
     }
     await Article.deleteOne({ _id: articleId });
-    return true; // Or you can return a success message or status code
+    return true;
   } catch (error) {
     throw error;
   }
