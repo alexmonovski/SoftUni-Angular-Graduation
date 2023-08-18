@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiCallsService } from 'src/app/core/services/api-calls.service';
 import { AuthService } from 'src/app/core/services/auth.service';
-import { Observable, Subscription, switchMap } from 'rxjs';
-
-// may add functionality to list the topic above the articles; screw the similarity
-// may add functionality to list the articles by every user ;
+import { Subscription, switchMap } from 'rxjs';
+import { IArticle } from 'src/app/shared/interfaces/iarticle';
+import { IUser } from 'src/app/shared/interfaces/iuser';
 
 @Component({
   selector: 'app-article-list',
@@ -12,29 +11,27 @@ import { Observable, Subscription, switchMap } from 'rxjs';
   styleUrls: ['./article-list.component.css'],
 })
 export class ArticleListComponent implements OnInit {
-  articles!: any[];
-  filteredArticles: any[] = [];
-  user: any;
+  articles: IArticle[] | undefined = undefined;
+  filteredArticles: IArticle[] | undefined = [];
+  user: IUser | undefined = undefined;
   selectedFilter: string = 'all';
 
-  private articlesObservable$!: Observable<string | null>;
   private subscription: Subscription = new Subscription();
 
   constructor(
     private apiCalls: ApiCallsService,
     private authService: AuthService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
-    const sessionSub = this.authService.sessionObservable$
+    this.subscription = this.authService.sessionObservable$
       .pipe(
-        switchMap((user: any) => {
+        switchMap((user) => {
           if (user) {
             this.user = user;
-            this.selectedFilter = 'topics'
+            this.selectedFilter = 'topics';
           } else {
-            this.user = undefined
-            this.selectedFilter = 'all'
+            this.selectedFilter = 'all';
           }
           return this.apiCalls.getAllArticles();
         })
@@ -42,36 +39,35 @@ export class ArticleListComponent implements OnInit {
       .subscribe({
         next: (response: any) => {
           this.articles = [];
-          const data = response.articles
+          const data = response.articles;
           data.forEach((article: any) => {
-            this.articles.push(article);
+            this.articles?.push(article);
           });
           this.filter();
         },
         error: (err) => console.error(err),
-        complete: () => { },
+        complete: () => {},
       });
-    this.subscription.add(sessionSub);
   }
 
   filter() {
     if (this.selectedFilter == 'topics') {
-      const userTopicIds = this.user.topics;
-      this.articles.forEach((article) => {
+      const userTopicIds = this.user?.topics;
+      this.articles?.forEach((article) => {
         const hasCommonTopic = article.topics.some((topicId: any) =>
-          userTopicIds.includes(topicId)
+          userTopicIds?.includes(topicId)
         );
         if (
           hasCommonTopic &&
-          !this.filteredArticles.some(
+          !this.filteredArticles?.some(
             (filteredArticle) => filteredArticle._id === article._id
           )
         ) {
-          this.filteredArticles.push(article);
+          this.filteredArticles?.push(article);
         }
       });
     } else if (this.selectedFilter == 'all') {
-      this.filteredArticles = this.articles.slice();
+      this.filteredArticles = this.articles?.slice();
     }
   }
 

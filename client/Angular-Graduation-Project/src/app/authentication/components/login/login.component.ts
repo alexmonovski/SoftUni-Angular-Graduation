@@ -28,7 +28,7 @@ export class LoginComponent {
     if (this.loginFormGroup.valid) {
       const formData = this.loginFormGroup.value;
       this.apiCalls.postLoginForm(formData).subscribe({
-        next: (response) => {
+        next: (response: any) => {
           this.authService.createSession(response);
           this.router.navigate(['/']);
         },

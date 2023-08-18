@@ -114,8 +114,9 @@ export class RegisterComponent implements OnInit {
 
   onSubmit(): void {
     if (this.registerFormGroup.valid) {
-      // convenient way to get the vals; 
-      const { name, email, description } = this.registerFormGroup.value.personalDetailsGroup;
+      // convenient way to get the vals;
+      const { name, email, description } =
+        this.registerFormGroup.value.personalDetailsGroup;
       const { password } = this.registerFormGroup.value.passwordGroup;
       const topics = this.registerFormGroup.value.topicsGroup.topics.slice();
       const sendData = {
@@ -128,7 +129,7 @@ export class RegisterComponent implements OnInit {
 
       if (this.registerOrEdit == 'register') {
         this.apiCalls.postRegisterForm(sendData).subscribe({
-          next: (response) => {
+          next: (response: any) => {
             this.authService.createSession(response);
             this.router.navigate(['/']);
           },
@@ -136,12 +137,16 @@ export class RegisterComponent implements OnInit {
             console.error(err);
             // convenient way to set errors
             if (err.status === 409) {
-              this.registerFormGroup.get('personalDetailsGroup.name')?.setErrors({
-                usernameOrEmailTaken: true,
-              });
-              this.registerFormGroup.get('personalDetailsGroup.email')?.setErrors({
-                usernameOrEmailTaken: true,
-              });
+              this.registerFormGroup
+                .get('personalDetailsGroup.name')
+                ?.setErrors({
+                  usernameOrEmailTaken: true,
+                });
+              this.registerFormGroup
+                .get('personalDetailsGroup.email')
+                ?.setErrors({
+                  usernameOrEmailTaken: true,
+                });
             }
           },
         });
@@ -154,22 +159,26 @@ export class RegisterComponent implements OnInit {
           },
           error: (err) => {
             console.error(err);
-            // we can still get that kind of mistake, even when editting. we can't set our name / email to taken vals; 
+            // we can still get that kind of mistake, even when editting. we can't set our name / email to taken vals;
             // convenient way to set errors
             if (err.status === 409) {
-              this.registerFormGroup.get('personalDetailsGroup.name')?.setErrors({
-                usernameOrEmailTaken: true,
-              });
-              this.registerFormGroup.get('personalDetailsGroup.email')?.setErrors({
-                usernameOrEmailTaken: true,
-              });
+              this.registerFormGroup
+                .get('personalDetailsGroup.name')
+                ?.setErrors({
+                  usernameOrEmailTaken: true,
+                });
+              this.registerFormGroup
+                .get('personalDetailsGroup.email')
+                ?.setErrors({
+                  usernameOrEmailTaken: true,
+                });
             }
           },
         });
       }
     } else {
       console.error('Form has errors.');
-      // loop to easily get the errors; 
+      // loop to easily get the errors;
       for (const controlName in this.registerFormGroup.controls) {
         if (this.registerFormGroup.controls.hasOwnProperty(controlName)) {
           const control = this.registerFormGroup.controls[controlName];

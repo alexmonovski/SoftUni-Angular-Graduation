@@ -51,7 +51,6 @@ export class UserCardComponent {
       .subscribe({
         next: (response) => {
           this.user = response.user
-          console.log(this.loggedInUser);
 
           if (this.loggedInUser) {
             if (this.loggedInUser.subscribedTo.includes(this.user._id)) {

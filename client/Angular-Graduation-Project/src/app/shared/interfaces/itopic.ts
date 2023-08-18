@@ -1,5 +1,6 @@
 export interface ITopic {
-  title: string;
+  id: string;
+  name: string;
   articles: string[];
-  subscribers: string[];
+  users: string[];
 }
