@@ -5,6 +5,8 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { ApiCallsService } from 'src/app/core/services/api-calls.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { IArticle } from 'src/app/shared/interfaces/iarticle';
+import { ITopic } from 'src/app/shared/interfaces/itopic';
 
 @Component({
   selector: 'app-article-create',
@@ -21,7 +23,7 @@ export class ArticleCreateComponent implements OnInit {
   // ref to the topic input el
   @ViewChild('topicInput') topicInput!: ElementRef<HTMLInputElement>;
   createOrEdit = 'create';
-  article!: any;
+  article: IArticle | undefined;
 
   createArticleFormGroup: FormGroup;
 
@@ -71,8 +73,8 @@ export class ArticleCreateComponent implements OnInit {
 
   ngOnInit(): void {
     this.apiCalls.getAllTopics().subscribe({
-      next: (data) => {
-        this.options = data.topics.map((dataObj: any) => dataObj.name);
+      next: (data: { topics: ITopic[] }) => {
+        this.options = data.topics.map((dataObj: ITopic) => dataObj.name);
       },
       error: (err) => console.error(err),
     });
@@ -81,16 +83,18 @@ export class ArticleCreateComponent implements OnInit {
       this.article = history.state.article;
       const topics = history.state.topics;
       this.createOrEdit = 'edit';
-      this.createArticleFormGroup.patchValue({
-        articleDataGroup: {
-          title: this.article.title,
-          description: this.article.description,
-          content: this.article.content,
-        },
-        topicsGroup: {
-          topics: topics.slice(),
-        },
-      });
+      if (this.article) {
+        this.createArticleFormGroup.patchValue({
+          articleDataGroup: {
+            title: this.article.title,
+            description: this.article.description,
+            content: this.article.content,
+          },
+          topicsGroup: {
+            topics: topics.slice(),
+          },
+        });
+      }
       this.topics = topics.slice();
     }
   }
@@ -128,21 +132,23 @@ export class ArticleCreateComponent implements OnInit {
           },
         });
       } else if (this.createOrEdit == 'edit') {
-        this.apiCalls.editArticle(sendData, this.article._id).subscribe({
-          next: (response) => {
-            this.router.navigate([`/articles/${this.article._id}`]);
-          },
-          error: (err) => {
-            console.error(err);
-            if (err.status === 409) {
-              this.createArticleFormGroup
-                .get('articleDataGroup.title')
-                ?.setErrors({
-                  titleTaken: true,
-                });
-            }
-          },
-        });
+        if (this.article) {
+          this.apiCalls.editArticle(sendData, this.article._id).subscribe({
+            next: (response) => {
+              this.router.navigate([`/articles/${this.article?._id}`]);
+            },
+            error: (err) => {
+              console.error(err);
+              if (err.status === 409) {
+                this.createArticleFormGroup
+                  .get('articleDataGroup.title')
+                  ?.setErrors({
+                    titleTaken: true,
+                  });
+              }
+            },
+          });
+        }
       }
     } else {
       console.error('Form has errors.');

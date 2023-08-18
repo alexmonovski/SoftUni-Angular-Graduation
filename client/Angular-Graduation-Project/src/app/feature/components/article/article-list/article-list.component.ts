@@ -40,7 +40,7 @@ export class ArticleListComponent implements OnInit {
         next: (response) => {
           this.articles = [];
           const data = response.articles;
-          data.forEach((article: any) => {
+          data.forEach((article: IArticle) => {
             this.articles?.push(article);
           });
           this.filter();
@@ -54,7 +54,7 @@ export class ArticleListComponent implements OnInit {
     if (this.selectedFilter == 'topics') {
       const userTopicIds = this.user?.topics;
       this.articles?.forEach((article) => {
-        const hasCommonTopic = article.topics.some((topicId: any) =>
+        const hasCommonTopic = article.topics.some((topicId: string) =>
           userTopicIds?.includes(topicId)
         );
         if (

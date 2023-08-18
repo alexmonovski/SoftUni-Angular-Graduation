@@ -11,7 +11,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class ArticleCommentComponent {
   commentFormGroup!: FormGroup;
-  articleId!: any;
+  articleId!: string;
 
   constructor(
     private apiCalls: ApiCallsService,

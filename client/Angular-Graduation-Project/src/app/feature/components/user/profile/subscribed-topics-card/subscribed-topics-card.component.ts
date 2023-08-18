@@ -1,6 +1,7 @@
 import { Subscription } from 'rxjs';
 import { Component, Input } from '@angular/core';
 import { ApiCallsService } from 'src/app/core/services/api-calls.service';
+import { ITopic } from 'src/app/shared/interfaces/itopic';
 
 @Component({
   selector: 'app-subscribed-topics-card',
@@ -8,10 +9,10 @@ import { ApiCallsService } from 'src/app/core/services/api-calls.service';
   styleUrls: ['./subscribed-topics-card.component.css'],
 })
 export class SubscribedTopicsCardComponent {
-  @Input() topicId: any;
-  topic: any;
+  @Input() topicId!: string;
+  topic: ITopic | undefined;
 
-  constructor(private apiCalls: ApiCallsService) { }
+  constructor(private apiCalls: ApiCallsService) {}
   subscription: Subscription = new Subscription();
 
   ngOnInit() {
@@ -20,7 +21,7 @@ export class SubscribedTopicsCardComponent {
         this.topic = response.topic;
       },
       error: (err) => console.error(err),
-      complete: () => { },
+      complete: () => {},
     });
   }
 

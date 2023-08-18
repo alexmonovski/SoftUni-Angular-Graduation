@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription, map, of, switchMap } from 'rxjs';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { IUser } from '../../interfaces/iuser';
 
 @Component({
   selector: 'app-header',
@@ -11,13 +12,13 @@ import { AuthService } from 'src/app/core/services/auth.service';
 export class HeaderComponent {
   isLoggedIn = false;
   subscription: Subscription = new Subscription();
-  user: any;
+  user!: IUser | null;
 
   constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit() {
     this.subscription = this.authService.sessionObservable$.subscribe({
-      next: (user: any | null) => {
+      next: (user: IUser | null) => {
         if (user) {
           this.isLoggedIn = true;
           this.user = user;

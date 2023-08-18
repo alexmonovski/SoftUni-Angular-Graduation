@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { ApiCallsService } from 'src/app/core/services/api-calls.service';
+import { IUser } from 'src/app/shared/interfaces/iuser';
 
 @Component({
   selector: 'app-profile-user-card',
@@ -8,5 +9,5 @@ import { ApiCallsService } from 'src/app/core/services/api-calls.service';
 })
 // pass the user, we already have that. no need to fetch again.
 export class ProfileUserCardComponent {
-  @Input() user: any;
+  @Input() user!: IUser;
 }

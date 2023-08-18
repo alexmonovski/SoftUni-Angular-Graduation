@@ -11,12 +11,12 @@ export function userMustBeAuthorGuard(): CanActivateFn {
     const router: Router = inject(Router);
     const activatedRoute: ActivatedRouteSnapshot = route;
     const routeId = activatedRoute.params['id'];
-    const userId = authService.getUserId() as { userId: any };
+    const userId = authService.getUserId();
 
     return apiCallsService.getSingleArticleLean(routeId).pipe(
       tap((data) => {
         const articleAuthorId = data.article.author;
-        if (userId.userId != articleAuthorId) {
+        if (userId?.userId != articleAuthorId) {
           router.navigate(['/']);
         }
       }),

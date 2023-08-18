@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ApiCallsService } from 'src/app/core/services/api-calls.service';
+import { IUser } from 'src/app/shared/interfaces/iuser';
 
 @Component({
   selector: 'app-user-list',
@@ -8,10 +9,10 @@ import { ApiCallsService } from 'src/app/core/services/api-calls.service';
   styleUrls: ['./user-list.component.css'],
 })
 export class UserListComponent {
-  users: any;
+  users: IUser[] | undefined;
 
-  constructor(private apiCalls: ApiCallsService) { }
-  subscription: Subscription = new Subscription()
+  constructor(private apiCalls: ApiCallsService) {}
+  subscription: Subscription = new Subscription();
 
   ngOnInit() {
     this.subscription = this.apiCalls.getAllUsers().subscribe({
@@ -25,7 +26,7 @@ export class UserListComponent {
 
   ngOnDestroy() {
     if (this.subscription) {
-      this.subscription.unsubscribe()
+      this.subscription.unsubscribe();
     }
   }
 }

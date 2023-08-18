@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { forkJoin, of } from 'rxjs';
 import { catchError, switchMap, tap } from 'rxjs/operators';
 import { ApiCallsService } from 'src/app/core/services/api-calls.service';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { IArticle } from 'src/app/shared/interfaces/iarticle';
+import { IUser } from 'src/app/shared/interfaces/iuser';
 
 @Component({
   selector: 'app-article-details',
@@ -12,73 +13,69 @@ import { AuthService } from 'src/app/core/services/auth.service';
   styleUrls: ['./article-details.component.css'],
 })
 export class ArticleDetailsComponent {
-  article!: any;
-  comments: any[] = [];
-  commentForm!: FormGroup;
-  authorName: any;
-  articleId: any;
-  loggedInUserId: any;
+  article!: IArticle;
+  articleId!: string;
+  loggedInUserId: string | undefined;
   isAuthor = false;
   hasLiked = false;
-  parsedTopics: any[] = [];
-  user: any
+  user!: IUser | null;
 
   constructor(
     private route: ActivatedRoute,
     private apiCalls: ApiCallsService,
     private authService: AuthService,
-    private router: Router,
-  ) { }
-
+    private router: Router
+  ) {}
 
   ngOnInit() {
-    this.route.params.pipe(
-      switchMap((params: Params) => {
-        this.articleId = params['id'];
-        return this.apiCalls.getSingleArticleLean(this.articleId);
-      }),
-      switchMap((article) => {
-        this.article = article.article;
-        return this.authService.sessionObservable$;
-      })
-    ).subscribe({
-      next: (response: any) => {
-        this.user = response
-        this.setFlags();
-      },
-      error: (err) => {
-        console.error(err);
-      },
-      complete: () => {
-      },
-    });
+    this.route.params
+      .pipe(
+        switchMap((params: Params) => {
+          this.articleId = params['id'];
+          return this.apiCalls.getSingleArticleLean(this.articleId);
+        }),
+        switchMap((article) => {
+          this.article = article.article;
+          return this.authService.sessionObservable$;
+        })
+      )
+      .subscribe({
+        next: (response: IUser | null) => {
+          if (response) {
+            this.user = response;
+          } else {
+            this.user = null;
+          }
+          this.setFlags();
+        },
+        error: (err) => {
+          console.error(err);
+        },
+        complete: () => {},
+      });
   }
 
-
   setFlags() {
-
     if (this.user) {
       this.loggedInUserId = this.user._id;
       this.isAuthor = this.loggedInUserId == this.article.author;
       this.hasLiked = this.article.usersLiked.some(
-        (likedUserId: any) => likedUserId === this.loggedInUserId
+        (likedUserId: string) => likedUserId === this.loggedInUserId
       );
     } else {
-      this.loggedInUserId = undefined
-      this.isAuthor = false
-      this.hasLiked = false
+      this.loggedInUserId = undefined;
+      this.isAuthor = false;
+      this.hasLiked = false;
     }
-
-
   }
 
   onLike() {
     this.apiCalls.likeArticle(this.articleId).subscribe({
-      next: (response: any) => {
+      next: (response: { updatedArticle: IArticle }) => {
         this.article = response.updatedArticle;
         this.setFlags();
       },
-      error: (err: any) => {
+      error: (err) => {
         console.error(err);
       },
       complete: () => '',
@@ -86,8 +83,8 @@ export class ArticleDetailsComponent {
   }
 
   onEdit() {
-    const topics: any[] = [];
-    const observables = this.article.topics.map((topic: any) => {
+    const topics: string[] = [];
+    const observables = this.article.topics.map((topic) => {
       return this.apiCalls.getSingleTopic(topic).pipe(
         catchError((err) => of(null)),
         tap((data) => {
@@ -107,16 +104,16 @@ export class ArticleDetailsComponent {
           },
         });
       },
-      error: (err) => { },
+      error: (err) => {},
     });
   }
 
   onDelete() {
     this.apiCalls.deleteArticle(this.articleId).subscribe({
-      next: (response: any) => {
+      next: (response: { message: string }) => {
         this.router.navigate(['']);
       },
-      error: (err: any) => {
+      error: (err) => {
         console.error(err);
       },
       complete: () => '',

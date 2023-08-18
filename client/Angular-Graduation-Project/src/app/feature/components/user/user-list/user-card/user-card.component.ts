@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { EMPTY, map, switchMap, tap, Subscription } from 'rxjs';
 import { ApiCallsService } from 'src/app/core/services/api-calls.service';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { IUser } from 'src/app/shared/interfaces/iuser';
 
 @Component({
   selector: 'app-user-card',
@@ -10,12 +11,12 @@ import { AuthService } from 'src/app/core/services/auth.service';
   styleUrls: ['./user-card.component.css'],
 })
 export class UserCardComponent {
-  @Input() userId: any
-  user: any;
+  @Input() userId!: string;
+  user: IUser | undefined;
   isAuth = false;
-  loggedInUser: any;
+  loggedInUser: IUser | null = null;
   subscription: Subscription = new Subscription();
-  num = 0
+  num = 0;
 
   userHasSubscribed = true;
   isAuthor = false;
@@ -24,13 +25,15 @@ export class UserCardComponent {
     private router: Router,
     private apiCalls: ApiCallsService,
     private authService: AuthService
-  ) { }
+  ) {}
 
-  subscribeToUser(subscribeeId: any) {
+  subscribeToUser(subscribeeId: string) {
     this.apiCalls.subscribeToUser(subscribeeId).subscribe({
-      next: (response) => {
-        if (response.updatedUser.subscribedTo.includes(this.user._id)) {
-          this.userHasSubscribed = true;
+      next: (response: { updatedUser: IUser }) => {
+        if (this.user) {
+          if (response.updatedUser.subscribedTo.includes(this.user._id)) {
+            this.userHasSubscribed = true;
+          }
         }
       },
       error: (err) => console.error(err),
@@ -38,46 +41,42 @@ export class UserCardComponent {
     });
   }
 
-
   ngOnInit() {
     this.subscription = this.authService.sessionObservable$
       .pipe(
         switchMap((response) => {
           this.loggedInUser = response;
-          if (this.loggedInUser) { this.isAuth = true }
+          if (this.loggedInUser) {
+            this.isAuth = true;
+          }
           return this.apiCalls.getSingleUserLean(this.userId);
         })
       )
       .subscribe({
         next: (response) => {
-          this.user = response.user
+          this.user = response.user;
 
           if (this.loggedInUser) {
             if (this.loggedInUser.subscribedTo.includes(this.user._id)) {
-              this.userHasSubscribed = true
+              this.userHasSubscribed = true;
             } else {
-              this.userHasSubscribed = false
+              this.userHasSubscribed = false;
             }
             if (this.loggedInUser._id == this.user._id) {
-              this.isAuthor = true
+              this.isAuthor = true;
+            } else {
+              null;
             }
-            else {
-              null
-            }
+          } else {
+            null;
           }
-          else {
-            null
-          }
-
         },
-        error: (err) => {
-        },
-        complete: () => {
-        },
+        error: (err) => {},
+        complete: () => {},
       });
   }
 
-  visitUserProfile(userId: any) {
+  visitUserProfile(userId: string) {
     this.router.navigate(['/auth/profile', userId]);
   }
 

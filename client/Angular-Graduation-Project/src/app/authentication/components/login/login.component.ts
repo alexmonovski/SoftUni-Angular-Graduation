@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiCallsService } from 'src/app/core/services/api-calls.service';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { IJwt } from 'src/app/shared/interfaces/ijwt';
 
 @Component({
   selector: 'app-login',
@@ -27,10 +28,8 @@ export class LoginComponent {
   onSubmit() {
     if (this.loginFormGroup.valid) {
       const formData = this.loginFormGroup.value;
-      console.log(formData);
-
       this.apiCalls.postLoginForm(formData).subscribe({
-        next: (response: any) => {
+        next: (response: IJwt) => {
           this.authService.createSession(response);
           this.router.navigate(['/']);
         },

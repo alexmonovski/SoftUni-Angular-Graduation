@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, forkJoin, map, of, switchMap, tap } from 'rxjs';
 import { ApiCallsService } from 'src/app/core/services/api-calls.service';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { IUser } from 'src/app/shared/interfaces/iuser';
 
 @Component({
   selector: 'app-profile',
@@ -10,16 +11,16 @@ import { AuthService } from 'src/app/core/services/auth.service';
   styleUrls: ['./profile.component.css'],
 })
 export class ProfileComponent implements OnInit {
-  isOwner: any;
-  ownerId: any;
-  owner: any
+  isOwner = false;
+  ownerId!: string;
+  owner: IUser | undefined;
 
   constructor(
     private apiCalls: ApiCallsService,
     private route: ActivatedRoute,
     private authService: AuthService,
     private router: Router
-  ) { }
+  ) {}
 
   ngOnInit() {
     // use params, because component may reload with new data
@@ -39,7 +40,7 @@ export class ProfileComponent implements OnInit {
         })
       )
       .subscribe({
-        next: (loggedInUser: any | null) => {
+        next: (loggedInUser: IUser | null) => {
           if (loggedInUser) {
             // проверка дали собственика си гледа собствения профил
             this.isOwner = loggedInUser._id == this.ownerId;
@@ -49,27 +50,25 @@ export class ProfileComponent implements OnInit {
           }
         },
         error: (err) => console.error(err),
-        complete: () => { },
+        complete: () => {},
       });
   }
 
   onEdit() {
     if (this.isOwner) {
-      const observables = this.owner.topics.map((topic: any) => {
+      const observables = (this.owner?.topics || []).map((topic: string) => {
         return this.apiCalls.getSingleTopic(topic).pipe(
           catchError(() => of(null)),
-          // transform the emitted values; we only care about the name
           map((data) => {
-            return data.topic.name;
+            return data?.topic.name;
           })
         );
       });
-      // merge the last emitted vals of the previous observables in an array and emmit that array
+
       forkJoin(observables).subscribe({
-        next: (topicNames: any) => {
-          // remove null vals if errors in the previous observables
-          topicNames = topicNames?.filter((name: any) => name !== null);
-          this.router.navigate([`/auth/profile/${this.owner._id}/edit`], {
+        next: (topicNames) => {
+          topicNames = topicNames?.filter((name) => name !== null);
+          this.router.navigate([`/auth/profile/${this.owner?._id}/edit`], {
             state: {
               user: this.owner,
               topics: topicNames,
@@ -79,7 +78,7 @@ export class ProfileComponent implements OnInit {
         error: (err) => {
           console.error(err);
         },
-        complete: () => { },
+        complete: () => {},
       });
     } else {
       return;

@@ -1,6 +1,7 @@
 import { Subscription } from 'rxjs';
 import { Component, Input } from '@angular/core';
 import { ApiCallsService } from 'src/app/core/services/api-calls.service';
+import { IUserPopulated } from 'src/app/shared/interfaces/iuser-populated';
 
 @Component({
   selector: 'app-subscribed-users-card',
@@ -8,27 +9,26 @@ import { ApiCallsService } from 'src/app/core/services/api-calls.service';
   styleUrls: ['./subscribed-users-card.component.css'],
 })
 export class SubscribedUsersCardComponent {
-  @Input() userId: any;
-  user: any;
+  @Input() userId!: string;
+  user: IUserPopulated | undefined;
 
-  constructor(private apiCalls: ApiCallsService) { }
-  subscription: Subscription = new Subscription()
+  constructor(private apiCalls: ApiCallsService) {}
+  subscription: Subscription = new Subscription();
 
   ngOnInit() {
-    // better to take the most up to date information; 
+    // better to take the most up to date information;
     this.subscription = this.apiCalls.getSingleUser(this.userId).subscribe({
-      next: (response) => {
+      next: (response: { user: IUserPopulated }) => {
         this.user = response.user;
       },
       error: (err) => console.error(err),
-      complete: () => { },
+      complete: () => {},
     });
   }
 
   ngOnDestroy() {
     if (this.subscription) {
-      this.subscription.unsubscribe()
+      this.subscription.unsubscribe();
     }
   }
-
 }

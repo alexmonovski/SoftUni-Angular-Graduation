@@ -8,9 +8,9 @@ export function userAuthorizedGuard(): CanActivateFn {
     const router: Router = inject(Router);
     const activatedRoute: ActivatedRouteSnapshot = route;
     const routeId = activatedRoute.params['id'];
-    const userId = authService.getUserId() as { userId: any };
+    const userId = authService.getUserId();
 
-    if (userId.userId == routeId) {
+    if (userId?.userId == routeId) {
       return true;
     } else {
       router.navigate(['/']);

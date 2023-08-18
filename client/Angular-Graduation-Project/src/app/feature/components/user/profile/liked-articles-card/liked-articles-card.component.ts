@@ -1,6 +1,8 @@
 import { Subscription } from 'rxjs';
 import { Component, Input } from '@angular/core';
 import { ApiCallsService } from 'src/app/core/services/api-calls.service';
+import { IArticlePopulated } from 'src/app/shared/interfaces/iarticle-populated';
+import { ITopic } from 'src/app/shared/interfaces/itopic';
 
 @Component({
   selector: 'app-liked-articles-card',
@@ -8,11 +10,11 @@ import { ApiCallsService } from 'src/app/core/services/api-calls.service';
   styleUrls: ['./liked-articles-cardcomponent.css'],
 })
 export class LikedArticlesCardComponent {
-  @Input() articleId: any;
-  article: any;
-  parsedTopics: any[] = [];
+  @Input() articleId!: string;
+  article: IArticlePopulated | undefined;
+  parsedTopics: string[] = [];
 
-  constructor(private apiCalls: ApiCallsService) { }
+  constructor(private apiCalls: ApiCallsService) {}
 
   // no need for unsubscribe; http client.
   ngOnInit() {
@@ -20,7 +22,7 @@ export class LikedArticlesCardComponent {
       this.apiCalls.getSingleArticle(this.articleId).subscribe({
         next: (response) => {
           this.article = response.article;
-          this.article.topics.forEach((topic: any) => {
+          this.article.topics.forEach((topic: ITopic) => {
             this.parsedTopics.push(topic.name);
           });
         },

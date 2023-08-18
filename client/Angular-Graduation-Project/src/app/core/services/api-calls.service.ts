@@ -1,7 +1,8 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { IArticle } from 'src/app/shared/interfaces/iarticle';
+import { IArticlePopulated } from 'src/app/shared/interfaces/iarticle-populated';
 import { IComment } from 'src/app/shared/interfaces/icomment';
 import { ICreateArticleFormData } from 'src/app/shared/interfaces/icreate-article-form-data';
 import { IJwt } from 'src/app/shared/interfaces/ijwt';
@@ -9,22 +10,22 @@ import { ILoginFormData } from 'src/app/shared/interfaces/ilogin-form-data';
 import { IRegisterFormData } from 'src/app/shared/interfaces/iregister-form-data';
 import { ITopic } from 'src/app/shared/interfaces/itopic';
 import { IUser } from 'src/app/shared/interfaces/iuser';
+import { IUserPopulated } from 'src/app/shared/interfaces/iuser-populated';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiCallsService {
   constructor(private http: HttpClient) {}
-  // todo: cast these and make unified responses
 
   // users
   getAllUsers(): Observable<{ users: IUser[] }> {
     const url = `http://localhost:3000/users/`;
     return this.http.get<{ users: IUser[] }>(url);
   }
-  getSingleUser(id: string): Observable<{ user: IUser }> {
+  getSingleUser(id: string): Observable<{ user: IUserPopulated }> {
     const url = `http://localhost:3000/users/${id}`;
-    return this.http.get<{ user: IUser }>(url);
+    return this.http.get<{ user: IUserPopulated }>(url);
   }
   subscribeToUser(subscribeeId: string): Observable<{ updatedUser: IUser }> {
     const url = `http://localhost:3000/users/${subscribeeId}/subscribe`;
@@ -57,9 +58,9 @@ export class ApiCallsService {
     const url = `http://localhost:3000/articles/`;
     return this.http.get<{ articles: IArticle[] }>(url);
   }
-  getSingleArticle(id: string): Observable<{ article: IArticle }> {
+  getSingleArticle(id: string): Observable<{ article: IArticlePopulated }> {
     const url = `http://localhost:3000/articles/${id}`;
-    return this.http.get<{ article: IArticle }>(url);
+    return this.http.get<{ article: IArticlePopulated }>(url);
   }
   getSingleArticleLean(id: string): Observable<{ article: IArticle }> {
     const url = `http://localhost:3000/articles/${id}?action=lean`;
