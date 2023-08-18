@@ -18,6 +18,7 @@ export class CreatedArticlesCardComponent {
   ngOnInit() {
     this.subscription = this.apiCalls.getSingleArticle(this.articleId).subscribe({
       next: (response) => {
+        // returns a fully populated article; where do I need it? 
         this.article = response;
         this.article.topics.forEach((topic: { name: any }) => {
           this.topics.push(topic.name);

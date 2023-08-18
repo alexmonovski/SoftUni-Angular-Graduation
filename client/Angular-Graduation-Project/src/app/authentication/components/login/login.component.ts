@@ -10,7 +10,6 @@ import { AuthService } from 'src/app/core/services/auth.service';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent {
-  // define here, assign later.
   loginFormGroup!: FormGroup;
 
   constructor(
@@ -30,7 +29,6 @@ export class LoginComponent {
       const formData = this.loginFormGroup.value;
       this.apiCalls.postLoginForm(formData).subscribe({
         next: (response) => {
-          // { jwt: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NGRiODUzOGQ5MjQ5OWM3MDUzNThiYTgiLCJpYXQiOjE2OTIyNzQ4OTgsImV4cCI6MTY5MjI3ODQ5OH0.-TgNBmaY1OIeD4M3v1Kk16JxdZht1IVN_BNyTnVCzvQ" }
           this.authService.createSession(response);
           this.router.navigate(['/']);
         },

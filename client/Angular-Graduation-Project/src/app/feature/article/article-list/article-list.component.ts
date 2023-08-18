@@ -24,7 +24,7 @@ export class ArticleListComponent implements OnInit {
   constructor(
     private apiCalls: ApiCallsService,
     private authService: AuthService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     const sessionSub = this.authService.sessionObservable$
@@ -43,7 +43,7 @@ export class ArticleListComponent implements OnInit {
           this.filter();
         },
         error: (err) => console.error(err),
-        complete: () => {},
+        complete: () => { },
       });
     this.subscription.add(sessionSub);
   }

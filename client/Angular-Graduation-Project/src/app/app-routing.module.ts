@@ -6,19 +6,19 @@ import { RegisterComponent } from './authentication/components/register/register
 import { AboutComponent } from './shared/about/about.component';
 import { ArticleDetailsComponent } from './feature/article/article-details/article-details.component';
 import { ArticleCreateComponent } from './feature/article/article-create/article-create.component';
-import { UsersComponent } from './authentication/components/users/users.component';
-import { ArticleListComponent } from './feature/article-list/article-list.component';
-import { ProfileComponent } from './authentication/components/profile/profile.component';
+import { ArticleListComponent } from './feature/article/article-list/article-list.component';
 import { ArticleCommentFormComponent } from './feature/article/article-details/article-comments/article-comment-form/article-comment-form.component';
 import { loginOrRegisterGuard } from './shared/services/login-or-register-guard.service';
 import { userAuthorizedGuard } from './shared/services/user-authorized-guard.service';
 import { userMustBeAuthenticatedGuard } from './shared/services/user-must-be-authenticated-guard.service';
 import { userMustNotBeAuthorGuard } from './shared/services/user-must-not-be-author-guard.service';
 import { userMustBeAuthorGuard } from './shared/services/user-must-be-author-guard.service';
+import { UserListComponent } from './feature/user/user-list/user-list.component';
+import { ProfileComponent } from './feature/user/profile/profile.component';
 
 const routes: Routes = [
   { path: '', component: ArticleListComponent },
-  { path: 'auth', component: UsersComponent },
+  { path: 'auth', component: UserListComponent },
   // route guard for login: user must be not logged in; session must not exist;
   {
     path: 'auth/login',
@@ -66,4 +66,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

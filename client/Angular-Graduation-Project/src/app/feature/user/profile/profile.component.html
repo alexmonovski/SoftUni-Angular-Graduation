@@ -1,8 +1,8 @@
-<ng-container *ngIf="user">
+<ng-container *ngIf="owner">
   <div class="user-profile">
     <!-- user card; expects an id -->
     <div class="first-flex">
-      <app-profile-user-card [user]="user"></app-profile-user-card>
+      <app-profile-user-card [user]="owner"></app-profile-user-card>
       <!-- Edit Button -->
       <button
         mat-raised-button
@@ -20,7 +20,7 @@
           <mat-expansion-panel-header>
             <mat-panel-title>Created Articles</mat-panel-title>
           </mat-expansion-panel-header>
-          <ng-container *ngFor="let articleId of user.articlesCreated">
+          <ng-container *ngFor="let articleId of owner.articlesCreated">
             <app-created-articles-card
               [articleId]="articleId"
             ></app-created-articles-card>
@@ -33,7 +33,7 @@
             <mat-expansion-panel-header>
               <mat-panel-title>Users Subscribed To</mat-panel-title>
             </mat-expansion-panel-header>
-            <ng-container *ngFor="let userId of user.subscribedTo">
+            <ng-container *ngFor="let userId of owner.subscribedTo">
               <app-subscribed-users-card
                 [userId]="userId"
               ></app-subscribed-users-card>
@@ -45,7 +45,7 @@
             <mat-expansion-panel-header>
               <mat-panel-title>Topics Subscribed To</mat-panel-title>
             </mat-expansion-panel-header>
-            <ng-container *ngFor="let topicId of user.topics">
+            <ng-container *ngFor="let topicId of owner.topics">
               <app-topics-subscribed-card
                 [topicId]="topicId"
               ></app-topics-subscribed-card>
@@ -57,7 +57,7 @@
             <mat-expansion-panel-header>
               <mat-panel-title>Liked Articles</mat-panel-title>
             </mat-expansion-panel-header>
-            <ng-container *ngFor="let articleId of user.articlesLiked">
+            <ng-container *ngFor="let articleId of owner.articlesLiked">
               <app-liked-articles-card
                 [articleId]="articleId"
               ></app-liked-articles-card>

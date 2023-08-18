@@ -10,16 +10,16 @@ import { AuthService } from 'src/app/core/services/auth.service';
   styleUrls: ['./profile.component.css'],
 })
 export class ProfileComponent implements OnInit {
-  user: any;
   isOwner: any;
   ownerId: any;
+  owner: any
 
   constructor(
     private apiCalls: ApiCallsService,
     private route: ActivatedRoute,
     private authService: AuthService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit() {
     // use params, because component may reload with new data
@@ -33,29 +33,29 @@ export class ProfileComponent implements OnInit {
         }),
         switchMap((response) => {
           // популираме собственика на страницата
-          this.user = response.user;
+          this.owner = response.user;
           // събваме към сесията. така ще разберем дали имаме потребител и кой точно е влязъл
           return this.authService.sessionObservable$;
         })
       )
       .subscribe({
-        next: (user: any | null) => {
-          if (user) {
+        next: (loggedInUser: any | null) => {
+          if (loggedInUser) {
             // проверка дали собственика си гледа собствения профил
-            this.isOwner = this.user._id == this.ownerId;
+            this.isOwner = loggedInUser._id == this.ownerId;
           } else {
             // няма как да е собственик, ако е Logout
             this.isOwner = false;
           }
         },
         error: (err) => console.error(err),
-        complete: () => {},
+        complete: () => { },
       });
   }
 
   onEdit() {
     if (this.isOwner) {
-      const observables = this.user.topics.map((topic: any) => {
+      const observables = this.owner.topics.map((topic: any) => {
         return this.apiCalls.getSingleTopic(topic).pipe(
           catchError(() => of(null)),
           // transform the emitted values; we only care about the name
@@ -69,9 +69,9 @@ export class ProfileComponent implements OnInit {
         next: (topicNames: any) => {
           // remove null vals if errors in the previous observables
           topicNames = topicNames?.filter((name: any) => name !== null);
-          this.router.navigate([`/auth/profile/${this.user._id}/edit`], {
+          this.router.navigate([`/auth/profile/${this.owner._id}/edit`], {
             state: {
-              user: this.user,
+              user: this.owner,
               topics: topicNames,
             },
           });
@@ -79,7 +79,7 @@ export class ProfileComponent implements OnInit {
         error: (err) => {
           console.error(err);
         },
-        complete: () => {},
+        complete: () => { },
       });
     } else {
       return;
