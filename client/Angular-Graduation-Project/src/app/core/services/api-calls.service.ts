@@ -1,101 +1,113 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { IArticle } from 'src/app/shared/interfaces/iarticle';
+import { IComment } from 'src/app/shared/interfaces/icomment';
+import { ICreateArticleFormData } from 'src/app/shared/interfaces/icreate-article-form-data';
+import { IJwt } from 'src/app/shared/interfaces/ijwt';
+import { ILoginFormData } from 'src/app/shared/interfaces/ilogin-form-data';
+import { IRegisterFormData } from 'src/app/shared/interfaces/iregister-form-data';
+import { ITopic } from 'src/app/shared/interfaces/itopic';
+import { IUser } from 'src/app/shared/interfaces/iuser';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiCallsService {
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
   // todo: cast these and make unified responses
 
   // users
-  getAllUsers(): Observable<any> {
+  getAllUsers(): Observable<{ users: IUser[] }> {
     const url = `http://localhost:3000/users/`;
-    return this.http.get(url);
+    return this.http.get<{ users: IUser[] }>(url);
   }
-  getSingleUser(id: any): Observable<any> {
+  getSingleUser(id: string): Observable<{ user: IUser }> {
     const url = `http://localhost:3000/users/${id}`;
-    return this.http.get(url);
+    return this.http.get<{ user: IUser }>(url);
   }
-  subscribeToUser(subscribeeId: any): Observable<any> {
+  subscribeToUser(subscribeeId: string): Observable<{ updatedUser: IUser }> {
     const url = `http://localhost:3000/users/${subscribeeId}/subscribe`;
-    return this.http.post(url, subscribeeId);
+    return this.http.post<{ updatedUser: IUser }>(url, subscribeeId);
   }
-  getSingleUserLean(id: any): Observable<any> {
+  getSingleUserLean(id: string): Observable<{ user: IUser }> {
     const url = `http://localhost:3000/users/${id}?action=lean`;
-    return this.http.get(url);
+    return this.http.get<{ user: IUser }>(url);
   }
 
   // auth
-  postRegisterForm(formData: any) {
+  postRegisterForm(formData: IRegisterFormData): Observable<IJwt> {
     const url = `http://localhost:3000/auth/register`;
-    return this.http.post(url, formData);
+    return this.http.post<IJwt>(url, formData);
   }
-  postLoginForm(formData: any) {
+  postLoginForm(formData: ILoginFormData): Observable<IJwt> {
     const url = `http://localhost:3000/auth/login`;
-    return this.http.post(url, formData);
+    return this.http.post<IJwt>(url, formData);
   }
-  postEditUserForm(formData: any, userId: any) {
+  postEditUserForm(
+    formData: IRegisterFormData,
+    userId: string
+  ): Observable<IJwt> {
     const url = `http://localhost:3000/auth/${userId}/edit`;
-    return this.http.post(url, formData);
+    return this.http.post<IJwt>(url, formData);
   }
 
   // articles
-  getAllArticles(): Observable<any> {
+  getAllArticles(): Observable<{ articles: IArticle[] }> {
     const url = `http://localhost:3000/articles/`;
-    return this.http.get(url);
+    return this.http.get<{ articles: IArticle[] }>(url);
   }
-  getSingleArticle(id: any): Observable<any> {
+  getSingleArticle(id: string): Observable<{ article: IArticle }> {
     const url = `http://localhost:3000/articles/${id}`;
-    return this.http.get(url);
+    return this.http.get<{ article: IArticle }>(url);
   }
-  getSingleArticleLean(id: any): Observable<any> {
+  getSingleArticleLean(id: string): Observable<{ article: IArticle }> {
     const url = `http://localhost:3000/articles/${id}?action=lean`;
-    return this.http.get(url);
+    return this.http.get<{ article: IArticle }>(url);
   }
-  getSingleArticlePopulated(id: any): Observable<any> {
+  getSingleArticlePopulated(id: string): Observable<{ article: IArticle }> {
     const url = `http://localhost:3000/articles/${id}?action=populated`;
-    return this.http.get(url);
+    return this.http.get<{ article: IArticle }>(url);
   }
-  createArticle(formData: any): Observable<any> {
+  createArticle(
+    formData: ICreateArticleFormData
+  ): Observable<{ newArticle: IArticle }> {
     const url = `http://localhost:3000/articles/create`;
-    return this.http.post(url, formData);
+    return this.http.post<{ newArticle: IArticle }>(url, formData);
   }
-  getArticlesByTopics(topics: any): Observable<any> {
-    const url = `http://localhost:3000/articles/topics`;
-    return this.http.post(url, topics);
-  }
-  addComment(formData: any, id: any): Observable<any> {
+  addComment(formData: IComment, id: string): Observable<{ message: string }> {
     const url = `http://localhost:3000/articles/${id}/comment/`;
-    return this.http.post<any>(url, formData);
+    return this.http.post<{ message: string }>(url, formData);
   }
-  likeArticle(id: any): Observable<any> {
+  likeArticle(id: string): Observable<{ updatedArticle: IArticle }> {
     const url = `http://localhost:3000/articles/${id}/like/`;
-    return this.http.get<any>(url);
+    return this.http.get<{ updatedArticle: IArticle }>(url);
   }
-  editArticle(formData: any, id: any): Observable<any> {
+  editArticle(
+    formData: ICreateArticleFormData,
+    id: string
+  ): Observable<{ article: IArticle }> {
     const url = `http://localhost:3000/articles/${id}/edit`;
-    return this.http.post(url, formData);
+    return this.http.post<{ article: IArticle }>(url, formData);
   }
-  deleteArticle(articleId: any): Observable<any> {
+  deleteArticle(articleId: string): Observable<{ message: string }> {
     const url = `http://localhost:3000/articles/${articleId}/delete`;
-    return this.http.get(url);
+    return this.http.get<{ message: string }>(url);
   }
 
   // topics
-  getSingleTopic(id: any): Observable<any> {
+  getSingleTopic(id: string): Observable<{ topic: ITopic }> {
     const url = `http://localhost:3000/topics/${id}`;
-    return this.http.get(url);
+    return this.http.get<{ topic: ITopic }>(url);
   }
-  getAllTopics(): Observable<any> {
+  getAllTopics(): Observable<{ topics: ITopic[] }> {
     const url = `http://localhost:3000/topics/`;
-    return this.http.get(url);
+    return this.http.get<{ topics: ITopic[] }>(url);
   }
 
   //comments
-  getCommentById(id: any): Observable<any> {
+  getCommentById(id: string): Observable<{ comment: IComment }> {
     const url = `http://localhost:3000/comments/${id}`;
-    return this.http.get(url);
+    return this.http.get<{ comment: IComment }>(url);
   }
 }

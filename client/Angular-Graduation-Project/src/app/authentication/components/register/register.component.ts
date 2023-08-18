@@ -128,6 +128,8 @@ export class RegisterComponent implements OnInit {
       };
 
       if (this.registerOrEdit == 'register') {
+        console.log(sendData);
+
         this.apiCalls.postRegisterForm(sendData).subscribe({
           next: (response: any) => {
             this.authService.createSession(response);

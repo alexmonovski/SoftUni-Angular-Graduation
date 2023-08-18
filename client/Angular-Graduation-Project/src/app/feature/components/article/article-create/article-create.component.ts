@@ -109,6 +109,7 @@ export class ArticleCreateComponent implements OnInit {
       };
 
       if (this.createOrEdit == 'create') {
+        console.log(sendData);
 
         this.apiCalls.createArticle(sendData).subscribe({
           next: (response) => {

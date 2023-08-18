@@ -3,14 +3,12 @@ import { ProfileComponent } from './feature/components/user/profile/profile.comp
 import { ArticleCommentComponent } from './feature/components/article/article-details/article-comments/article-comment/article-comment.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-
 import { LoginComponent } from './authentication/components/login/login.component';
 import { RegisterComponent } from './authentication/components/register/register.component';
 import { AboutComponent } from './shared/components/about/about.component';
 import { loginOrRegisterGuard } from './shared/services/login-or-register-guard.service';
 import { userAuthorizedGuard } from './shared/services/user-authorized-guard.service';
 import { userMustBeAuthenticatedGuard } from './shared/services/user-must-be-authenticated-guard.service';
-import { userMustNotBeAuthorGuard } from './shared/services/user-must-not-be-author-guard.service';
 import { userMustBeAuthorGuard } from './shared/services/user-must-be-author-guard.service';
 import { ArticleListComponent } from './feature/components/article/article-list/article-list.component';
 import { ArticleDetailsComponent } from './feature/components/article/article-details/article-details.component';
@@ -65,4 +63,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

@@ -37,7 +37,7 @@ export class ArticleListComponent implements OnInit {
         })
       )
       .subscribe({
-        next: (response: any) => {
+        next: (response) => {
           this.articles = [];
           const data = response.articles;
           data.forEach((article: any) => {
