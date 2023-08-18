@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HeaderComponent } from './header/header.component';
-import { FooterComponent } from './footer/footer.component';
-import { DarkModeToggleComponent } from './dark-mode-toggle/dark-mode-toggle.component';
-import { AboutComponent } from './about/about.component';
-import { ErrorComponent } from './error/error.component';
+import { HeaderComponent } from './components/header/header.component';
+import { FooterComponent } from './components/footer/footer.component';
+import { DarkModeToggleComponent } from './components/dark-mode-toggle/dark-mode-toggle.component';
+import { AboutComponent } from './components/about/about.component';
+import { ErrorComponent } from './components/error/error.component';
 import { MaterialModule } from '../material.module';
 import { AppRoutingModule } from '../app-routing.module';
 
@@ -27,4 +27,4 @@ import { AppRoutingModule } from '../app-routing.module';
     ErrorComponent,
   ],
 })
-export class SharedModule {}
+export class SharedModule { }

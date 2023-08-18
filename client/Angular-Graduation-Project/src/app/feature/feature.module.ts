@@ -1,28 +1,28 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ArticleDetailsComponent } from './article/article-details/article-details.component';
 import { MatCardModule } from '@angular/material/card';
 import { MaterialModule } from '../material.module';
-import { ArticleListComponent } from './article/article-list/article-list.component';
-import { ArticleCardComponent } from './article/article-card/article-card.component';
 import { CoreModule } from '../core/core.module';
 import { AppRoutingModule } from '../app-routing.module';
-import { ArticleCreateComponent } from './article/article-create/article-create.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CKEditorModule } from 'ckeditor4-angular';
-import { JoditAngularModule } from 'jodit-angular';
-import { ArticleTopicsComponent } from './article/article-details/article-topics/article-topics.component';
-import { ArticleLikesComponent } from './article/article-details/article-likes/article-likes.component';
-import { ArticleCommentsComponent } from './article/article-details/article-comments/article-comments.component';
-import { ArticleCommentFormComponent } from './article/article-details/article-comments/article-comment-form/article-comment-form.component';
-import { UserListComponent } from './user/user-list/user-list.component';
-import { UserCardComponent } from './user/user-list/user-card/user-card.component';
-import { ProfileComponent } from './user/profile/profile.component';
-import { CreatedArticlesCardComponent } from './user/profile/created-articles-card/created-articles-card.component';
-import { LikedArticlesCardComponent } from './user/profile/liked-articles-card/liked-articles-card.component';
-import { ProfileUserCardComponent } from './user/profile/profile-user-card/profile-user-card.component';
-import { SubscribedUsersCardComponent } from './user/profile/subscribed-users-card/subscribed-users-card.component';
-import { TopicsSubscribedCardComponent } from './user/profile/topics-subscribed-card/topics-subscribed-card.component';
+
+import { ArticleListComponent } from './components/article/article-list/article-list.component';
+import { ArticleCommentsComponent } from './components/article/article-details/article-comments/article-comments.component';
+import { ArticleDetailsComponent } from './components/article/article-details/article-details.component';
+import { ArticleCreateComponent } from './components/article/article-create/article-create.component';
+import { ArticleCardComponent } from './components/article/article-card/article-card.component';
+import { ArticleTopicsComponent } from './components/article/article-details/article-topics/article-topics.component';
+import { ArticleCommentComponent } from './components/article/article-details/article-comments/article-comment/article-comment.component';
+import { UserListComponent } from './components/user/user-list/user-list.component';
+import { UserCardComponent } from './components/user/user-list/user-card/user-card.component';
+import { ProfileComponent } from './components/user/profile/profile.component';
+import { CreatedArticlesCardComponent } from './components/user/profile/created-articles-card/created-articles-card.component';
+import { LikedArticlesCardComponent } from './components/user/profile/liked-articles-card/liked-articles-card.component';
+import { ProfileUserCardComponent } from './components/user/profile/profile-user-card/profile-user-card.component';
+import { SubscribedUsersCardComponent } from './components/user/profile/subscribed-users-card/subscribed-users-card.component';
+import { SubscribedTopicsCardComponent } from './components/user/profile/subscribed-topics-card/subscribed-topics-card.component';
+
+
 
 
 @NgModule({
@@ -33,8 +33,7 @@ import { TopicsSubscribedCardComponent } from './user/profile/topics-subscribed-
     ArticleCardComponent,
     ArticleCreateComponent,
     ArticleTopicsComponent,
-    ArticleLikesComponent,
-    ArticleCommentFormComponent,
+    ArticleCommentComponent,
     UserListComponent,
     UserCardComponent,
     ProfileComponent,
@@ -42,7 +41,7 @@ import { TopicsSubscribedCardComponent } from './user/profile/topics-subscribed-
     LikedArticlesCardComponent,
     ProfileUserCardComponent,
     SubscribedUsersCardComponent,
-    TopicsSubscribedCardComponent,
+    SubscribedTopicsCardComponent
   ],
   imports: [
     CommonModule,
@@ -51,8 +50,6 @@ import { TopicsSubscribedCardComponent } from './user/profile/topics-subscribed-
     CoreModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    CKEditorModule,
-    JoditAngularModule,
     FormsModule,
   ],
   exports: [

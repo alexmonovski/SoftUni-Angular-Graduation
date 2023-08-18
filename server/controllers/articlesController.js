@@ -16,7 +16,7 @@ const articlesController = require("express").Router();
 articlesController.get("/", async (req, res) => {
   try {
     const articles = await getAllArticles();
-    res.status(200).json(articles);
+    res.status(200).json({ articles });
   } catch (err) {
     console.error(
       "🚀 ~ file: articlesController.js:24 ~ articlesController.get ~ articlesController:"
@@ -38,7 +38,7 @@ articlesController.get("/:id", async (req, res) => {
     if (!article) {
       res.status(404).json({ error: "Article not found" });
     } else {
-      res.status(200).json(article);
+      res.status(200).json({ article });
     }
   } catch (err) {
     console.error(
@@ -87,7 +87,7 @@ articlesController.post("/topics", async (req, res) => {
   try {
     const userTopics = req.body;
     const articlesByTopics = await getArticlesByTopics(userTopics);
-    res.status(200).json(articlesByTopics);
+    res.status(200).json({ articlesByTopics });
   } catch (err) {
     console.error(
       "🚀 ~ file: articlesController.js:77 ~ articlesController.post ~ articlesController:"
@@ -99,13 +99,12 @@ articlesController.post("/topics", async (req, res) => {
 
 // create article
 articlesController.post("/create", async (req, res) => {
-  console.log("we reach");
   try {
     const userId = await getUserIdFromToken(req.headers.authorization);
     const newArticle = await createArticle(req.body, userId);
 
     if (newArticle) {
-      res.status(201).json(newArticle);
+      res.status(201).json({ newArticle });
     } else {
       res.status(400).json({ error: "Bad Request" });
     }
@@ -129,7 +128,7 @@ articlesController.post("/:id/edit", async (req, res) => {
   try {
     const article = await editArticle(req.params.id, req.body);
     if (article) {
-      res.status(201).json(article);
+      res.status(201).json({ article });
     } else {
       res.status(400).json({ error: "Bad Request" });
     }

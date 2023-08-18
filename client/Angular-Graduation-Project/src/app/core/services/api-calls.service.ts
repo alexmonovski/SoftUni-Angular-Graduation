@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class ApiCallsService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
   // todo: cast these and make unified responses
 
   // users
@@ -16,10 +16,6 @@ export class ApiCallsService {
   }
   getSingleUser(id: any): Observable<any> {
     const url = `http://localhost:3000/users/${id}`;
-    return this.http.get(url);
-  }
-  getSelf(): Observable<any> {
-    const url = `http://localhost:3000/users/current`;
     return this.http.get(url);
   }
   subscribeToUser(subscribeeId: any): Observable<any> {

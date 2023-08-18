@@ -15,7 +15,7 @@ export function userMustBeAuthorGuard(): CanActivateFn {
 
     return apiCallsService.getSingleArticleLean(routeId).pipe(
       tap((data) => {
-        const articleAuthorId = data.author;
+        const articleAuthorId = data.article.author;
         if (userId.userId != articleAuthorId) {
           router.navigate(['/']);
         }

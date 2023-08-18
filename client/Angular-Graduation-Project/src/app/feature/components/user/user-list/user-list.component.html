@@ -1,0 +1,3 @@
+<ng-container *ngIf="users">
+  <app-user-card *ngFor="let user of users" [userId]="user._id"></app-user-card>
+</ng-container>

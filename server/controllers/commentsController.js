@@ -9,7 +9,7 @@ commentsController.get("/:id", async (req, res) => {
     if (!comment) {
       res.status(404).json({ error: "Comment not found" });
     } else {
-      res.status(200).json(comment);
+      res.status(200).json({ comment });
     }
   } catch (err) {
     console.error(

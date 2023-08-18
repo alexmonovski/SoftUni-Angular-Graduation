@@ -65,8 +65,8 @@ export class AuthService {
             this.setUserDetails(JSON.stringify(user));
           }
         },
-        error: (err) => {},
-        complete: () => {},
+        error: (err) => { },
+        complete: () => { },
       });
     }
   }

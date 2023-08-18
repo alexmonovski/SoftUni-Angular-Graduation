@@ -1,20 +1,20 @@
+import { ArticleCreateComponent } from './feature/components/article/article-create/article-create.component';
+import { ProfileComponent } from './feature/components/user/profile/profile.component';
+import { ArticleCommentComponent } from './feature/components/article/article-details/article-comments/article-comment/article-comment.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { LoginComponent } from './authentication/components/login/login.component';
 import { RegisterComponent } from './authentication/components/register/register.component';
-import { AboutComponent } from './shared/about/about.component';
-import { ArticleDetailsComponent } from './feature/article/article-details/article-details.component';
-import { ArticleCreateComponent } from './feature/article/article-create/article-create.component';
-import { ArticleListComponent } from './feature/article/article-list/article-list.component';
-import { ArticleCommentFormComponent } from './feature/article/article-details/article-comments/article-comment-form/article-comment-form.component';
+import { AboutComponent } from './shared/components/about/about.component';
 import { loginOrRegisterGuard } from './shared/services/login-or-register-guard.service';
 import { userAuthorizedGuard } from './shared/services/user-authorized-guard.service';
 import { userMustBeAuthenticatedGuard } from './shared/services/user-must-be-authenticated-guard.service';
 import { userMustNotBeAuthorGuard } from './shared/services/user-must-not-be-author-guard.service';
 import { userMustBeAuthorGuard } from './shared/services/user-must-be-author-guard.service';
-import { UserListComponent } from './feature/user/user-list/user-list.component';
-import { ProfileComponent } from './feature/user/profile/profile.component';
+import { ArticleListComponent } from './feature/components/article/article-list/article-list.component';
+import { ArticleDetailsComponent } from './feature/components/article/article-details/article-details.component';
+import { UserListComponent } from './feature/components/user/user-list/user-list.component';
 
 const routes: Routes = [
   { path: '', component: ArticleListComponent },
@@ -51,8 +51,7 @@ const routes: Routes = [
   // user must be logged in and must not be the article's author (article's author route contains an id. the user._id stored in the local storage must not match this one )
   {
     path: 'articles/:id/add-comment',
-    component: ArticleCommentFormComponent,
-    canActivate: [userMustNotBeAuthorGuard()],
+    component: ArticleCommentComponent,
   },
   // user must be logged in and must be the article's author (article's author route contains an id. the user._id stored in the local storage must match this one )
   {
