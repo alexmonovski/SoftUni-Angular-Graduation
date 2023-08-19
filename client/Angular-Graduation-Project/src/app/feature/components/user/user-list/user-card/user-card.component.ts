@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { EMPTY, map, switchMap, tap, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { ApiCallsService } from 'src/app/core/services/api-calls.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { IUser } from 'src/app/shared/interfaces/iuser';
@@ -11,14 +11,10 @@ import { IUser } from 'src/app/shared/interfaces/iuser';
   styleUrls: ['./user-card.component.css'],
 })
 export class UserCardComponent {
-  @Input() userId!: string;
-  user: IUser | undefined;
-  isAuth = false;
+  @Input() owner!: IUser;
   loggedInUser: IUser | null = null;
   subscription: Subscription = new Subscription();
-  num = 0;
-
-  userHasSubscribed = true;
+  userHasSubscribed = false;
   isAuthor = false;
 
   constructor(
@@ -27,57 +23,51 @@ export class UserCardComponent {
     private authService: AuthService
   ) {}
 
-  subscribeToUser(subscribeeId: string) {
-    this.apiCalls.subscribeToUser(subscribeeId).subscribe({
-      next: (response: { updatedUser: IUser }) => {
-        if (this.user) {
-          if (response.updatedUser.subscribedTo.includes(this.user._id)) {
+  ngOnInit() {
+    this.subscription = this.authService.sessionObservable$.subscribe({
+      next: (response: IUser | null) => {
+        this.loggedInUser = response;
+        if (this.loggedInUser) {
+          if (this.loggedInUser.subscribedTo.includes(this.owner._id)) {
             this.userHasSubscribed = true;
+          } else {
+            this.userHasSubscribed = false;
+          }
+          if (this.loggedInUser._id == this.owner._id) {
+            this.isAuthor = true;
+          } else {
+            this.isAuthor = false;
           }
         }
       },
-      error: (err) => console.error(err),
-      complete: () => '',
+      error: (err) => {},
+      complete: () => {},
     });
   }
 
-  ngOnInit() {
-    this.subscription = this.authService.sessionObservable$
-      .pipe(
-        switchMap((response) => {
-          this.loggedInUser = response;
-          if (this.loggedInUser) {
-            this.isAuth = true;
-          }
-          return this.apiCalls.getSingleUserLean(this.userId);
-        })
-      )
-      .subscribe({
-        next: (response) => {
-          this.user = response.user;
-
-          if (this.loggedInUser) {
-            if (this.loggedInUser.subscribedTo.includes(this.user._id)) {
-              this.userHasSubscribed = true;
-            } else {
-              this.userHasSubscribed = false;
-            }
-            if (this.loggedInUser._id == this.user._id) {
-              this.isAuthor = true;
-            } else {
-              null;
-            }
-          } else {
-            null;
+  onSubscribe() {
+    if (
+      this.userHasSubscribed == false &&
+      this.isAuthor == false &&
+      this.loggedInUser
+    ) {
+      this.apiCalls.subscribeToUser(this.owner._id).subscribe({
+        next: (response: { updatedUser: IUser }) => {
+          if (response.updatedUser.subscribedTo.includes(this.owner._id)) {
+            this.userHasSubscribed = true;
+            this.authService.setUserDetails(
+              JSON.stringify(response.updatedUser)
+            );
           }
         },
-        error: (err) => {},
-        complete: () => {},
+        error: (err) => console.error(err),
+        complete: () => '',
       });
+    }
   }
 
-  visitUserProfile(userId: string) {
-    this.router.navigate(['/auth/profile', userId]);
+  visitUserProfile() {
+    this.router.navigate(['/auth/profile', this.owner._id]);
   }
 
   ngOnDestroy() {

@@ -35,7 +35,6 @@ async function validateInput(body, command) {
     if (userWithTakenName && userWithTakenName._id.toString() !== _id) {
       throw new Error("A user with this username or email already exists.");
     }
-
     return true;
   }
   //
@@ -45,12 +44,19 @@ async function validateInput(body, command) {
       throw new Error("All fields are required.");
     }
     const user = await User.findOne({ email: email });
-    if (!user) {
+    if (user == false) {
       throw new Error("Email or password do not match.");
     }
+
+    // парама от логин формата е в добър формат.
+
+    // ако е false това става falsy. след това го обръщаме и става true и влиза.
+    // ако е true като го обърнем става FALSY и не влиза.
+
     const comparePass = await bcrypt.compare(body.password, user.password);
     console.log(comparePass);
     if (!comparePass) {
+      console.log("we reach");
       throw new Error("Email or password do not match.");
     }
     return user;

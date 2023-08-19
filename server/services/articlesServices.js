@@ -63,7 +63,6 @@ async function createArticle(body, userId) {
   const author = await User.findById(userId);
 
   const uniqueTopicIds = await createAndParseTopics(body.topics);
-  console.log(uniqueTopicIds);
 
   const newArticle = new Article({
     title: body.title,
@@ -74,11 +73,8 @@ async function createArticle(body, userId) {
     topics: uniqueTopicIds,
   });
 
-  console.log(newArticle);
-
   await newArticle.save();
 
-  console.log("we erach");
   await User.findByIdAndUpdate(userId, {
     $push: { articlesCreated: newArticle._id },
   });
@@ -95,7 +91,7 @@ async function createAndParseTopics(topics) {
     const existingTopic = existingTopics.find(
       (topic) => topic.name === topicName
     );
-    if (!existingTopic) {
+    if (existingTopic == false) {
       topicsToCreate.push(topicName);
     } else {
       createdTopics.push(existingTopic);
@@ -169,11 +165,11 @@ async function deleteArticle(articleId, userId) {
     .populate("author")
     .populate("topics")
     .populate("comments");
-  if (!article) {
+  if (article == false) {
     throw new Error("Article not found");
   }
 
-  if (!article.author.equals(userId)) {
+  if (article.author.equals(userId) == false) {
     throw new Error("User is not authorized to delete this article");
   }
 

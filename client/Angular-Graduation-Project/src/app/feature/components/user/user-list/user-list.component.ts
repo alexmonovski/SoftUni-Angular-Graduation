@@ -12,21 +12,15 @@ export class UserListComponent {
   users: IUser[] | undefined;
 
   constructor(private apiCalls: ApiCallsService) {}
-  subscription: Subscription = new Subscription();
 
   ngOnInit() {
-    this.subscription = this.apiCalls.getAllUsers().subscribe({
+    this.apiCalls.getAllUsers().subscribe({
       next: (response) => {
         this.users = response.users;
+        console.log(this.users);
       },
       error: (err) => console.error(err),
       complete: () => '',
     });
-  }
-
-  ngOnDestroy() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
   }
 }

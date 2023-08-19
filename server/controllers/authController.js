@@ -32,7 +32,6 @@ authController.post("/register", async (req, res) => {
 authController.post("/login", async (req, res) => {
   try {
     const formData = req.body;
-    console.log(formData);
     const jwt = await loginUser(formData);
     return res.status(200).json({ jwt });
   } catch (err) {

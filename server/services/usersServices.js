@@ -22,7 +22,9 @@ async function subscribeToUser(id, subscriberId) {
   const subscribee = await User.findById(id);
   const subscriber = await User.findById(subscriberId);
 
-  if (!subscribee || !subscriber) {
+  console.log(subscribee, subscriber);
+
+  if (subscribee == false || subscriber == false) {
     throw new Error("Invalid user IDs provided.");
   }
 
@@ -39,12 +41,16 @@ async function subscribeToUser(id, subscriberId) {
     { $push: { subscriptions: subscriberId } },
     { new: true }
   );
-
+  await updatedSubscribee.save();
   const updatedUser = await User.findByIdAndUpdate(
     subscriberId,
     { $push: { subscribedTo: id } },
     { new: true }
   );
+  await updatedUser.save();
+
+  console.log(updatedSubscribee, updatedUser);
+
   return updatedUser;
 }
 

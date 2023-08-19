@@ -1,19 +1,21 @@
-<ng-container *ngIf="user">
+<ng-container *ngIf="owner">
   <mat-card class="user-card">
     <mat-card-header>
-      <mat-card-title>Name: {{ user.name }}</mat-card-title>
-      <mat-card-subtitle>Description: {{ user.description }}</mat-card-subtitle>
+      <mat-card-title>Name: {{ owner.name }}</mat-card-title>
+      <mat-card-subtitle
+        >Description: {{ owner.description }}</mat-card-subtitle
+      >
     </mat-card-header>
     <mat-card-actions>
       <button
-        *ngIf="!userHasSubscribed && !isAuthor && isAuth"
+        *ngIf="userHasSubscribed == false && isAuthor == false && loggedInUser"
         mat-button
         color="primary"
-        (click)="subscribeToUser(user._id)"
+        (click)="onSubscribe()"
       >
         Subscribe
       </button>
-      <button mat-button color="accent" (click)="visitUserProfile(user._id)">
+      <button mat-button color="accent" (click)="visitUserProfile()">
         Visit User Page
       </button>
     </mat-card-actions>

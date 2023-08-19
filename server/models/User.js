@@ -16,9 +16,9 @@ const userSchema = new Schema({
 });
 
 userSchema.plugin(uniqueValidator);
-userSchema.pre("save", async function () {
-  const hashedPass = await bcrypt.hash(this.password, 10);
-  this.password = hashedPass;
-});
+// userSchema.pre("save", async function () {
+//   const hashedPass = await bcrypt.hash(this.password, 10);
+//   this.password = hashedPass;
+// });
 const User = model("User", userSchema);
 module.exports = User;

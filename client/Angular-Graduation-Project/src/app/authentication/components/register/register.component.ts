@@ -10,6 +10,7 @@ import { passwordMatchValidator } from '../../services/password-match-validator.
 import { IJwt } from 'src/app/shared/interfaces/ijwt';
 import { IUser } from 'src/app/shared/interfaces/iuser';
 import { ITopic } from 'src/app/shared/interfaces/itopic';
+import { displayFormErrorsService } from 'src/app/shared/services/display-form-errors.service';
 
 @Component({
   selector: 'app-register',
@@ -117,10 +118,10 @@ export class RegisterComponent implements OnInit {
 
   onSubmit(): void {
     if (this.registerFormGroup.valid) {
-      // convenient way to get the vals;
       const { name, email, description } =
         this.registerFormGroup.value.personalDetailsGroup;
       const { password } = this.registerFormGroup.value.passwordGroup;
+
       const topics = this.registerFormGroup.value.topicsGroup.topics.slice();
       const sendData = {
         name,
@@ -130,9 +131,9 @@ export class RegisterComponent implements OnInit {
         topics,
       };
 
-      if (this.registerOrEdit == 'register') {
-        console.log(sendData);
+      console.log(sendData);
 
+      if (this.registerOrEdit == 'register') {
         this.apiCalls.postRegisterForm(sendData).subscribe({
           next: (response: IJwt) => {
             this.authService.createSession(response);
@@ -140,7 +141,6 @@ export class RegisterComponent implements OnInit {
           },
           error: (err) => {
             console.error(err);
-            // convenient way to set errors
             if (err.status === 409) {
               this.registerFormGroup
                 .get('personalDetailsGroup.name')
@@ -165,8 +165,6 @@ export class RegisterComponent implements OnInit {
             },
             error: (err) => {
               console.error(err);
-              // we can still get that kind of mistake, even when editting. we can't set our name / email to taken vals;
-              // convenient way to set errors
               if (err.status === 409) {
                 this.registerFormGroup
                   .get('personalDetailsGroup.name')
@@ -185,19 +183,7 @@ export class RegisterComponent implements OnInit {
       }
     } else {
       console.error('Form has errors.');
-      // loop to easily get the errors;
-      for (const controlName in this.registerFormGroup.controls) {
-        if (this.registerFormGroup.controls.hasOwnProperty(controlName)) {
-          const control = this.registerFormGroup.controls[controlName];
-
-          if (control.errors) {
-            console.error(
-              `Validation errors for ${controlName}:`,
-              control.errors
-            );
-          }
-        }
-      }
+      displayFormErrorsService(this.registerFormGroup);
     }
   }
 }

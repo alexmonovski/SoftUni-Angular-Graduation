@@ -35,7 +35,7 @@ articlesController.get("/:id", async (req, res) => {
     } else {
       article = await getArticleById(req.params.id);
     }
-    if (!article) {
+    if (article == false) {
       res.status(404).json({ error: "Article not found" });
     } else {
       res.status(200).json({ article });

@@ -10,32 +10,36 @@ const bcrypt = require("bcrypt");
 async function registerUser(body) {
   const { name, email, description, topics, password } = body;
   await validateInput(body, "registerUser");
-  const hashedPassword = await bcrypt.hash(password, 10);
-  const newUser = new User({
-    name,
-    email,
-    description,
-    password: hashedPassword,
-  });
-  const createdUser = await newUser.save();
+  const parsedPassword = password.trim();
+  const hashedPassword = await bcrypt.hash(parsedPassword, 10);
+  console.log(hashedPassword); // Log the hashed password
   const existingTopics = await Topic.find({ name: { $in: topics } }).exec();
   const existingTopicIds = existingTopics.map((topic) => topic._id);
   const topicsToCreate = topics.filter(
     (topicName) =>
-      !existingTopics.some((existingTopic) => existingTopic.name === topicName)
+      existingTopics.some(
+        (existingTopic) => existingTopic.name === topicName
+      ) == false
   );
   const newTopics = await Topic.insertMany(
     topicsToCreate.map((topicName) => ({ name: topicName }))
   );
   const createdTopicIds = newTopics.map((topic) => topic._id);
-  const updatedUser = await User.findByIdAndUpdate(
-    createdUser._id,
-    { $push: { topics: { $each: [...existingTopicIds, ...createdTopicIds] } } },
-    { new: true }
-  ).exec();
-  return createSession(updatedUser);
-}
+  const updatedTopicIds = [...existingTopicIds, ...createdTopicIds];
+  const updatedUser = new User({
+    name,
+    email,
+    description,
+    password: hashedPassword,
+    topics: updatedTopicIds, // Update the topics array
+  });
 
+  console.log("updated user pre save: ", updatedUser);
+
+  await updatedUser.save();
+  console.log("updated user post save: ", updatedUser); // Log the updated user object
+  return createSession(updatedUser); // Assuming createSession returns something meaningful
+}
 async function loginUser(body) {
   const user = await validateInput(body, "loginUser");
   return createSession(user);
@@ -53,7 +57,7 @@ async function editUser(body, userId) {
   await validateInput(body, "editUser");
 
   const user = await User.findById(userId);
-  if (!user) {
+  if (user == false) {
     throw new Error("User not found");
   }
 
@@ -67,7 +71,9 @@ async function editUser(body, userId) {
   // Filter topics to create new ones
   const topicsToCreate = topics.filter(
     (topicName) =>
-      !existingTopics.some((existingTopic) => existingTopic.name === topicName)
+      existingTopics.some(
+        (existingTopic) => existingTopic.name === topicName
+      ) == false
   );
 
   // Create and insert new topics

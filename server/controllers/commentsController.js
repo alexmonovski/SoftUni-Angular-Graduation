@@ -6,7 +6,7 @@ const commentsController = require("express").Router();
 commentsController.get("/:id", async (req, res) => {
   try {
     const comment = await getCommentById(req.params.id);
-    if (!comment) {
+    if (comment == false) {
       res.status(404).json({ error: "Comment not found" });
     } else {
       res.status(200).json({ comment });
