@@ -26,13 +26,13 @@
         type="password"
         placeholder="Password"
       />
+      <mat-error *ngIf="loginFormGroup?.get('password')?.hasError('required')">
+        Password is required.
+      </mat-error>
       <mat-error
         *ngIf="loginFormGroup?.get('password')?.hasError('userNotFound')"
       >
         Incorrect email or password.
-      </mat-error>
-      <mat-error *ngIf="loginFormGroup?.get('password')?.hasError('required')">
-        Password is required.
       </mat-error>
     </mat-form-field>
     <button mat-raised-button color="primary" type="submit">Login</button>

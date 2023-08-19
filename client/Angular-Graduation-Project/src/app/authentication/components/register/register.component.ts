@@ -19,16 +19,15 @@ import { ITopic } from 'src/app/shared/interfaces/itopic';
 export class RegisterComponent implements OnInit {
   // the topics array we fetch from outside
   topics: string[] = [];
-  // the options autocomplete
+  // the mat options autocomplete
   options: string[] = [];
   // the keys that trigger chip submit
   separatorKeysCodes: number[] = [ENTER, COMMA];
-  // ref to the topic input el
+  // ref to the topic input element
   @ViewChild('topicInput') topicInput!: ElementRef<HTMLInputElement>;
-  // default type of the form
   registerOrEdit = 'register';
   registerFormGroup: FormGroup;
-  user!: IUser | undefined;
+  user: IUser | null = null;
 
   // init the form
   constructor(
@@ -37,33 +36,28 @@ export class RegisterComponent implements OnInit {
     private authService: AuthService,
     private router: Router
   ) {
-    this.registerFormGroup = this.formBuilder.group(
-      {
-        personalDetailsGroup: this.formBuilder.group({
-          name: ['', [Validators.required]],
-          email: ['', [Validators.required, Validators.email]],
-          description: ['', [Validators.required]],
-        }),
-        passwordGroup: this.formBuilder.group(
-          {
-            password: ['', [Validators.required]],
-            repass: ['', [Validators.required]],
-          },
-          {
-            validators: passwordMatchValidator(),
-          }
-        ),
-        topicsGroup: this.formBuilder.group({
-          topics: [[]],
-        }),
-      },
-      {
-        validators: passwordMatchValidator(),
-      }
-    );
+    this.registerFormGroup = this.formBuilder.group({
+      personalDetailsGroup: this.formBuilder.group({
+        name: ['', [Validators.required]],
+        email: ['', [Validators.required, Validators.email]],
+        description: ['', [Validators.required]],
+      }),
+      passwordGroup: this.formBuilder.group(
+        {
+          password: ['', [Validators.required]],
+          repass: ['', [Validators.required]],
+        },
+        {
+          validators: passwordMatchValidator(),
+        }
+      ),
+      topicsGroup: this.formBuilder.group({
+        topics: [[]],
+      }),
+    });
   }
 
-  // remove chip
+  // remove topic chip
   removeTopic(topic: string): void {
     const index = this.topics.indexOf(topic);
     if (index >= 0) {
@@ -88,20 +82,22 @@ export class RegisterComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // prepopulate the mat-option;
     this.apiCalls.getAllTopics().subscribe({
       next: (data: { topics: ITopic[] }) => {
-        this.options = data.topics.map((dataObj: ITopic) => dataObj.name);
+        if (data.topics.length > 0) {
+          this.options = data.topics.map((dataObj: ITopic) => dataObj.name);
+        } else {
+          this.options = [];
+        }
       },
       error: (err) => console.error(err),
     });
-
+    // prepopulate the form itself
     if (history.state && history.state.user) {
-      console.log(history.state.user);
-
       this.user = history.state.user;
       const topics = history.state.topics;
       this.registerOrEdit = 'edit';
-
       if (this.user) {
         this.registerFormGroup.patchValue({
           personalDetailsGroup: {
@@ -109,7 +105,6 @@ export class RegisterComponent implements OnInit {
             email: this.user.email,
             description: this.user.description,
           },
-          // prepopulate the form value for topics
           topicsGroup: {
             topics: topics.slice(),
           },

@@ -4,6 +4,7 @@ import { ApiCallsService } from 'src/app/core/services/api-calls.service';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { IJwt } from 'src/app/shared/interfaces/ijwt';
+import { displayFormErrorsService } from 'src/app/shared/services/display-form-errors.service';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +12,7 @@ import { IJwt } from 'src/app/shared/interfaces/ijwt';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent {
-  loginFormGroup!: FormGroup;
+  loginFormGroup: FormGroup;
 
   constructor(
     private apiCalls: ApiCallsService,
@@ -47,17 +48,7 @@ export class LoginComponent {
       });
     } else {
       console.error('Form has errors.');
-      for (const controlName in this.loginFormGroup.controls) {
-        if (this.loginFormGroup.controls.hasOwnProperty(controlName)) {
-          const control = this.loginFormGroup.controls[controlName];
-          if (control.errors) {
-            console.error(
-              `Validation errors for ${controlName}:`,
-              control.errors
-            );
-          }
-        }
-      }
+      displayFormErrorsService(this.loginFormGroup);
     }
   }
 }
