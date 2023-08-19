@@ -29,8 +29,6 @@ export class LoginComponent {
   onSubmit() {
     if (this.loginFormGroup.valid) {
       const formData = this.loginFormGroup.value;
-      console.log(formData);
-
       const truee = true;
 
       this.apiCalls.postLoginForm(formData).subscribe({

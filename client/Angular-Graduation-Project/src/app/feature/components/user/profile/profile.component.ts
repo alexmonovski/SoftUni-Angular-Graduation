@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { catchError, forkJoin, map, of, switchMap, tap } from 'rxjs';
+import { catchError, forkJoin, map, of, switchMap } from 'rxjs';
 import { ApiCallsService } from 'src/app/core/services/api-calls.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { IUser } from 'src/app/shared/interfaces/iuser';
@@ -14,6 +14,7 @@ export class ProfileComponent implements OnInit {
   isOwner = false;
   ownerId!: string;
   owner: IUser | undefined;
+  useForSubscriptions = true;
 
   constructor(
     private apiCalls: ApiCallsService,
@@ -27,25 +28,19 @@ export class ProfileComponent implements OnInit {
     this.route.params
       .pipe(
         switchMap((params) => {
-          // сетваш кой е собственика на страницата
           this.ownerId = params['id'];
-          // вземаме собственика на страницата
           return this.apiCalls.getSingleUserLean(this.ownerId);
         }),
-        switchMap((response) => {
-          // популираме собственика на страницата
+        switchMap((response: { user: IUser }) => {
           this.owner = response.user;
-          // събваме към сесията. така ще разберем дали имаме потребител и кой точно е влязъл
           return this.authService.sessionObservable$;
         })
       )
       .subscribe({
         next: (loggedInUser: IUser | null) => {
           if (loggedInUser) {
-            // проверка дали собственика си гледа собствения профил
             this.isOwner = loggedInUser._id == this.ownerId;
           } else {
-            // няма как да е собственик, ако е Logout
             this.isOwner = false;
           }
         },
@@ -67,7 +62,7 @@ export class ProfileComponent implements OnInit {
 
       forkJoin(observables).subscribe({
         next: (topicNames) => {
-          topicNames = topicNames?.filter((name) => name !== null);
+          topicNames.filter((name) => name !== null);
           this.router.navigate([`/auth/profile/${this.owner?._id}/edit`], {
             state: {
               user: this.owner,

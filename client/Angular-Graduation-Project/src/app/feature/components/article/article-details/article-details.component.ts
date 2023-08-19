@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { forkJoin, of } from 'rxjs';
-import { catchError, switchMap, tap } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import { ApiCallsService } from 'src/app/core/services/api-calls.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { IArticle } from 'src/app/shared/interfaces/iarticle';
@@ -13,13 +13,9 @@ import { IUser } from 'src/app/shared/interfaces/iuser';
   styleUrls: ['./article-details.component.css'],
 })
 export class ArticleDetailsComponent {
-  // id we receive from the route params
   articleId: string = '';
-  // the article object we fetch via api call
-  article: IArticle | undefined = undefined;
-  // user we receive via behavior subject
+  article: IArticle | undefined;
   loggedInUser: IUser | null = null;
-  // boolean flags to determine authority
   isAuthor = false;
   hasLiked = false;
 
@@ -93,21 +89,20 @@ export class ArticleDetailsComponent {
         return this.apiCalls.getSingleTopic(topicId).pipe(
           // on error emit null
           catchError((err) => of(null)),
-          tap((data) => {
-            if (data) {
-              topics.push(data.topic.name);
-            }
+          map((data) => {
+            return data?.topic.name;
           })
         );
       });
 
       // an array with the results of the prev subs when all of them complete
       forkJoin(observables).subscribe({
-        next: () => {
+        next: (topicNames) => {
+          topicNames.filter((name) => name !== null);
           this.router.navigate([`/articles/${this.articleId}/edit`], {
             state: {
               article: this.article,
-              topics: topics,
+              topics: topicNames,
             },
           });
         },

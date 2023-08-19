@@ -6,6 +6,10 @@
     <mat-card-content>
       <p>Email: {{ user.email }}</p>
       <p>Description: {{ user.description }}</p>
+      <p>
+        Topics:
+        {{ topics.length > 0 ? topics.join(", ") : "No topics added yet." }}
+      </p>
     </mat-card-content>
     <mat-card-actions>
       <a mat-button [routerLink]="['/auth/profile', user._id]">View Profile</a>

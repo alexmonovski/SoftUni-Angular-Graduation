@@ -91,6 +91,16 @@
           [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
           #topicInput
         />
+        <mat-error
+          *ngIf="
+            createArticleFormGroup
+              .get('topicsGroup')
+              ?.get('topics')
+              ?.hasError('required')
+          "
+        >
+          Article topics are required.
+        </mat-error>
         <mat-autocomplete
           #auto="matAutocomplete"
           (optionSelected)="selected($event)"

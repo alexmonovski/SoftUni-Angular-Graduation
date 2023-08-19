@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiCallsService } from 'src/app/core/services/api-calls.service';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
+import { displayFormErrorsService } from 'src/app/shared/services/display-form-errors.service';
 
 @Component({
   selector: 'app-article-comment-form',
@@ -10,7 +11,7 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./article-comment.component.css'],
 })
 export class ArticleCommentComponent {
-  commentFormGroup!: FormGroup;
+  commentFormGroup: FormGroup;
   articleId!: string;
 
   constructor(
@@ -45,6 +46,7 @@ export class ArticleCommentComponent {
       });
     } else {
       console.error('Form has errors.');
+      displayFormErrorsService(this.commentFormGroup);
     }
   }
 }

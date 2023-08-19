@@ -54,9 +54,7 @@ async function validateInput(body, command) {
     // ако е true като го обърнем става FALSY и не влиза.
 
     const comparePass = await bcrypt.compare(body.password, user.password);
-    console.log(comparePass);
     if (!comparePass) {
-      console.log("we reach");
       throw new Error("Email or password do not match.");
     }
     return user;

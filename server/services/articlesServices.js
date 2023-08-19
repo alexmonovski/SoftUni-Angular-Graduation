@@ -14,11 +14,7 @@ async function getAllArticles() {
 }
 
 async function getArticleById(id) {
-  const article = await Article.findById(id)
-    .populate("author")
-    .populate("usersLiked")
-    .populate("topics")
-    .populate("comments");
+  const article = await Article.findById(id).populate("topics");
   return article;
 }
 
@@ -91,7 +87,9 @@ async function createAndParseTopics(topics) {
     const existingTopic = existingTopics.find(
       (topic) => topic.name === topicName
     );
-    if (existingTopic == false) {
+    if (existingTopic == undefined) {
+      console.log(topicName);
+
       topicsToCreate.push(topicName);
     } else {
       createdTopics.push(existingTopic);
@@ -137,13 +135,13 @@ async function likeArticle(articleId, userId) {
   if (user.articlesLiked.includes(articleId)) {
     throw new Error("User has already liked this article.");
   }
-  await Article.findByIdAndUpdate(articleId, {
-    $push: { usersLiked: userId },
-  });
-  await User.findByIdAndUpdate(userId, {
-    $push: { articlesLiked: articleId },
-  });
-  return await Article.findById(articleId);
+
+  article.usersLiked.push(userId);
+  await article.save();
+  user.articlesLiked.push(articleId);
+  await user.save();
+
+  return article;
 }
 
 async function commentArticle(articleId, commentBody, commentAuthorId) {

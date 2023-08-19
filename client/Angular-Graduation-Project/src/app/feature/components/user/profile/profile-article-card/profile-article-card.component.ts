@@ -6,11 +6,11 @@ import { IArticlePopulated } from 'src/app/shared/interfaces/iarticle-populated'
 import { ITopic } from 'src/app/shared/interfaces/itopic';
 
 @Component({
-  selector: 'app-created-articles-card',
-  templateUrl: './created-articles-card.component.html',
-  styleUrls: ['./created-articles-card.component.css'],
+  selector: 'app-profile-article-card',
+  templateUrl: './profile-article-card.component.html',
+  styleUrls: ['./profile-article-card.component.css'],
 })
-export class CreatedArticlesCardComponent {
+export class ProfileArticleCardComponent {
   @Input() articleId!: string;
   article: IArticlePopulated | undefined;
   topics: string[] = [];

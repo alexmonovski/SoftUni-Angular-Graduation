@@ -1,3 +1,5 @@
+import { ArticleCardComponent } from './components/article/article-list/article-card/article-card.component';
+
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
@@ -10,20 +12,16 @@ import { ArticleListComponent } from './components/article/article-list/article-
 import { ArticleCommentsComponent } from './components/article/article-details/article-comments/article-comments.component';
 import { ArticleDetailsComponent } from './components/article/article-details/article-details.component';
 import { ArticleCreateComponent } from './components/article/article-create/article-create.component';
-import { ArticleCardComponent } from './components/article/article-card/article-card.component';
+
 import { ArticleTopicsComponent } from './components/article/article-details/article-topics/article-topics.component';
 import { ArticleCommentComponent } from './components/article/article-details/article-comments/article-comment/article-comment.component';
 import { UserListComponent } from './components/user/user-list/user-list.component';
 import { UserCardComponent } from './components/user/user-list/user-card/user-card.component';
 import { ProfileComponent } from './components/user/profile/profile.component';
-import { CreatedArticlesCardComponent } from './components/user/profile/created-articles-card/created-articles-card.component';
-import { LikedArticlesCardComponent } from './components/user/profile/liked-articles-card/liked-articles-card.component';
 import { ProfileUserCardComponent } from './components/user/profile/profile-user-card/profile-user-card.component';
 import { SubscribedUsersCardComponent } from './components/user/profile/subscribed-users-card/subscribed-users-card.component';
 import { SubscribedTopicsCardComponent } from './components/user/profile/subscribed-topics-card/subscribed-topics-card.component';
-
-
-
+import { ProfileArticleCardComponent } from './components/user/profile/profile-article-card/profile-article-card.component';
 
 @NgModule({
   declarations: [
@@ -37,11 +35,10 @@ import { SubscribedTopicsCardComponent } from './components/user/profile/subscri
     UserListComponent,
     UserCardComponent,
     ProfileComponent,
-    CreatedArticlesCardComponent,
-    LikedArticlesCardComponent,
     ProfileUserCardComponent,
     SubscribedUsersCardComponent,
-    SubscribedTopicsCardComponent
+    SubscribedTopicsCardComponent,
+    ProfileArticleCardComponent,
   ],
   imports: [
     CommonModule,
@@ -59,4 +56,4 @@ import { SubscribedTopicsCardComponent } from './components/user/profile/subscri
     ArticleCardComponent,
   ],
 })
-export class FeatureModule { }
+export class FeatureModule {}

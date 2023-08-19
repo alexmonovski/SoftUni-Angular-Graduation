@@ -131,8 +131,6 @@ export class RegisterComponent implements OnInit {
         topics,
       };
 
-      console.log(sendData);
-
       if (this.registerOrEdit == 'register') {
         this.apiCalls.postRegisterForm(sendData).subscribe({
           next: (response: IJwt) => {

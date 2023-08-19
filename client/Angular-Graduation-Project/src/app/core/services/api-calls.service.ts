@@ -68,9 +68,11 @@ export class ApiCallsService {
     const url = `http://localhost:3000/articles/${id}?action=lean`;
     return this.http.get<{ article: IArticle }>(url);
   }
-  getSingleArticlePopulated(id: string): Observable<{ article: IArticle }> {
+  getSingleArticlePopulated(
+    id: string
+  ): Observable<{ article: IArticlePopulated }> {
     const url = `http://localhost:3000/articles/${id}?action=populated`;
-    return this.http.get<{ article: IArticle }>(url);
+    return this.http.get<{ article: IArticlePopulated }>(url);
   }
   createArticle(
     formData: ICreateArticleFormData

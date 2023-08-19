@@ -17,7 +17,6 @@ export class UserListComponent {
     this.apiCalls.getAllUsers().subscribe({
       next: (response) => {
         this.users = response.users;
-        console.log(this.users);
       },
       error: (err) => console.error(err),
       complete: () => '',

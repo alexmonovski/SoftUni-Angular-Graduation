@@ -3,10 +3,11 @@ import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { ApiCallsService } from 'src/app/core/services/api-calls.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { IArticle } from 'src/app/shared/interfaces/iarticle';
 import { ITopic } from 'src/app/shared/interfaces/itopic';
+import { displayFormErrorsService } from 'src/app/shared/services/display-form-errors.service';
 
 @Component({
   selector: 'app-article-create',
@@ -24,15 +25,13 @@ export class ArticleCreateComponent implements OnInit {
   @ViewChild('topicInput') topicInput!: ElementRef<HTMLInputElement>;
   createOrEdit = 'create';
   article: IArticle | undefined;
-
   createArticleFormGroup: FormGroup;
 
   // init the form
   constructor(
     private formBuilder: FormBuilder,
     private apiCalls: ApiCallsService,
-    private router: Router,
-    private route: ActivatedRoute
+    private router: Router
   ) {
     this.createArticleFormGroup = this.formBuilder.group({
       articleDataGroup: this.formBuilder.group({
@@ -113,8 +112,6 @@ export class ArticleCreateComponent implements OnInit {
       };
 
       if (this.createOrEdit == 'create') {
-        console.log(sendData);
-
         this.apiCalls.createArticle(sendData).subscribe({
           next: (response) => {
             const id = response.newArticle._id;
@@ -152,6 +149,7 @@ export class ArticleCreateComponent implements OnInit {
       }
     } else {
       console.error('Form has errors.');
+      displayFormErrorsService(this.createArticleFormGroup);
     }
   }
 }

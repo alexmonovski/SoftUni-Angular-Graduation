@@ -39,6 +39,7 @@ export class ArticleListComponent implements OnInit {
       .subscribe({
         next: (response: { articles: IArticle[] }) => {
           const data = response.articles;
+          this.articles = [];
           data.forEach((article: IArticle) => {
             this.articles.push(article);
           });
