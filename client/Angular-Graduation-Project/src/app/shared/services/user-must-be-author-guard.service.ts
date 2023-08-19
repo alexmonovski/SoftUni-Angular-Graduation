@@ -14,13 +14,15 @@ export function userMustBeAuthorGuard(): CanActivateFn {
     const userId = authService.getUserId();
 
     return apiCallsService.getSingleArticleLean(routeId).pipe(
-      tap((data) => {
+      map((data) => {
         const articleAuthorId = data.article.author;
-        if (userId?.userId != articleAuthorId) {
+        if (userId?.userId == articleAuthorId) {
+          return true;
+        } else {
           router.navigate(['/']);
+          return false;
         }
-      }),
-      map(() => true) // Return true after tap
+      })
     );
   };
 }

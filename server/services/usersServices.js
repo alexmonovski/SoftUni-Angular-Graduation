@@ -5,13 +5,7 @@ async function getAllUsers() {
 }
 
 async function getUserById(id) {
-  return await User.findById(id)
-    .populate("topics")
-    .populate("articlesCreated")
-    .populate("articlesLiked")
-    .populate("subscribedTo")
-    .populate("subscriptions")
-    .lean();
+  return await User.findById(id).populate("topics").lean();
 }
 
 async function getUserByIdSimple(id) {
@@ -21,8 +15,6 @@ async function getUserByIdSimple(id) {
 async function subscribeToUser(id, subscriberId) {
   const subscribee = await User.findById(id);
   const subscriber = await User.findById(subscriberId);
-
-  console.log(subscribee, subscriber);
 
   if (subscribee == false || subscriber == false) {
     throw new Error("Invalid user IDs provided.");
@@ -48,9 +40,6 @@ async function subscribeToUser(id, subscriberId) {
     { new: true }
   );
   await updatedUser.save();
-
-  console.log(updatedSubscribee, updatedUser);
-
   return updatedUser;
 }
 

@@ -9,9 +9,9 @@ export interface IArticlePopulated {
   content: string;
   authorName: string;
   author: string;
-  usersLiked: IUser[];
+  usersLiked: string[];
   topics: ITopic[];
-  comments: IComment[];
+  comments: string[];
   createdAt: Date;
   lastEdit: Date;
 }

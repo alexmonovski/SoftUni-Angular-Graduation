@@ -10,9 +10,9 @@ export interface IUserPopulated {
   description: string;
   password: string;
   topics: ITopic[];
-  articlesCreated: IArticle[];
-  articlesLiked: IArticle[];
-  subscribedTo: IUser[];
-  subscriptions: IUser[];
-  commentsCreated: IComment[];
+  articlesCreated: string[];
+  articlesLiked: string[];
+  subscribedTo: string[];
+  subscriptions: string[];
+  commentsCreated: string[];
 }
