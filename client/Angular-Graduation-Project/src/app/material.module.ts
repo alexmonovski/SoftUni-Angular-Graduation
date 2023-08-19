@@ -13,6 +13,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatGridListModule } from '@angular/material/grid-list';
 
 @NgModule({
   declarations: [],
@@ -31,6 +32,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     TextFieldModule,
     MatAutocompleteModule,
     MatSnackBarModule,
+    MatGridListModule,
   ],
   exports: [
     MatButtonModule,
@@ -47,6 +49,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     TextFieldModule,
     MatAutocompleteModule,
     MatSnackBarModule,
+    MatGridListModule,
   ],
 })
 export class MaterialModule {}
