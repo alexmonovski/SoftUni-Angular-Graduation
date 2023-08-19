@@ -80,6 +80,7 @@ Article-list component
 This is the home page component that triggers on the ‘/’ route. The purpose of this component is to compose a list of article-cards. On init this component subscribes to the session observable already mentioned in the Auth Service in order to fetch the logged in user (if any). On success it gets the logged in user in the form of a user object (a mongoose document parsed to object, leanified) in the format of a an IUser interface. After receiving the logged in user object (or null) the component populates the user variable with the just received user. Later this variable is used to filter the logged in user’s articles by the topics that he has subscribed to.
 After this first stream ends an api call is made to retreive all of the articles from the database. The api call response holds an object with an ‘articles’ key that contains an array of articles (in the interface format of ‘IArticle’). A local articles variable is populated with these articles and a filter function is invoked, that automatically filters the articles based on the logged in user’s interests. The user can change the filter anytime.
 This component passes the article data to the ‘article-card’ component , and composes an article list using it in a loop for each article document.
+
 Article-card component
 This component gets composed by the article-list component mentioned previously and it receives the article data (some of it, without the ‘content’ key).
 Article-details component
@@ -89,18 +90,23 @@ On comment (invoking the onComment function) the component redirects to the arti
 On edit (invoking the onEdit function) the article’s topics and data are populated in a route state and are used to populate the Edit Article form (the create article component form double-used as an edit article component form).
 On delete (invoking the onDelete function) a backend request is sent to delete the article and on success the component redirects us to the home page.
 This component passes comment data to the ArticleCommentsComponent in order to render the components.
+
 Article-comments component
 The purpose of this component is to hold a list of comments which it renders according to the comments reference array of the article doc. The component receives its data from the parent ArticleDetails component.
+
 Article-comment component
 This component holds a comment article form. On init it fetches and populates the articleId variable from the route params and then updates the article document associated with this id. The form has two fields: title and content. Both are required and have errors to reflect if they are left empty.
 On submit the form makes an api call to add a comment to the article passing the form data and the article id. On success the component redirects the user to the article’s details page.
+
 Article-create component
 A create article form that takes title, description, content and topics as values. The title, description, and content are in an ‘articleDataGroup’ form group, the topics are in a ‘topicsGroup’. All controls have a ‘required’ validator. A custom error is also implemented: on form submit the component sends an api call to check if the article’s title has already been taken. If it has, a relevant error triggers in the title field.
 Just like in the register user form ‘mat-chip’ and ‘mat-autocomplete’ components from angular material are used to enhance the experience of adding topics to the article. On init the component populates the mat-autocomplete with all already existing topics and provides input suggestions for the chips.
 On submit the create article form sends a post request to the backend and on success redirects the user to the article details page.
 Our create article form also doubles as an edit article form. On init the component makes a check to see if it has received some state from the route and if it has, the form gets set to edit and gets populated with article details. A “registerOrEdit” variable is responsible for the switch and changing the actions that trigger when the form is submitted and the text on the form submit button (‘register’ or ‘edit’). The variable is initially set to ‘register’.
+
 User-list component
 The purpose of this component is to compose a list of all of the authors (registered users) that the app has. On init it makes an api call to receive all of the registered users. On success the backend returns an object with a ‘users’ key that holds an array of ‘IUser’ objects. The component loops through the data and for each user object renders the user-card component, passing the user details to it.
+
 User-card component
 This card receives a user object from the user-list component and composes a user card based on the object’s details. On init it subs to the session observable and gets the logged in user (if we have one). After receiving the logged in user’s data the components sets boolean flags that determine whether the logged in user can subscribe to the user on the card (a user can’t subscribe to himself and the user must be logged in, in order to subscribe). This card holds a link to each user’s profile page.
 
@@ -109,10 +115,13 @@ A component that composes the profile page of each user. If the logged in user i
 On init the profile component subscribes to the route parameters and extracts the owner id from them. After that, it makes an api call to retrieve the corresponding user object from the backend. After that, it subscribes the “sessionObservable$” in order to fetch the currently logged in user (if any). The streams are chained into a single one and when that chained stream completes the component sets relevant boolean flags that determine what access the currently logged in user has.
 The component has an onEdit method which becomes available when the logged in user is the owner of the page. The method fetches and populates the user’s topics and populates the route state with the user’s data. After that it redirects to the register form, this time used as an ‘edit user form’.
 The profile component passes user data to the ‘profile-article-card’, ‘profile-user-card’, ‘subscribed-topics-card’ and ‘subscribed-users-card’ in order to compose the user profile page. All of the child components receive corresponding id-s with which to make api calls except for the ‘profile-user-card’, which receives the data of the fetched user here.
+
 Profile-article-card
 A component that doubles its use as a ‘created articles card’ and ‘liked articles card’. It receives an article id from the profile component and then on init fetches the article associated with this id. It populates the card with details from the fetched object.
+
 Profile-user-card
 A component that receives the user object from the profile component and populates the template with user details.
+
 Subscribed-topics -card
 The component receives a topic id from the profile component and then on init fetches the topic associated with this id. It populates the card with details from the fetched object.
 
@@ -124,15 +133,18 @@ The component receives a user id from the profile component and then on init fet
 Components
 About page
 A static about page describing the app’s purpose.
+
 Dark-mode-toggle
 A toggle implementing the ‘dark reader’ extension. It adds css for the app’s dark mode.
+
 Error
-An error card component. Its purpose is to serve as the content of the angular ‘snackbar’ in order to display an error message.  
+An error card component. Its purpose is to serve as the content of the angular ‘snackbar’ in order to display an error message. 
+
 Footer
 A static footer component.
+
 Header
-A header component. Holds the main navigation of the site in a nav. If a user is logged in it displays: Profile, Create Article, Authors, About and Logout. If a user is not logged in it displays: Login, Register, Authors, About.
-On init the header subscribes to the sessionObservable$ and gets the logged in user’s data (if there is a logged in user). Then it sets the isLoggedIn and user variables to true or false depending on the outcome. These variables determine the visibility of the various navigation elements.
+A header component. Holds the main navigation of the site in a nav. If a user is logged in it displays: Profile, Create Article, Authors, About and Logout. If a user is not logged in it displays: Login, Register, Authors, About. On init the header subscribes to the sessionObservable$ and gets the logged in user’s data (if there is a logged in user). Then it sets the isLoggedIn and user variables to true or false depending on the outcome. These variables determine the visibility of the various navigation elements.
 
 Interfaces
 IArticlePopulated
@@ -145,7 +157,6 @@ ICreateArticleFormData
 An interface for the ‘create article form’ form data.
 IDecoded
 Interface for the decoded JWT.
-
 IJwt
 Interface for the JWT backend responses.
 IloginFormData
@@ -158,17 +169,22 @@ IuserPopulated
 An interface for the user documents. The topics reference array is populated.
 Iuser
 An interface for the user documents. Leanified.
+
 Services
 displayFormErrorsService
 A service that takes a formgroup as an argument and loops through all of the form controls. It displays every error in the console.
+
 ErrorHandlerService
 A service that handles the global error messaging functionality. It initiates a subject, casts it as an observable and emits every time an error occurs in the app. This service works in tandem with the ‘error’ component.
 
 Login-or-register-guard-service
 A route guard that uses the getJwt() method from the authService and if it receives a JWT it prevents access to paths: 'auth/login' and 'auth/register'. It essentially prevents authenticated users access to the login and register routes.
+
 User-authorized-guard-service
 A route guard that uses the getUserId() method from the authService and the parameters of the previous activated route. It prevents navigation to the 'auth/profile/:id/edit' path for users who do not own the profile page of the user associated with the route. The guard compares the profile page path with the userId val of the logged in user. If they differ it blocks access, essentially denying access to the ‘edit user’ functionality for users who do not own the account.
+
 User-must-be-authenticated-guard-service
 A route guard that attempts to retrieve the jwt from local storage. If it succeeds it allows access to the route, if it fails it denies it. It guards the route: 'articles/create'. It essentially prevents not logged in users access to the create article route.
+
 User-must-be-author-guard.service
 A route guard that fetches an article id through the currently activated route. Then it compares the currently logged in user’s id with the article’s author and if they differ it denies access. Protects the path: 'articles/:id/edit'. It essentially prevents users who do not own the article resource from editing it.
