@@ -39,7 +39,9 @@ export class ProfileComponent implements OnInit {
         }),
         catchError((err) => {
           console.error(err);
-          this.errorHandlerService.setErrorMessage('An error occurred: ' + err);
+          this.errorHandlerService.setErrorMessage(
+            'An error occurred: ' + err.message
+          );
           return of(null);
         })
       )
@@ -52,7 +54,11 @@ export class ProfileComponent implements OnInit {
           }
         },
         error: (err) => {
-          this.errorHandlerService.setErrorMessage('An error occurred: ' + err);
+          console.log('we are here');
+
+          this.errorHandlerService.setErrorMessage(
+            'An error occurred: ' + err.message
+          );
           console.error(err);
         },
         complete: () => {},
@@ -64,8 +70,10 @@ export class ProfileComponent implements OnInit {
       const observables = (this.owner?.topics || []).map((topic: string) => {
         return this.apiCalls.getSingleTopic(topic).pipe(
           catchError((err) => {
+            console.error('we are here');
+
             this.errorHandlerService.setErrorMessage(
-              'An error occurred: ' + err
+              'An error occurred: ' + err.message
             );
             return of(null);
           }),
@@ -87,7 +95,9 @@ export class ProfileComponent implements OnInit {
         },
         error: (err) => {
           console.error(err);
-          this.errorHandlerService.setErrorMessage('An error occurred: ' + err);
+          this.errorHandlerService.setErrorMessage(
+            'An error occurred: ' + err.message
+          );
         },
         complete: () => {},
       });

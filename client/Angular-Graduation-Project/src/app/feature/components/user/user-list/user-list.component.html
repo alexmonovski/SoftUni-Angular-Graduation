@@ -1,3 +1,7 @@
-<ng-container *ngIf="users">
+<ng-container *ngIf="users; else noUsers">
   <app-user-card *ngFor="let user of users" [owner]="user"></app-user-card>
 </ng-container>
+
+<ng-template #noUsers>
+  <p class="no-users-message">No users registered yet. Be the first!</p>
+</ng-template>

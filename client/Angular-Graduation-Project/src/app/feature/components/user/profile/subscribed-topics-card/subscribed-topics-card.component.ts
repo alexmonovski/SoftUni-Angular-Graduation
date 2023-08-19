@@ -26,7 +26,9 @@ export class SubscribedTopicsCardComponent {
       },
       error: (err) => {
         console.error(err);
-        this.errorHandlerService.setErrorMessage('An error occurred: ' + err);
+        this.errorHandlerService.setErrorMessage(
+          'An error occurred: ' + err.message
+        );
       },
       complete: () => {},
     });

@@ -1,0 +1,8 @@
+.no-users-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh; /* Adjust as needed */
+  font-size: 18px;
+  text-align: center;
+}

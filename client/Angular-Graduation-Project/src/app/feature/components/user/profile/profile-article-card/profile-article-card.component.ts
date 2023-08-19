@@ -33,7 +33,9 @@ export class ProfileArticleCardComponent {
           });
         },
         error: (err) => {
-          this.errorHandlerService.setErrorMessage('An error occurred: ' + err);
+          this.errorHandlerService.setErrorMessage(
+            'An error occurred: ' + err.message
+          );
           return console.error(err);
         },
         complete: () => {},
