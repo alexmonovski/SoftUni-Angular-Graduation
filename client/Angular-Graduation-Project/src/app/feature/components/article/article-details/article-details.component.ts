@@ -42,7 +42,9 @@ export class ArticleDetailsComponent {
         }),
         catchError((err) => {
           console.error(err);
-          this.errorHandlerService.setErrorMessage('An error occurred: ' + err);
+          this.errorHandlerService.setErrorMessage(
+            'An error occurred: ' + err.message
+          );
           // replacement obs
           return of(null);
         })
@@ -58,7 +60,9 @@ export class ArticleDetailsComponent {
         },
         error: (err) => {
           console.error(err);
-          this.errorHandlerService.setErrorMessage('An error occurred: ' + err);
+          this.errorHandlerService.setErrorMessage(
+            'An error occurred: ' + err.message
+          );
         },
         complete: () => {},
       });
@@ -86,7 +90,9 @@ export class ArticleDetailsComponent {
       },
       error: (err) => {
         console.error(err);
-        this.errorHandlerService.setErrorMessage('An error occurred: ' + err);
+        this.errorHandlerService.setErrorMessage(
+          'An error occurred: ' + err.message
+        );
       },
       complete: () => '',
     });
@@ -101,7 +107,7 @@ export class ArticleDetailsComponent {
           // on error emit null
           catchError((err) => {
             this.errorHandlerService.setErrorMessage(
-              'An error occurred: ' + err
+              'An error occurred: ' + err.message
             );
             return of(null);
           }),
@@ -123,7 +129,9 @@ export class ArticleDetailsComponent {
           });
         },
         error: (err) => {
-          this.errorHandlerService.setErrorMessage('An error occurred: ' + err);
+          this.errorHandlerService.setErrorMessage(
+            'An error occurred: ' + err.message
+          );
         },
       });
     }
@@ -136,7 +144,9 @@ export class ArticleDetailsComponent {
       },
       error: (err) => {
         console.error(err);
-        this.errorHandlerService.setErrorMessage('An error occurred: ' + err);
+        this.errorHandlerService.setErrorMessage(
+          'An error occurred: ' + err.message
+        );
       },
       complete: () => '',
     });

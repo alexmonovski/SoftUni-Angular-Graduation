@@ -25,7 +25,9 @@ export class ArticleCommentsComponent implements OnInit {
         },
         error: (err) => {
           console.error('Error fetching comment:', err);
-          this.errorHandlerService.setErrorMessage('An error occurred: ' + err);
+          this.errorHandlerService.setErrorMessage(
+            'An error occurred: ' + err.message
+          );
         },
         complete: () => {},
       });

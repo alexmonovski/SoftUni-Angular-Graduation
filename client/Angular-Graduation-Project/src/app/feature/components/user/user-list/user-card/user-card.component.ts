@@ -44,7 +44,9 @@ export class UserCardComponent {
       },
       error: (err) => {
         console.error(err);
-        this.errorHandlerService.setErrorMessage('An error occurred: ' + err);
+        this.errorHandlerService.setErrorMessage(
+          'An error occurred: ' + err.message
+        );
       },
       complete: () => {},
     });
@@ -67,7 +69,9 @@ export class UserCardComponent {
         },
         error: (err) => {
           console.error(err);
-          this.errorHandlerService.setErrorMessage('An error occurred: ' + err);
+          this.errorHandlerService.setErrorMessage(
+            'An error occurred: ' + err.message
+          );
         },
         complete: () => '',
       });

@@ -79,7 +79,9 @@ export class ArticleCreateComponent implements OnInit {
       },
       error: (err) => {
         console.error(err);
-        this.errorHandlerService.setErrorMessage('An error occurred: ' + err);
+        this.errorHandlerService.setErrorMessage(
+          'An error occurred: ' + err.message
+        );
       },
       complete: () => {},
     });
@@ -126,7 +128,7 @@ export class ArticleCreateComponent implements OnInit {
           error: (err) => {
             console.error(err);
             this.errorHandlerService.setErrorMessage(
-              'An error occurred: ' + err
+              'An error occurred: ' + err.message
             );
             if (err.status === 409) {
               this.createArticleFormGroup
@@ -146,7 +148,7 @@ export class ArticleCreateComponent implements OnInit {
             error: (err) => {
               console.error(err);
               this.errorHandlerService.setErrorMessage(
-                'An error occurred: ' + err
+                'An error occurred: ' + err.message
               );
               if (err.status === 409) {
                 this.createArticleFormGroup

@@ -27,7 +27,7 @@ export class ArticleTopicsComponent {
           error: (err) => {
             console.error('Error fetching comment:', err);
             this.errorHandlerService.setErrorMessage(
-              'An error occurred: ' + err
+              'An error occurred: ' + err.message
             );
           },
           complete: () => {},

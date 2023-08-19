@@ -145,7 +145,7 @@ export class RegisterComponent implements OnInit {
           error: (err) => {
             console.error(err);
             this.errorHandlerService.setErrorMessage(
-              'An error occurred: ' + err
+              'An error occurred: ' + err.message
             );
             if (err.status === 409) {
               this.registerFormGroup
@@ -171,7 +171,7 @@ export class RegisterComponent implements OnInit {
             },
             error: (err) => {
               this.errorHandlerService.setErrorMessage(
-                'An error occurred: ' + err
+                'An error occurred: ' + err.message
               );
               console.error(err);
               if (err.status === 409) {

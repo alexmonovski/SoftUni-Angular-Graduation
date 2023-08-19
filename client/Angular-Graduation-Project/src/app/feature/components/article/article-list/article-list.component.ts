@@ -48,7 +48,9 @@ export class ArticleListComponent implements OnInit {
           this.filter();
         },
         error: (err) => {
-          this.errorHandlerService.setErrorMessage('An error occurred: ' + err);
+          this.errorHandlerService.setErrorMessage(
+            'An error occurred: ' + err.message
+          );
           console.error(err);
         },
         complete: () => {},
