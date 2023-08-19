@@ -24,7 +24,7 @@ export class ArticleCreateComponent implements OnInit {
   separatorKeysCodes: number[] = [ENTER, COMMA];
   // ref to the topic input el
   @ViewChild('topicInput') topicInput!: ElementRef<HTMLInputElement>;
-  createOrEdit = 'create';
+  createOrEdit = 'Create';
   article: IArticle | undefined;
   createArticleFormGroup: FormGroup;
 
@@ -87,7 +87,7 @@ export class ArticleCreateComponent implements OnInit {
     if (history.state && history.state.article) {
       this.article = history.state.article;
       const topics = history.state.topics;
-      this.createOrEdit = 'edit';
+      this.createOrEdit = 'Edit';
       if (this.article) {
         this.createArticleFormGroup.patchValue({
           articleDataGroup: {
@@ -117,7 +117,7 @@ export class ArticleCreateComponent implements OnInit {
         topics,
       };
 
-      if (this.createOrEdit == 'create') {
+      if (this.createOrEdit == 'Create') {
         this.apiCalls.createArticle(sendData).subscribe({
           next: (response) => {
             const id = response.newArticle._id;
@@ -137,7 +137,7 @@ export class ArticleCreateComponent implements OnInit {
             }
           },
         });
-      } else if (this.createOrEdit == 'edit') {
+      } else if (this.createOrEdit == 'Edit') {
         if (this.article) {
           this.apiCalls.editArticle(sendData, this.article._id).subscribe({
             next: (response) => {

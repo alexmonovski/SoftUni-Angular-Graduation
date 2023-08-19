@@ -5,6 +5,7 @@ const commentSchema = new Schema({
   content: { type: String, required: true },
   createdAt: { type: Date, default: Date.now },
   lastEdit: { type: Date, default: Date.now },
+  authorName: { type: String, required: true },
   author: { type: Types.ObjectId, ref: "User" },
   article: { type: Types.ObjectId, ref: "Article" },
   usersLiked: { type: [Types.ObjectId], ref: "User", default: [] },

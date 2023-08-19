@@ -12,7 +12,6 @@ async function registerUser(body) {
   await validateInput(body, "registerUser");
   const parsedPassword = password.trim();
   const hashedPassword = await bcrypt.hash(parsedPassword, 10);
-  console.log(hashedPassword); // Log the hashed password
   const existingTopics = await Topic.find({ name: { $in: topics } }).exec();
   const existingTopicIds = existingTopics.map((topic) => topic._id);
   const topicsToCreate = topics.filter(
@@ -33,11 +32,7 @@ async function registerUser(body) {
     password: hashedPassword,
     topics: updatedTopicIds, // Update the topics array
   });
-
-  console.log("updated user pre save: ", updatedUser);
-
   await updatedUser.save();
-  console.log("updated user post save: ", updatedUser); // Log the updated user object
   return createSession(updatedUser); // Assuming createSession returns something meaningful
 }
 async function loginUser(body) {

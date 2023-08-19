@@ -1,0 +1,33 @@
+.comment-list {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.comment {
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+}
+
+.comment-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.comment-author {
+  font-size: 14px;
+  color: #888;
+  margin-bottom: 5px;
+}
+
+.comment-content {
+  font-size: 16px;
+  line-height: 1.5;
+}

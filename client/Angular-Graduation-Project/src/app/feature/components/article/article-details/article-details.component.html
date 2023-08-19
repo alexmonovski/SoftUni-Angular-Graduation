@@ -21,17 +21,30 @@
     </mat-card-content>
 
     <mat-card-actions *ngIf="isAuthor == false && loggedInUser">
-      <a mat-button *ngIf="hasLiked == false" (click)="onLike()">Like</a>
-      <a mat-button (click)="onComment()">Comment</a>
+      <a
+        mat-raised-button
+        *ngIf="hasLiked == false"
+        class="mat-primary"
+        (click)="onLike()"
+        >Like</a
+      >
+      <span class="button-gap"></span>
+      <a mat-raised-button class="mat-primary" (click)="onComment()">Comment</a>
+    </mat-card-actions>
+
+    <mat-card-actions *ngIf="isAuthor && loggedInUser">
+      <a mat-raised-button class="mat-primary" (click)="onEdit()"
+        >Edit article</a
+      >
+      <span class="button-gap"></span>
+      <a mat-raised-button class="mat-primary" (click)="onDelete()"
+        >Delete article</a
+      >
     </mat-card-actions>
 
     <app-article-comments
       [commentIds]="article.comments"
+      class="app-article-comments"
     ></app-article-comments>
-
-    <mat-card-actions *ngIf="isAuthor && loggedInUser">
-      <a mat-button (click)="onEdit()" *ngIf="isAuthor">Edit article</a>
-      <a mat-button (click)="onDelete()">Delete article</a>
-    </mat-card-actions>
   </mat-card>
 </ng-container>

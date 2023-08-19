@@ -145,17 +145,18 @@ async function likeArticle(articleId, userId) {
 }
 
 async function commentArticle(articleId, commentBody, commentAuthorId) {
-  const newComment = new Comment(commentBody);
-  newComment.author = commentAuthorId;
-  await newComment.save();
-
-  const article = await Article.findById(articleId);
-  article.comments.push(newComment._id);
-  await article.save();
-
   const user = await User.findById(commentAuthorId);
+  const newComment = new Comment(commentBody);
+  const article = await Article.findById(articleId);
+
   user.commentsCreated.push(newComment._id);
+  newComment.author = commentAuthorId;
+  newComment.authorName = user.name;
+  article.comments.push(newComment._id);
+
   await user.save();
+  await newComment.save();
+  await article.save();
 }
 
 async function deleteArticle(articleId, userId) {

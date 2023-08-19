@@ -6,4 +6,5 @@ export interface IComment {
   createdAt: Date;
   lastEdit: Date;
   author: string;
+  authorName: string;
 }

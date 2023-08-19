@@ -27,7 +27,7 @@ export class RegisterComponent implements OnInit {
   separatorKeysCodes: number[] = [ENTER, COMMA];
   // ref to the topic input element
   @ViewChild('topicInput') topicInput!: ElementRef<HTMLInputElement>;
-  registerOrEdit = 'register';
+  registerOrEdit = 'Register';
   registerFormGroup: FormGroup;
   user: IUser | null = null;
 
@@ -103,7 +103,7 @@ export class RegisterComponent implements OnInit {
     if (history.state && history.state.user) {
       this.user = history.state.user;
       const topics = history.state.topics;
-      this.registerOrEdit = 'edit';
+      this.registerOrEdit = 'Edit';
       if (this.user) {
         this.registerFormGroup.patchValue({
           personalDetailsGroup: {
@@ -136,7 +136,7 @@ export class RegisterComponent implements OnInit {
         topics,
       };
 
-      if (this.registerOrEdit == 'register') {
+      if (this.registerOrEdit == 'Register') {
         this.apiCalls.postRegisterForm(sendData).subscribe({
           next: (response: IJwt) => {
             this.authService.createSession(response);

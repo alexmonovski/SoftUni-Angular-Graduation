@@ -1,9 +1,8 @@
 <div class="comment-list">
   <h3>Comments</h3>
-  <ul>
-    <li *ngFor="let comment of comments">
-      <h4>Title: {{ comment.title }}</h4>
-      <p>Content: {{ comment.content }}</p>
-    </li>
-  </ul>
+  <div class="comment" *ngFor="let comment of comments">
+    <div class="comment-title">Title: {{ comment.title }}</div>
+    <div class="comment-author">Author: {{ comment.authorName }}</div>
+    <div class="comment-content">Content: {{ comment.content }}</div>
+  </div>
 </div>
