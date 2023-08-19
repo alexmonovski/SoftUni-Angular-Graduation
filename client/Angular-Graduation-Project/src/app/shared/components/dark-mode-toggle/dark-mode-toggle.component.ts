@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { DarkModeService } from 'src/app/core/services/dark-mode.service';
 import * as DarkReader from 'darkreader';
 
 @Component({
@@ -10,7 +9,7 @@ import * as DarkReader from 'darkreader';
 export class DarkModeToggleComponent {
   isDarkModeEnabled: boolean = false;
 
-  constructor(private darkModeService: DarkModeService) {}
+  constructor() {}
 
   toggleDarkMode() {
     if (this.isDarkModeEnabled) {

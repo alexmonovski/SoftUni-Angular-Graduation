@@ -27,13 +27,13 @@ export class ApiCallsService {
     const url = `http://localhost:3000/users/${id}`;
     return this.http.get<{ user: IUserPopulated }>(url);
   }
-  subscribeToUser(subscribeeId: string): Observable<{ updatedUser: IUser }> {
-    const url = `http://localhost:3000/users/${subscribeeId}/subscribe`;
-    return this.http.post<{ updatedUser: IUser }>(url, subscribeeId);
-  }
   getSingleUserLean(id: string): Observable<{ user: IUser }> {
     const url = `http://localhost:3000/users/${id}?action=lean`;
     return this.http.get<{ user: IUser }>(url);
+  }
+  subscribeToUser(subscribeeId: string): Observable<{ updatedUser: IUser }> {
+    const url = `http://localhost:3000/users/${subscribeeId}/subscribe`;
+    return this.http.post<{ updatedUser: IUser }>(url, subscribeeId);
   }
 
   // auth
@@ -54,7 +54,6 @@ export class ApiCallsService {
   }
 
   // articles
-  //? not populated
   getAllArticles(): Observable<{ articles: IArticle[] }> {
     const url = `http://localhost:3000/articles/`;
     return this.http.get<{ articles: IArticle[] }>(url);
@@ -67,12 +66,6 @@ export class ApiCallsService {
   getSingleArticleLean(id: string): Observable<{ article: IArticle }> {
     const url = `http://localhost:3000/articles/${id}?action=lean`;
     return this.http.get<{ article: IArticle }>(url);
-  }
-  getSingleArticlePopulated(
-    id: string
-  ): Observable<{ article: IArticlePopulated }> {
-    const url = `http://localhost:3000/articles/${id}?action=populated`;
-    return this.http.get<{ article: IArticlePopulated }>(url);
   }
   createArticle(
     formData: ICreateArticleFormData

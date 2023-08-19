@@ -19,7 +19,7 @@ export class UserListComponent {
 
   ngOnInit() {
     this.apiCalls.getAllUsers().subscribe({
-      next: (response) => {
+      next: (response: { users: IUser[] }) => {
         this.users = response.users;
       },
       error: (err) => {

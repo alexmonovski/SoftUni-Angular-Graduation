@@ -36,6 +36,11 @@ export class ProfileComponent implements OnInit {
         switchMap((response: { user: IUser }) => {
           this.owner = response.user;
           return this.authService.sessionObservable$;
+        }),
+        catchError((err) => {
+          console.error(err);
+          this.errorHandlerService.setErrorMessage('An error occurred: ' + err);
+          return of(null);
         })
       )
       .subscribe({

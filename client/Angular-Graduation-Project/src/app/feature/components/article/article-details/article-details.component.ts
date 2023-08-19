@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { forkJoin, of } from 'rxjs';
+import { forkJoin, of, Subscription } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { ApiCallsService } from 'src/app/core/services/api-calls.service';
 import { AuthService } from 'src/app/core/services/auth.service';
@@ -19,6 +19,7 @@ export class ArticleDetailsComponent {
   loggedInUser: IUser | null = null;
   isAuthor = false;
   hasLiked = false;
+  private subscription: Subscription = new Subscription();
 
   constructor(
     private router: Router,
@@ -29,7 +30,7 @@ export class ArticleDetailsComponent {
   ) {}
 
   ngOnInit() {
-    this.route.params
+    this.subscription = this.route.params
       .pipe(
         switchMap((params: Params) => {
           this.articleId = params['id'];
@@ -143,5 +144,9 @@ export class ArticleDetailsComponent {
 
   onComment() {
     this.router.navigate([`/articles/${this.articleId}/add-comment`]);
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }

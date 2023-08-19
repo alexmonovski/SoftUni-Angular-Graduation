@@ -7,7 +7,6 @@ import { AboutComponent } from './components/about/about.component';
 import { ErrorComponent } from './components/error/error.component';
 import { MaterialModule } from '../material.module';
 import { AppRoutingModule } from '../app-routing.module';
-import { ErrorComponentComponent } from './components/error-component/error-component.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +16,6 @@ import { ErrorComponentComponent } from './components/error-component/error-comp
     AboutComponent,
     FooterComponent,
     ErrorComponent,
-    ErrorComponentComponent,
   ],
   imports: [CommonModule, MaterialModule, AppRoutingModule],
   exports: [
@@ -29,4 +27,4 @@ import { ErrorComponentComponent } from './components/error-component/error-comp
     ErrorComponent,
   ],
 })
-export class SharedModule { }
+export class SharedModule {}
