@@ -4,6 +4,7 @@ import { catchError, forkJoin, map, of, switchMap } from 'rxjs';
 import { ApiCallsService } from 'src/app/core/services/api-calls.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { IUser } from 'src/app/shared/interfaces/iuser';
+import { ErrorHandlerService } from 'src/app/shared/services/error-handler.service';
 
 @Component({
   selector: 'app-profile',
@@ -20,7 +21,8 @@ export class ProfileComponent implements OnInit {
     private apiCalls: ApiCallsService,
     private route: ActivatedRoute,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private errorHandlerService: ErrorHandlerService
   ) {}
 
   ngOnInit() {
@@ -44,7 +46,10 @@ export class ProfileComponent implements OnInit {
             this.isOwner = false;
           }
         },
-        error: (err) => console.error(err),
+        error: (err) => {
+          this.errorHandlerService.setErrorMessage('An error occurred: ' + err);
+          console.error(err);
+        },
         complete: () => {},
       });
   }
@@ -53,7 +58,12 @@ export class ProfileComponent implements OnInit {
     if (this.isOwner) {
       const observables = (this.owner?.topics || []).map((topic: string) => {
         return this.apiCalls.getSingleTopic(topic).pipe(
-          catchError(() => of(null)),
+          catchError((err) => {
+            this.errorHandlerService.setErrorMessage(
+              'An error occurred: ' + err
+            );
+            return of(null);
+          }),
           map((data) => {
             return data?.topic.name;
           })
@@ -72,6 +82,7 @@ export class ProfileComponent implements OnInit {
         },
         error: (err) => {
           console.error(err);
+          this.errorHandlerService.setErrorMessage('An error occurred: ' + err);
         },
         complete: () => {},
       });

@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Subscription, map, of, switchMap } from 'rxjs';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { IUser } from '../../interfaces/iuser';
+import { ErrorHandlerService } from '../../services/error-handler.service';
 
 @Component({
   selector: 'app-header',
@@ -14,7 +15,11 @@ export class HeaderComponent {
   subscription: Subscription = new Subscription();
   user!: IUser | null;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private errorHandlerService: ErrorHandlerService
+  ) {}
 
   ngOnInit() {
     this.subscription = this.authService.sessionObservable$.subscribe({
@@ -27,7 +32,10 @@ export class HeaderComponent {
           this.user = null;
         }
       },
-      error: (err) => {},
+      error: (err) => {
+        console.error(err);
+        this.errorHandlerService.setErrorMessage('An error occurred: ' + err);
+      },
       complete: () => {},
     });
   }

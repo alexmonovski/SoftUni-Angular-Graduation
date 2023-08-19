@@ -5,6 +5,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import jwt_decode from 'jwt-decode';
 import { ApiCallsService } from './api-calls.service';
 import { IDecoded } from 'src/app/shared/interfaces/idecoded';
+import { ErrorHandlerService } from 'src/app/shared/services/error-handler.service';
 
 // add expiry time later
 @Injectable({
@@ -14,7 +15,10 @@ export class AuthService {
   private sessionSubject: BehaviorSubject<IUser | null>;
   public sessionObservable$: Observable<IUser | null>;
 
-  constructor(private apiCalls: ApiCallsService) {
+  constructor(
+    private apiCalls: ApiCallsService,
+    private errorHandlerService: ErrorHandlerService
+  ) {
     this.sessionSubject = new BehaviorSubject<IUser | null>(null);
     this.sessionObservable$ = this.sessionSubject.asObservable();
     this.sessionSubject.next(this.getUserDetails());
@@ -70,6 +74,7 @@ export class AuthService {
       },
       error: (err) => {
         console.error(err);
+        this.errorHandlerService.setErrorMessage('An error occurred: ' + err);
       },
       complete: () => {},
     });

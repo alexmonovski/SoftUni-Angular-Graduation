@@ -6,6 +6,7 @@ import { ApiCallsService } from 'src/app/core/services/api-calls.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { IArticle } from 'src/app/shared/interfaces/iarticle';
 import { IUser } from 'src/app/shared/interfaces/iuser';
+import { ErrorHandlerService } from 'src/app/shared/services/error-handler.service';
 
 @Component({
   selector: 'app-article-details',
@@ -23,7 +24,8 @@ export class ArticleDetailsComponent {
     private router: Router,
     private route: ActivatedRoute,
     private apiCalls: ApiCallsService,
-    private authService: AuthService
+    private authService: AuthService,
+    private errorHandlerService: ErrorHandlerService
   ) {}
 
   ngOnInit() {
@@ -36,6 +38,12 @@ export class ArticleDetailsComponent {
         switchMap((article: { article: IArticle }) => {
           this.article = article.article;
           return this.authService.sessionObservable$;
+        }),
+        catchError((err) => {
+          console.error(err);
+          this.errorHandlerService.setErrorMessage('An error occurred: ' + err);
+          // replacement obs
+          return of(null);
         })
       )
       .subscribe({
@@ -49,6 +57,7 @@ export class ArticleDetailsComponent {
         },
         error: (err) => {
           console.error(err);
+          this.errorHandlerService.setErrorMessage('An error occurred: ' + err);
         },
         complete: () => {},
       });
@@ -76,6 +85,7 @@ export class ArticleDetailsComponent {
       },
       error: (err) => {
         console.error(err);
+        this.errorHandlerService.setErrorMessage('An error occurred: ' + err);
       },
       complete: () => '',
     });
@@ -88,7 +98,12 @@ export class ArticleDetailsComponent {
       const observables = this.article.topics.map((topicId) => {
         return this.apiCalls.getSingleTopic(topicId).pipe(
           // on error emit null
-          catchError((err) => of(null)),
+          catchError((err) => {
+            this.errorHandlerService.setErrorMessage(
+              'An error occurred: ' + err
+            );
+            return of(null);
+          }),
           map((data) => {
             return data?.topic.name;
           })
@@ -106,7 +121,9 @@ export class ArticleDetailsComponent {
             },
           });
         },
-        error: (err) => {},
+        error: (err) => {
+          this.errorHandlerService.setErrorMessage('An error occurred: ' + err);
+        },
       });
     }
   }
@@ -118,6 +135,7 @@ export class ArticleDetailsComponent {
       },
       error: (err) => {
         console.error(err);
+        this.errorHandlerService.setErrorMessage('An error occurred: ' + err);
       },
       complete: () => '',
     });

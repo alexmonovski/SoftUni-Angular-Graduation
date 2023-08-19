@@ -9,6 +9,8 @@ import { SharedModule } from './shared/shared.module';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { FeatureModule } from './feature/feature.module';
 import { HttpClientModule } from '@angular/common/http';
+import { ErrorHandlerService } from './shared/services/error-handler.service';
+import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [AppComponent],
@@ -23,7 +25,10 @@ import { HttpClientModule } from '@angular/common/http';
     FeatureModule,
     HttpClientModule,
   ],
-  providers: [],
+  providers: [
+    ErrorHandlerService,
+    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 3000 } },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

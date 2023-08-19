@@ -4,6 +4,7 @@ import { ApiCallsService } from 'src/app/core/services/api-calls.service';
 import { IArticle } from 'src/app/shared/interfaces/iarticle';
 import { IArticlePopulated } from 'src/app/shared/interfaces/iarticle-populated';
 import { ITopic } from 'src/app/shared/interfaces/itopic';
+import { ErrorHandlerService } from 'src/app/shared/services/error-handler.service';
 
 @Component({
   selector: 'app-profile-article-card',
@@ -15,7 +16,10 @@ export class ProfileArticleCardComponent {
   article: IArticlePopulated | undefined;
   topics: string[] = [];
 
-  constructor(private apiCalls: ApiCallsService) {}
+  constructor(
+    private apiCalls: ApiCallsService,
+    private errorHandlerService: ErrorHandlerService
+  ) {}
   subscription: Subscription = new Subscription();
 
   ngOnInit() {
@@ -28,7 +32,10 @@ export class ProfileArticleCardComponent {
             this.topics.push(topic.name);
           });
         },
-        error: (err) => console.error(err),
+        error: (err) => {
+          this.errorHandlerService.setErrorMessage('An error occurred: ' + err);
+          return console.error(err);
+        },
         complete: () => {},
       });
   }

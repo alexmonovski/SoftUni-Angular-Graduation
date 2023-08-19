@@ -1,3 +1,4 @@
+import { ErrorHandlerService } from './../../../shared/services/error-handler.service';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
@@ -35,7 +36,8 @@ export class RegisterComponent implements OnInit {
     private formBuilder: FormBuilder,
     private apiCalls: ApiCallsService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private errorHandlerService: ErrorHandlerService
   ) {
     this.registerFormGroup = this.formBuilder.group({
       personalDetailsGroup: this.formBuilder.group({
@@ -92,7 +94,10 @@ export class RegisterComponent implements OnInit {
           this.options = [];
         }
       },
-      error: (err) => console.error(err),
+      error: (err) => {
+        console.error(err);
+        this.errorHandlerService.setErrorMessage('An error occurred: ' + err);
+      },
     });
     // prepopulate the form itself
     if (history.state && history.state.user) {
@@ -139,6 +144,9 @@ export class RegisterComponent implements OnInit {
           },
           error: (err) => {
             console.error(err);
+            this.errorHandlerService.setErrorMessage(
+              'An error occurred: ' + err
+            );
             if (err.status === 409) {
               this.registerFormGroup
                 .get('personalDetailsGroup.name')
@@ -162,6 +170,9 @@ export class RegisterComponent implements OnInit {
               this.router.navigate(['/']);
             },
             error: (err) => {
+              this.errorHandlerService.setErrorMessage(
+                'An error occurred: ' + err
+              );
               console.error(err);
               if (err.status === 409) {
                 this.registerFormGroup

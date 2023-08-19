@@ -8,6 +8,7 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { IArticle } from 'src/app/shared/interfaces/iarticle';
 import { ITopic } from 'src/app/shared/interfaces/itopic';
 import { displayFormErrorsService } from 'src/app/shared/services/display-form-errors.service';
+import { ErrorHandlerService } from 'src/app/shared/services/error-handler.service';
 
 @Component({
   selector: 'app-article-create',
@@ -31,7 +32,8 @@ export class ArticleCreateComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private apiCalls: ApiCallsService,
-    private router: Router
+    private router: Router,
+    private errorHandlerService: ErrorHandlerService
   ) {
     this.createArticleFormGroup = this.formBuilder.group({
       articleDataGroup: this.formBuilder.group({
@@ -75,7 +77,11 @@ export class ArticleCreateComponent implements OnInit {
       next: (data: { topics: ITopic[] }) => {
         this.options = data.topics.map((dataObj: ITopic) => dataObj.name);
       },
-      error: (err) => console.error(err),
+      error: (err) => {
+        console.error(err);
+        this.errorHandlerService.setErrorMessage('An error occurred: ' + err);
+      },
+      complete: () => {},
     });
 
     if (history.state && history.state.article) {
@@ -119,6 +125,9 @@ export class ArticleCreateComponent implements OnInit {
           },
           error: (err) => {
             console.error(err);
+            this.errorHandlerService.setErrorMessage(
+              'An error occurred: ' + err
+            );
             if (err.status === 409) {
               this.createArticleFormGroup
                 .get('articleDataGroup.title')
@@ -136,6 +145,9 @@ export class ArticleCreateComponent implements OnInit {
             },
             error: (err) => {
               console.error(err);
+              this.errorHandlerService.setErrorMessage(
+                'An error occurred: ' + err
+              );
               if (err.status === 409) {
                 this.createArticleFormGroup
                   .get('articleDataGroup.title')
@@ -149,6 +161,7 @@ export class ArticleCreateComponent implements OnInit {
       }
     } else {
       console.error('Form has errors.');
+      this.errorHandlerService.setErrorMessage('Form is invalid.');
       displayFormErrorsService(this.createArticleFormGroup);
     }
   }

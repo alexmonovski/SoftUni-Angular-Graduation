@@ -7,6 +7,7 @@ import { AboutComponent } from './components/about/about.component';
 import { ErrorComponent } from './components/error/error.component';
 import { MaterialModule } from '../material.module';
 import { AppRoutingModule } from '../app-routing.module';
+import { ErrorComponentComponent } from './components/error-component/error-component.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { AppRoutingModule } from '../app-routing.module';
     AboutComponent,
     FooterComponent,
     ErrorComponent,
+    ErrorComponentComponent,
   ],
   imports: [CommonModule, MaterialModule, AppRoutingModule],
   exports: [

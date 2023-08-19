@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApiCallsService } from 'src/app/core/services/api-calls.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { Subscription, switchMap } from 'rxjs';
+import { ErrorHandlerService } from 'src/app/shared/services/error-handler.service';
 
 @Component({
   selector: 'app-article-list',
@@ -19,7 +20,8 @@ export class ArticleListComponent implements OnInit {
 
   constructor(
     private apiCalls: ApiCallsService,
-    private authService: AuthService
+    private authService: AuthService,
+    private errorHandlerService: ErrorHandlerService
   ) {}
 
   ngOnInit(): void {
@@ -45,7 +47,10 @@ export class ArticleListComponent implements OnInit {
           });
           this.filter();
         },
-        error: (err) => console.error(err),
+        error: (err) => {
+          this.errorHandlerService.setErrorMessage('An error occurred: ' + err);
+          console.error(err);
+        },
         complete: () => {},
       });
   }

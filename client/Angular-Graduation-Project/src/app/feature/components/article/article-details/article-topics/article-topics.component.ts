@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { ApiCallsService } from 'src/app/core/services/api-calls.service';
 import { ITopic } from 'src/app/shared/interfaces/itopic';
+import { ErrorHandlerService } from 'src/app/shared/services/error-handler.service';
 
 @Component({
   selector: 'app-article-topics',
@@ -11,7 +12,10 @@ export class ArticleTopicsComponent {
   @Input() topicIds!: string[];
   parsedTopics: string[] = [];
 
-  constructor(private apiCalls: ApiCallsService) {}
+  constructor(
+    private apiCalls: ApiCallsService,
+    private errorHandlerService: ErrorHandlerService
+  ) {}
 
   ngOnInit() {
     if (this.topicIds.length > 0) {
@@ -20,8 +24,11 @@ export class ArticleTopicsComponent {
           next: (topic: { topic: ITopic }) => {
             this.parsedTopics.push(topic.topic.name);
           },
-          error: (error) => {
-            console.error('Error fetching comment:', error);
+          error: (err) => {
+            console.error('Error fetching comment:', err);
+            this.errorHandlerService.setErrorMessage(
+              'An error occurred: ' + err
+            );
           },
           complete: () => {},
         });

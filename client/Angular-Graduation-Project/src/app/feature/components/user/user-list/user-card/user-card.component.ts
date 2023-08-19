@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { ApiCallsService } from 'src/app/core/services/api-calls.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { IUser } from 'src/app/shared/interfaces/iuser';
+import { ErrorHandlerService } from 'src/app/shared/services/error-handler.service';
 
 @Component({
   selector: 'app-user-card',
@@ -20,7 +21,8 @@ export class UserCardComponent {
   constructor(
     private router: Router,
     private apiCalls: ApiCallsService,
-    private authService: AuthService
+    private authService: AuthService,
+    private errorHandlerService: ErrorHandlerService
   ) {}
 
   ngOnInit() {
@@ -40,7 +42,10 @@ export class UserCardComponent {
           }
         }
       },
-      error: (err) => {},
+      error: (err) => {
+        console.error(err);
+        this.errorHandlerService.setErrorMessage('An error occurred: ' + err);
+      },
       complete: () => {},
     });
   }
@@ -60,7 +65,10 @@ export class UserCardComponent {
             );
           }
         },
-        error: (err) => console.error(err),
+        error: (err) => {
+          console.error(err);
+          this.errorHandlerService.setErrorMessage('An error occurred: ' + err);
+        },
         complete: () => '',
       });
     }
