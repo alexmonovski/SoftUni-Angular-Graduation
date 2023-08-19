@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ApiCallsService } from 'src/app/core/services/api-calls.service';
 import { IComment } from 'src/app/shared/interfaces/icomment';
+import { ErrorHandlerService } from 'src/app/shared/services/error-handler.service';
 
 @Component({
   selector: 'app-article-comments',
@@ -11,7 +12,10 @@ export class ArticleCommentsComponent implements OnInit {
   @Input() commentIds!: string[];
   comments: IComment[] = [];
 
-  constructor(private apiCalls: ApiCallsService) {}
+  constructor(
+    private apiCalls: ApiCallsService,
+    private errorHandlerService: ErrorHandlerService
+  ) {}
 
   ngOnInit(): void {
     this.commentIds.forEach((commentId) => {
@@ -19,8 +23,9 @@ export class ArticleCommentsComponent implements OnInit {
         next: (comment: { comment: IComment }) => {
           this.comments.push(comment.comment);
         },
-        error: (error) => {
-          console.error('Error fetching comment:', error);
+        error: (err) => {
+          console.error('Error fetching comment:', err);
+          this.errorHandlerService.setErrorMessage('An error occurred: ' + err);
         },
         complete: () => {},
       });
