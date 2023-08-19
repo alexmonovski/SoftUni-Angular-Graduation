@@ -9,20 +9,6 @@ import { IArticlePopulated } from 'src/app/shared/interfaces/iarticle-populated'
   styleUrls: ['./article-card.component.css'],
 })
 export class ArticleCardComponent {
-  @Input() articleId!: string;
-  article: IArticlePopulated | undefined;
-
-  constructor(private apiCalls: ApiCallsService) {}
-
-  ngOnInit() {
-    if (this.articleId) {
-      this.apiCalls.getSingleArticle(this.articleId).subscribe({
-        next: (articleResponse) => {
-          this.article = articleResponse.article;
-        },
-        error: (err) => console.error(err),
-        complete: () => {},
-      });
-    }
-  }
+  @Input() article!: IArticle;
+  constructor() {}
 }

@@ -1,15 +1,20 @@
 <ng-container *ngIf="article">
   <mat-card class="article-card" [routerLink]="['/articles', article._id]">
+    <mat-card-header>
+      <mat-card-title>{{ article.title }}</mat-card-title>
+    </mat-card-header>
     <mat-card-content>
-      <h2 class="article-title">{{ article.title }}</h2>
       <p class="article-description">{{ article.description }}</p>
       <div class="article-details">
         <p class="article-author">Author: {{ article.authorName }}</p>
         <p class="article-created">
           Created on: {{ article.createdAt | date }}
         </p>
-        <p class="article-likes">Likes: {{ article.usersLiked.length || 0 }}</p>
+        <p class="article-created">Last edit: {{ article.lastEdit | date }}</p>
       </div>
     </mat-card-content>
+    <mat-card-footer>
+      <p class="article-likes">Likes: {{ article.usersLiked.length }}</p>
+    </mat-card-footer>
   </mat-card>
 </ng-container>

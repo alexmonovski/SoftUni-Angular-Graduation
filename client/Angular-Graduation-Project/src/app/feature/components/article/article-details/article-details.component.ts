@@ -13,18 +13,21 @@ import { IUser } from 'src/app/shared/interfaces/iuser';
   styleUrls: ['./article-details.component.css'],
 })
 export class ArticleDetailsComponent {
-  article!: IArticle;
-  articleId!: string;
-  loggedInUserId: string | undefined;
+  // id we receive from the route params
+  articleId: string = '';
+  // the article object we fetch via api call
+  article: IArticle | undefined = undefined;
+  // user we receive via behavior subject
+  loggedInUser: IUser | null = null;
+  // boolean flags to determine authority
   isAuthor = false;
   hasLiked = false;
-  user!: IUser | null;
 
   constructor(
+    private router: Router,
     private route: ActivatedRoute,
     private apiCalls: ApiCallsService,
-    private authService: AuthService,
-    private router: Router
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
@@ -34,7 +37,7 @@ export class ArticleDetailsComponent {
           this.articleId = params['id'];
           return this.apiCalls.getSingleArticleLean(this.articleId);
         }),
-        switchMap((article) => {
+        switchMap((article: { article: IArticle }) => {
           this.article = article.article;
           return this.authService.sessionObservable$;
         })
@@ -42,9 +45,9 @@ export class ArticleDetailsComponent {
       .subscribe({
         next: (response: IUser | null) => {
           if (response) {
-            this.user = response;
+            this.loggedInUser = response;
           } else {
-            this.user = null;
+            this.loggedInUser = null;
           }
           this.setFlags();
         },
@@ -56,16 +59,16 @@ export class ArticleDetailsComponent {
   }
 
   setFlags() {
-    if (this.user) {
-      this.loggedInUserId = this.user._id;
-      this.isAuthor = this.loggedInUserId == this.article.author;
-      this.hasLiked = this.article.usersLiked.some(
-        (likedUserId: string) => likedUserId === this.loggedInUserId
-      );
-    } else {
-      this.loggedInUserId = undefined;
-      this.isAuthor = false;
-      this.hasLiked = false;
+    if (this.article) {
+      if (this.loggedInUser) {
+        this.isAuthor = this.loggedInUser._id == this.article.author;
+        this.hasLiked = this.article.usersLiked.some(
+          (likedUserId) => likedUserId == this.loggedInUser?._id
+        );
+      } else {
+        this.isAuthor = false;
+        this.hasLiked = false;
+      }
     }
   }
 
@@ -83,29 +86,34 @@ export class ArticleDetailsComponent {
   }
 
   onEdit() {
-    const topics: string[] = [];
-    const observables = this.article.topics.map((topic) => {
-      return this.apiCalls.getSingleTopic(topic).pipe(
-        catchError((err) => of(null)),
-        tap((data) => {
-          if (data) {
-            topics.push(data.topic.name);
-          }
-        })
-      );
-    });
+    if (this.article) {
+      const topics: string[] = [];
+      // the array map, not the rxjs map;
+      const observables = this.article.topics.map((topicId) => {
+        return this.apiCalls.getSingleTopic(topicId).pipe(
+          // on error emit null
+          catchError((err) => of(null)),
+          tap((data) => {
+            if (data) {
+              topics.push(data.topic.name);
+            }
+          })
+        );
+      });
 
-    forkJoin(observables).subscribe({
-      next: () => {
-        this.router.navigate([`/articles/${this.articleId}/edit`], {
-          state: {
-            article: this.article,
-            topics: topics,
-          },
-        });
-      },
-      error: (err) => {},
-    });
+      // an array with the results of the prev subs when all of them complete
+      forkJoin(observables).subscribe({
+        next: () => {
+          this.router.navigate([`/articles/${this.articleId}/edit`], {
+            state: {
+              article: this.article,
+              topics: topics,
+            },
+          });
+        },
+        error: (err) => {},
+      });
+    }
   }
 
   onDelete() {

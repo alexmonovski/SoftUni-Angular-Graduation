@@ -54,10 +54,12 @@ export class ApiCallsService {
   }
 
   // articles
+  //? not populated
   getAllArticles(): Observable<{ articles: IArticle[] }> {
     const url = `http://localhost:3000/articles/`;
     return this.http.get<{ articles: IArticle[] }>(url);
   }
+
   getSingleArticle(id: string): Observable<{ article: IArticlePopulated }> {
     const url = `http://localhost:3000/articles/${id}`;
     return this.http.get<{ article: IArticlePopulated }>(url);

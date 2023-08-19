@@ -7,7 +7,7 @@
   *ngIf="filteredArticles && filteredArticles.length > 0; else noArticles"
 >
   <ng-container *ngFor="let article of filteredArticles">
-    <app-article-card [articleId]="article._id"></app-article-card>
+    <app-article-card [article]="article"></app-article-card>
   </ng-container>
 </ng-container>
 

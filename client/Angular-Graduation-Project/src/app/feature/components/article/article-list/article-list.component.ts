@@ -1,9 +1,9 @@
+import { IArticle } from './../../../../shared/interfaces/iarticle';
+import { IUser } from './../../../../shared/interfaces/iuser';
 import { Component, OnInit } from '@angular/core';
 import { ApiCallsService } from 'src/app/core/services/api-calls.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { Subscription, switchMap } from 'rxjs';
-import { IArticle } from 'src/app/shared/interfaces/iarticle';
-import { IUser } from 'src/app/shared/interfaces/iuser';
 
 @Component({
   selector: 'app-article-list',
@@ -11,11 +11,10 @@ import { IUser } from 'src/app/shared/interfaces/iuser';
   styleUrls: ['./article-list.component.css'],
 })
 export class ArticleListComponent implements OnInit {
-  articles: IArticle[] | undefined = undefined;
-  filteredArticles: IArticle[] | undefined = [];
-  user: IUser | undefined = undefined;
+  articles: IArticle[] = [];
+  filteredArticles: IArticle[] = [];
+  user: IUser | null = null;
   selectedFilter: string = 'all';
-
   private subscription: Subscription = new Subscription();
 
   constructor(
@@ -26,22 +25,22 @@ export class ArticleListComponent implements OnInit {
   ngOnInit(): void {
     this.subscription = this.authService.sessionObservable$
       .pipe(
-        switchMap((user) => {
+        switchMap((user: IUser | null) => {
           if (user) {
             this.user = user;
             this.selectedFilter = 'topics';
           } else {
+            this.user = null;
             this.selectedFilter = 'all';
           }
           return this.apiCalls.getAllArticles();
         })
       )
       .subscribe({
-        next: (response) => {
-          this.articles = [];
+        next: (response: { articles: IArticle[] }) => {
           const data = response.articles;
           data.forEach((article: IArticle) => {
-            this.articles?.push(article);
+            this.articles.push(article);
           });
           this.filter();
         },
@@ -52,23 +51,19 @@ export class ArticleListComponent implements OnInit {
 
   filter() {
     if (this.selectedFilter == 'topics') {
-      const userTopicIds = this.user?.topics;
-      this.articles?.forEach((article) => {
-        const hasCommonTopic = article.topics.some((topicId: string) =>
-          userTopicIds?.includes(topicId)
+      const userTopicIds = this.user?.topics || [];
+      this.filteredArticles = this.articles.filter((article) => {
+        return article.topics.some((articleTopicId: string) =>
+          userTopicIds.includes(articleTopicId)
         );
-        if (
-          hasCommonTopic &&
-          !this.filteredArticles?.some(
-            (filteredArticle) => filteredArticle._id === article._id
-          )
-        ) {
-          this.filteredArticles?.push(article);
-        }
       });
     } else if (this.selectedFilter == 'all') {
-      this.filteredArticles = this.articles?.slice();
+      this.filteredArticles = this.articles.slice();
     }
+    this.filteredArticles.sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    );
   }
 
   ngOnDestroy(): void {
