@@ -54,8 +54,6 @@ export class ProfileComponent implements OnInit {
           }
         },
         error: (err) => {
-          console.log('we are here');
-
           this.errorHandlerService.setErrorMessage(
             'An error occurred: ' + err.message
           );

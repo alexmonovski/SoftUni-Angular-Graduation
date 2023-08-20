@@ -88,8 +88,6 @@ async function createAndParseTopics(topics) {
       (topic) => topic.name === topicName
     );
     if (existingTopic == undefined) {
-      console.log(topicName);
-
       topicsToCreate.push(topicName);
     } else {
       createdTopics.push(existingTopic);

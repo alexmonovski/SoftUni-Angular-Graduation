@@ -47,12 +47,6 @@ async function validateInput(body, command) {
     if (user == false) {
       throw new Error("Email or password do not match.");
     }
-
-    // парама от логин формата е в добър формат.
-
-    // ако е false това става falsy. след това го обръщаме и става true и влиза.
-    // ако е true като го обърнем става FALSY и не влиза.
-
     const comparePass = await bcrypt.compare(body.password, user.password);
     if (!comparePass) {
       throw new Error("Email or password do not match.");
