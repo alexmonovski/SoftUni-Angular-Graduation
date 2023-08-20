@@ -96,7 +96,9 @@ export class RegisterComponent implements OnInit {
       },
       error: (err) => {
         console.error(err);
-        this.errorHandlerService.setErrorMessage('An error occurred: ' + err);
+        this.errorHandlerService.setErrorMessage(
+          'An error occurred: ' + err.message
+        );
       },
     });
     // prepopulate the form itself

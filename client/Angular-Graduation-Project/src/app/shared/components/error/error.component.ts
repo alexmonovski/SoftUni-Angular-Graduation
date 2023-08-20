@@ -6,6 +6,8 @@ import { MAT_SNACK_BAR_DATA } from '@angular/material/snack-bar';
   templateUrl: './error.component.html',
   styleUrls: ['./error.component.css'],
 })
+// a vessel for the error; takes the error information from the MAT_SNACK_BAR_DATA through injection
+//! turned out I don't need it.
 export class ErrorComponent {
   constructor(@Inject(MAT_SNACK_BAR_DATA) public data: any) {}
   get errorMessage() {

@@ -2,6 +2,8 @@
 The app’s purpose is to establish a discussion forum where users can create articles and share these articles with the world. The authenticated users can create articles, subscribe to users and topics, like articles and comment on articles. The not-authenticated users can see and read the articles that other users have created.
 The app has its own REST api built with ExpressJS and MongoDB. For convenience purposes a dark mode is also provided, implementing the ‘dark reader’ npm extension.
 
+Both assets can be started with 'npm start' in the console.
+
 2.0 Modules
 
 2.1 Auth module
@@ -48,7 +50,7 @@ getAllArticles(): a get request that fetches all of the created articles from th
 getSingleArticle: a post request that sends an articleId and fetches the corresponding article from the db (the one that has the same .\_id as the request). On success it returns an object with an ‘article’ key which contains the article data. The ‘topics’ key is prepopulated for convenience.  
 getSingleArticleLean: same as the previous one, but leanified.
 createArticle: a post request that sends form data from the create article form to the backend. On success it returns an object with a ‘newArticle’ key that holds the just created article data.
-getArticlesByTopics: a post request that sends an array witht topics to the backend. On success it returns an object with ‘articlesByTopics’ key that holds the articles that are associated with the provided topics (only unique articles are returned, no duplicates.
+getArticlesByTopics: a post request that sends an array witht topics to the backend. On success it returns an object with ‘articlesByTopics’ key that holds the articles that are associated with the provided topics (only unique articles are returned, no duplicates).
 addComment: A post request that sends the ‘add comment’ form data and the just commented article Id to the backend. On success the backend returns a success message and adds relations between the commenting user and the article.
 likeArticle: a get request that adds adds relations between the liking user and the article being liked. On success returns an object with an ‘updatedArticle’ key that holds the updated article data.
 editArticle: a post request that sends formdata to the backend and then the backend edits the article document according to the formdata. On success returns an object with an ‘article’ key that holds the updated article data.
