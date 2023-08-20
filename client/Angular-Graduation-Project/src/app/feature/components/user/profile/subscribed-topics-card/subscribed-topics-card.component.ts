@@ -1,5 +1,5 @@
 import { Subscription } from 'rxjs';
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ApiCallsService } from 'src/app/core/services/api-calls.service';
 import { ITopic } from 'src/app/shared/interfaces/itopic';
 import { ErrorHandlerService } from 'src/app/shared/services/error-handler.service';
@@ -9,7 +9,7 @@ import { ErrorHandlerService } from 'src/app/shared/services/error-handler.servi
   templateUrl: './subscribed-topics-card.component.html',
   styleUrls: ['./subscribed-topics-card.component.css'],
 })
-export class SubscribedTopicsCardComponent {
+export class SubscribedTopicsCardComponent implements OnInit, OnDestroy {
   @Input() topicId!: string;
   topic: ITopic | undefined;
 

@@ -1,6 +1,6 @@
 import { IArticle } from './../../../../shared/interfaces/iarticle';
 import { IUser } from './../../../../shared/interfaces/iuser';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ApiCallsService } from 'src/app/core/services/api-calls.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { Subscription, switchMap } from 'rxjs';
@@ -11,7 +11,7 @@ import { ErrorHandlerService } from 'src/app/shared/services/error-handler.servi
   templateUrl: './article-list.component.html',
   styleUrls: ['./article-list.component.css'],
 })
-export class ArticleListComponent implements OnInit {
+export class ArticleListComponent implements OnInit, OnDestroy {
   articles: IArticle[] = [];
   filteredArticles: IArticle[] = [];
   user: IUser | null = null;

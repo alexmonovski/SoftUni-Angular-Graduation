@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ApiCallsService } from 'src/app/core/services/api-calls.service';
 import { IUser } from 'src/app/shared/interfaces/iuser';
@@ -9,7 +9,7 @@ import { ErrorHandlerService } from 'src/app/shared/services/error-handler.servi
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.css'],
 })
-export class UserListComponent {
+export class UserListComponent implements OnInit {
   users: IUser[] | undefined;
 
   constructor(

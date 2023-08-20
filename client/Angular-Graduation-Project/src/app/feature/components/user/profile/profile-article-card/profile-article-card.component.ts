@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { tap, Subscription } from 'rxjs';
 import { ApiCallsService } from 'src/app/core/services/api-calls.service';
 import { IArticle } from 'src/app/shared/interfaces/iarticle';
@@ -11,7 +11,7 @@ import { ErrorHandlerService } from 'src/app/shared/services/error-handler.servi
   templateUrl: './profile-article-card.component.html',
   styleUrls: ['./profile-article-card.component.css'],
 })
-export class ProfileArticleCardComponent {
+export class ProfileArticleCardComponent implements OnInit, OnDestroy {
   @Input() articleId!: string;
   article: IArticlePopulated | undefined;
   topics: string[] = [];

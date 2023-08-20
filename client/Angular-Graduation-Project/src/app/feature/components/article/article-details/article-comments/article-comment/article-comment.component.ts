@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiCallsService } from 'src/app/core/services/api-calls.service';
 import { Router } from '@angular/router';
@@ -11,7 +11,7 @@ import { ErrorHandlerService } from 'src/app/shared/services/error-handler.servi
   templateUrl: './article-comment.component.html',
   styleUrls: ['./article-comment.component.css'],
 })
-export class ArticleCommentComponent {
+export class ArticleCommentComponent implements OnInit {
   commentFormGroup: FormGroup;
   articleId!: string;
 

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription, map, of, switchMap } from 'rxjs';
 import { AuthService } from 'src/app/core/services/auth.service';
@@ -10,7 +10,7 @@ import { ErrorHandlerService } from '../../services/error-handler.service';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit, OnDestroy {
   isLoggedIn = false;
   subscription: Subscription = new Subscription();
   user!: IUser | null;

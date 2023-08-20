@@ -1,5 +1,5 @@
 import { Subscription } from 'rxjs';
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ApiCallsService } from 'src/app/core/services/api-calls.service';
 import { IUserPopulated } from 'src/app/shared/interfaces/iuser-populated';
 import { ITopic } from 'src/app/shared/interfaces/itopic';
@@ -10,7 +10,7 @@ import { ErrorHandlerService } from 'src/app/shared/services/error-handler.servi
   templateUrl: './subscribed-users-card.component.html',
   styleUrls: ['./subscribed-users-card.component.css'],
 })
-export class SubscribedUsersCardComponent {
+export class SubscribedUsersCardComponent implements OnInit, OnDestroy {
   @Input() userId!: string;
   user: IUserPopulated | undefined;
   topics: string[] = [];

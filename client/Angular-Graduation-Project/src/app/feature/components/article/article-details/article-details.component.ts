@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { forkJoin, of, Subscription } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
@@ -13,7 +13,7 @@ import { ErrorHandlerService } from 'src/app/shared/services/error-handler.servi
   templateUrl: './article-details.component.html',
   styleUrls: ['./article-details.component.css'],
 })
-export class ArticleDetailsComponent {
+export class ArticleDetailsComponent implements OnInit, OnDestroy {
   articleId: string = '';
   article: IArticle | undefined;
   loggedInUser: IUser | null = null;

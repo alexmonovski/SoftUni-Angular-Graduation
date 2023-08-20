@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ApiCallsService } from 'src/app/core/services/api-calls.service';
@@ -11,7 +11,7 @@ import { ErrorHandlerService } from 'src/app/shared/services/error-handler.servi
   templateUrl: './user-card.component.html',
   styleUrls: ['./user-card.component.css'],
 })
-export class UserCardComponent {
+export class UserCardComponent implements OnInit, OnDestroy {
   @Input() owner!: IUser;
   loggedInUser: IUser | null = null;
   subscription: Subscription = new Subscription();
